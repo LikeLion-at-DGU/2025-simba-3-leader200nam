@@ -1,3 +1,67 @@
-{% extends "base.html" %} {% block content %}
-<h1 class="contents"></h1>
+{% extends "base.html" %} {% block content %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/page/mainpage.css' %}" />
+<div class="main-container">
+  <div class="main-box">
+    <div class="univ-name">동국대학교</div>
+    <img
+      src="{% static 'images/ako1.svg' %}"
+      alt="akoq Image"
+      class="ako1-img"
+    />
+    <div class="level-container">
+      <span class="level-title">서누의 레벨</span>
+      <div class="level">
+        <span class="user-level">LV.1</span>
+        <span class="level-count">280/500</span>
+      </div>
+      <div class="bar-container">
+        <div class="bar-fill"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-quest">
+    <div class="quest-header">
+      <span class="quest-title">3월 2주차 퀘스트</span>
+      <span class="quest-date">종료까지 05D 07H </span>
+    </div>
+    <div class="quest-border"></div>
+
+    <div class="quest-lists">
+      <div class="quest-list">
+        <span class="quest-order">1</span>
+        <div class="quest-infos">
+          <p class="quest-name">학과 과방 방문해보기</p>
+          <span class="quest-description"
+            >동기와 선배들을 만나볼 수 있는 만남의 광장 !</span
+          >
+        </div>
+      </div>
+      <span class="quest-point">(+50 exp)</span>
+    </div>
+
+    <div class="quest-lists">
+      <div class="quest-list">
+        <span class="quest-order">2</span>
+        <div class="quest-infos">
+          <span class="quest-name">상록원에서 학식 먹어보기</span>
+          <span class="quest-description">첫학식은 김삼철이 국룰이지</span>
+        </div>
+      </div>
+      <span class="quest-point">(+50 exp)</span>
+    </div>
+    <div class="quest-lists">
+      <div class="quest-list">
+        <span class="quest-order">3</span>
+        <div class="quest-infos">
+          <span class="quest-name">동기 3명과 인스타 맞팔하기</span>
+          <span class="quest-description">맞팔은 기본중에 기본이라고</span>
+        </div>
+      </div>
+      <span class="quest-point">(+50 exp)</span>
+    </div>
+  </div>
+</div>
+<script src="{% static 'js/page/mainpage.js' %}"></script>
+
 {% endblock content %}
