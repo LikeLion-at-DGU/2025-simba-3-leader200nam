@@ -1,1 +1,33 @@
-<nav class="navbar-container"></nav>
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/common/nav.css' %}" />
+
+<nav class="navbar-container">
+  <div class="logo-bar">
+    <a class="logo-img" href="{% url 'mainpage' %}">
+      <img src="{% static 'images/CAMPERCENT.svg' %}" alt="Campercent Logo" />
+    </a>
+    <a class="friend-icon" href="{% url 'mainpage' %}">
+      <!-- Todo: 친구 페이지 제작 후 URL 수정 -->
+      <img src="{% static 'images/friend.svg' %}" alt="Friend List" />
+    </a>
+  </div>
+  <div class="menu-bar">
+    <!--Todo: 각 페이지 제작 후 URL 수정-->
+    <ul class="menu-list">
+      <li class="menu-item">
+        <a href="#">RANK</a>
+      </li>
+      <li class="menu-item active">
+        <!--js active 적용. 현재는 디자인을 위해서-->
+        <a href="#">HOME</a>
+      </li>
+      <li class="menu-item">
+        <a href="#">FREIEND</a>
+      </li>
+      <li class="menu-item">
+        <a href="#">FEED</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+<script src="{% static 'js/base/nav.js' %}"></script>
