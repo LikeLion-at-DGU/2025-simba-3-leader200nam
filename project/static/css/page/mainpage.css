@@ -1,0 +1,197 @@
+* {
+  font-family: "Moneygraphy-Rounded", sans-serif;
+}
+
+.main-container {
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-box {
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    rgba(17, 51, 137, 0.1) 53%,
+    rgba(15, 60, 190, 0.5) 100%
+  );
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 358px;
+  height: 350px;
+  justify-content: space-between;
+}
+
+.univ-name {
+  background-color: white;
+  font-size: 16px;
+  color: #dc8219;
+  padding: 7px 10px;
+  border-radius: 10px;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.ako1-img {
+  position: absolute;
+  top: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 222px;
+  height: 222px;
+  background-color: inherit;
+  z-index: 1;
+}
+
+.level-container {
+  padding: 15px;
+  border-radius: 10px;
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.9) 100%
+  );
+  /* level-container를 main-box의 가장 아래로 밀어냅니다. */
+  margin-top: auto; /* 남은 수직 공간을 모두 차지하여 아래로 밀어냄 */
+  width: 100%; /* 부모 너비에 맞게 */
+  box-sizing: border-box; /* 패딩 포함 너비 계산 */
+  z-index: 2; /* ako1-img 위에 오도록 z-index 설정 (선택 사항) */
+}
+
+.level-title {
+  font-size: 14px;
+  color: rgba(42, 42, 42, 0.7);
+  font-weight: 400;
+}
+
+.level {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5px;
+  background-color: inherit;
+}
+
+.user-level,
+.level-count {
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(138, 138, 138, 0.7);
+  background-color: inherit;
+}
+
+/* --- 막대 그래프 스타일 --- */
+.bar-container {
+  width: 100%;
+  height: 20px;
+  border-radius: 10px;
+  background: rgba(231, 231, 231, 0.7);
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 10px;
+  background: linear-gradient(90deg, rgba(240, 185, 89, 0.1) 0%, #e4811c 100%);
+  transition: width 1s ease-out;
+  width: 0%;
+}
+
+.main-quest {
+  width: 100%;
+  background-color: white;
+  border-radius: 10px;
+  margin-top: 20px;
+  padding: 17px;
+}
+
+.quest-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: inherit;
+  margin-bottom: 17px;
+}
+
+.quest-title {
+  color: #113389;
+  font-family: 머니그라피TTF;
+  font-size: 20px;
+  background-color: inherit;
+}
+
+.quest-date {
+  color: #757575;
+  font-size: 11px;
+  font-weight: 400;
+  background-color: inherit;
+}
+
+.quest-border {
+  border: 1px solid rgba(245, 245, 245, 0.95);
+}
+
+.quest-lists {
+  padding: 5px 5px;
+  margin-top: 15px;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white;
+}
+
+.quest-list {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  background-color: inherit;
+}
+
+.quest-order {
+  color: #2a2a2a;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  background-color: inherit;
+}
+
+.quest-infos {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background-color: white;
+}
+
+.quest-name {
+  color: #2a2a2a;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  background-color: inherit;
+}
+
+.quest-description {
+  color: #8a8a8a;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  background-color: inherit;
+}
+
+.quest-point {
+  color: #000;
+  text-align: center;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  background-color: inherit;
+}
