@@ -1,0 +1,64 @@
+.logo-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 17px 16px;
+}
+
+.friend-icon {
+  width: 24px;
+  height: 24px;
+}
+
+.menu-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+  margin-bottom: 20px;
+  text-align: center;
+  font-family: Moneygraphy-Rounded;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px; /* 113.333% */
+  letter-spacing: -0.5px;
+}
+
+.menu-item {
+  position: relative;
+}
+
+.menu-item a {
+  position: relative;
+  text-decoration: none;
+  color: #2a2a2a;
+  padding-bottom: 12px;
+  display: block;
+}
+
+.menu-item.active a {
+  color: #0f3cbe;
+}
+
+.menu-item a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 3px;
+  background-color: #0f3cbe;
+  /* 애니메이션: width 속성에 트랜지션 적용 */
+  transition: width 0.3s ease-in-out;
+}
+
+.menu-item.active a::after {
+  width: 100%;
+}
+
+.menu-list {
+  display: flex;
+  align-items: center;
+  gap: 55px;
+}
