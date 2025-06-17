@@ -1,0 +1,77 @@
+body {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+.ako1-img {
+  width: 291px;
+  height: 291px;
+  position: absolute;
+  bottom: 181px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+
+/* 텍스트 스타일 */
+#introText {
+  margin-top: 185px;
+  color: #2a2a2a;
+  text-align: center;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 400;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  line-height: 30px;
+  white-space: pre-line; /* \n 줄바꿈 적용 */
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+.highlight-text {
+  color: #1061ff;
+}
+
+.fade-in {
+  opacity: 1 !important;
+}
+
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-left-color: rgba(16, 97, 255, 0.8);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1.2s linear infinite, fade-in-out 2.4s ease-in-out infinite;
+  position: absolute;
+  margin-top: 180px;
+  left: 50%;
+  transform: translateX(-50%);
+  filter: blur(0.5px);
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
+}
+
+/* 스피너 회전 애니메이션 */
+@keyframes spin {
+  0% {
+    transform: translateX(-50%) rotate(0deg);
+  }
+  100% {
+    transform: translateX(-50%) rotate(360deg);
+  }
+}
+
+@keyframes fade-in-out {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}

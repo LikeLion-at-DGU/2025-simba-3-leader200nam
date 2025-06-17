@@ -4,3 +4,6 @@ from django.shortcuts import render
 
 def mainpage(request):
     return render(request, 'main/mainpage.html')
+
+def intropage(request):
+    return render(request, 'intro/intropage.html')
