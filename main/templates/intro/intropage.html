@@ -1,0 +1,11 @@
+{% extends "baseNoneHeader.html" %} {% block content %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/page/intropage.css' %}" />
+
+<div class="intro-container">
+  <h1 id="introText"></h1>
+  <div class="spinner" id="loadingSpinner" style="display: none"></div>
+  <img src="{% static 'images/ako1.svg' %}" alt="akoq Image" class="ako1-img" />
+</div>
+<script src="{% static 'js/page/intropage.js' %}"></script>
+
+{% endblock content %}
