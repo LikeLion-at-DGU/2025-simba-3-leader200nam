@@ -1,0 +1,78 @@
+{% extends "baseNoneHeader.html" %} {% block content %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/page/registeration.css' %}" />
+
+<div class="registeration-container">
+  <div id="header">
+    <img
+      src="{% static 'images/back-icon.svg' %}"
+      alt="back icon"
+      class="back-icon"
+    />
+    <h1 class="registeration-title">학과 과방 방문해보기</h1>
+  </div>
+
+  <form id="registeration" method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="registeration-box">
+      <div class="image-upload-box" id="uploadBox">
+        <img src="{% static 'images/image.svg' %}" alt="image icon"
+        class="upload-icon" id="uploadIcon"/ >
+        <img id="previewImage" style="display: none" />
+      </div>
+
+      <input type="file" id="real-upload" name="image" accept="image/*" />
+
+      <div class="input-group">
+        <label for="img-name" class="input-label">사진명</label>
+        <div class="img-input">
+          <input
+            type="text"
+            name="img-name"
+            placeholder="사진명을 입력해주세요"
+            required
+          />
+        </div>
+        <p class="input-condition">2~15자 이내로 작성해주세요.</p>
+      </div>
+
+      <div class="input-group">
+        <label for="place" class="input-label">촬영장소</label>
+        <div class="place-input">
+          <input
+            type="text"
+            name="place"
+            placeholder="촬영 장소를 입력해주세요."
+            required
+          />
+        </div>
+        <p class="input-condition">2~15자 이내로 작성해주세요.</p>
+      </div>
+
+      <div class="input-group">
+        <label for="description" class="input-label">메모</label>
+        <div class="description-input">
+          <textarea
+            name="description"
+            id="descriptionTextarea"
+            placeholder="사진에 대한 설명을 입력해주세요"
+            maxlength="150"
+          ></textarea>
+        </div>
+        <p class="input-condition" id="charCount">(0/150)</p>
+      </div>
+
+      <div class="public">
+        <p class="feed-public">게시글 공개 여부</p>
+        <label class="toggle-switch">
+          <input type="checkbox" id="visibilityToggle" />
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <button type="submit">등록하기</button>
+    </div>
+  </form>
+</div>
+
+<script src="{% static 'js/page/registeration.js' %}"></script>
+{% endblock content %}

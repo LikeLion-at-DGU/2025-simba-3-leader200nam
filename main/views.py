@@ -16,3 +16,6 @@ def signup(request):
 
 def introInputPage(request):
     return render(request, 'intro/introInputPage.html')
+
+def registeration(request):
+    return render(request, 'main/registeration.html')
