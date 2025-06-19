@@ -7,3 +7,9 @@ def mainpage(request):
 
 def intropage(request):
     return render(request, 'intro/intropage.html')
+
+def signin(request):
+    return render(request, 'signin/signin.html')
+
+def signup(request):
+    return render(request, 'signup/signup.html')
