@@ -13,3 +13,6 @@ def signin(request):
 
 def signup(request):
     return render(request, 'signup/signup.html')
+
+def introInputPage(request):
+    return render(request, 'intro/introInputPage.html')

@@ -36,14 +36,14 @@ document.addEventListener("DOMContentLoaded", () => {
     .closest(".input-group")
     .querySelector(".input-condition");
 
-  // 학번: only digits
+  // 학번
   numberInput.addEventListener("input", () => {
     const value = numberInput.value;
-    const isValid = /^\d{10}$/.test(value); // Must be exactly 10 digits
+    const isValid = /^\d{10}$/.test(value); 
     updateValidationState(numberInput, numberCondition, isValid);
   });
 
-  // 비밀번호: 4-12 characters, letters, numbers, Korean
+  // 비밀번호
   passwordInput.addEventListener("input", () => {
     const value = passwordInput.value;
     const isValid =
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     validatePasswordMatch();
   });
 
-  // 비밀번호 확인: matches password
+  // 비밀번호 확인
   passwordCheckInput.addEventListener("input", validatePasswordMatch);
 
   function validatePasswordMatch() {
