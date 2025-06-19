@@ -41,3 +41,13 @@ class SignUpForm(UserCreationForm):
         if User.objects.filter(student_id=student_id).exists():
             raise forms.ValidationError('이미 사용 중인 학번(아이디)입니다.')
         return student_id 
+        
+class LoginForm(forms.Form):
+    student_id = forms.CharField(
+        label='학번(아이디)',
+        widget=forms.TextInput(attrs={'placeholder': '학번을 입력해주세요.'})
+    )
+    password = forms.CharField(
+        label='비밀번호',
+        widget=forms.PasswordInput(attrs={'placeholder': '비밀번호를 입력해주세요.'})
+    ) 
