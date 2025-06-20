@@ -40,8 +40,8 @@ class SignUpForm(UserCreationForm):
         student_id = self.cleaned_data.get('student_id')
         if User.objects.filter(student_id=student_id).exists():
             raise forms.ValidationError('이미 사용 중인 학번(아이디)입니다.')
-        return student_id 
-        
+        return student_id
+
 class LoginForm(forms.Form):
     student_id = forms.CharField(
         label='학번(아이디)',
@@ -50,4 +50,12 @@ class LoginForm(forms.Form):
     password = forms.CharField(
         label='비밀번호',
         widget=forms.PasswordInput(attrs={'placeholder': '비밀번호를 입력해주세요.'})
-    ) 
+    )
+
+class ProfileUpdateForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('nickname', 'department', 'bio', 'image')
+        widgets = {
+            'bio': forms.Textarea(attrs={'placeholder': '자기소개를 입력해주세요.'}),
+        } 

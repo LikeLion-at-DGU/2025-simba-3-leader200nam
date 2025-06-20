@@ -1,10 +1,16 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import SignUpForm, LoginForm
+from .forms import SignUpForm, LoginForm, ProfileUpdateForm
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from .serializers import RegisterSerializer, LoginSerializer
+from django.contrib.auth.decorators import login_required
+from django import forms
+from accounts.models import User
+from quest.models import Quest
+from feed.models import Feed
+from datetime import date
 
 # Create your views here.
 
@@ -62,5 +68,66 @@ class LogoutAPIView(APIView):
     def post(self, request):
         logout(request)
         return Response({'message': '로그아웃 성공'}, status=status.HTTP_200_OK)
+
+@login_required
+def profile_view(request):
+    return render(request, 'accounts/profile.html', {'user': request.user})
+
+@login_required
+def profile_update(request):
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('accounts:profile')
+    else:
+        form = ProfileUpdateForm(instance=request.user)
+    return render(request, 'accounts/profile_update.html', {'form': form})
+
+class NicknameForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['nickname']
+
+@login_required
+def set_nickname(request):
+    if request.method == 'POST':
+        form = NicknameForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('mainpage')
+    else:
+        form = NicknameForm(instance=request.user)
+    return render(request, 'accounts/set_nickname.html', {'form': form})
+
+@login_required
+def mainpage(request):
+    # 닉네임 없으면 닉네임 입력 페이지로 리다이렉트
+    if not request.user.nickname:
+        return redirect('accounts:set_nickname')
+    # 레벨 계산(예: 100exp당 1레벨)
+    exp = getattr(request.user, 'exp', 0)
+    level = exp // 100 + 1
+    # 학교명
+    school = request.user.school_name
+    # 이번 주 퀘스트
+    today = date.today()
+    month = today.month
+    week = (today.day - 1) // 7 + 1
+    quests = Quest.objects.filter(month=month, week=week)
+    # 퀘스트 완료 여부(Feed에 인증된 quest가 3개 이상이면 완료)
+    completed_count = Feed.objects.filter(author=request.user, quest__in=quests, is_completed=True).count()
+    is_all_completed = completed_count >= 3
+    # 퀘스트 경험치 정보
+    quest_exp = sum(q.exp for q in quests)
+    context = {
+        'nickname': request.user.nickname,
+        'level': level,
+        'school': school,
+        'quests': quests,
+        'is_all_completed': is_all_completed,
+        'quest_exp': quest_exp,
+    }
+    return render(request, 'main/mainpage.html', context)
 
 
