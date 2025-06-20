@@ -12,6 +12,7 @@ class Feed(models.Model):
     image_name = models.CharField(max_length=15, null=True, blank=True)
     location = models.CharField(max_length=15, null=True, blank=True)
     memo = models.CharField(max_length=150, blank=True)
+    content = models.TextField(blank=True)
     is_private = models.BooleanField(default=False)
     is_deleted = models.BooleanField(default=False)
     is_completed = models.BooleanField(default=True)

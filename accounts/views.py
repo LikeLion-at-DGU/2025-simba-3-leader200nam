@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
-from .forms import SignUpForm, LoginForm
+from .forms import SignUpForm, LoginForm, ProfileUpdateForm
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status, permissions
 from .serializers import RegisterSerializer, LoginSerializer
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
@@ -62,5 +63,20 @@ class LogoutAPIView(APIView):
     def post(self, request):
         logout(request)
         return Response({'message': '로그아웃 성공'}, status=status.HTTP_200_OK)
+
+@login_required
+def profile_view(request):
+    return render(request, 'accounts/profile.html', {'user': request.user})
+
+@login_required
+def profile_update(request):
+    if request.method == 'POST':
+        form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('accounts:profile')
+    else:
+        form = ProfileUpdateForm(instance=request.user)
+    return render(request, 'accounts/profile_update.html', {'form': form})
 
 
