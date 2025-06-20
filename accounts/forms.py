@@ -21,21 +21,6 @@ class SignUpForm(UserCreationForm):
         widget=forms.TextInput(attrs={'placeholder': '본인의 학번을 입력해주세요.'}),
         help_text='숫자만 입력해주세요.'
     )
-    nickname = forms.CharField(
-        max_length=30,
-        label='닉네임',
-        widget=forms.TextInput(attrs={'placeholder': '닉네임을 입력해주세요.'}),
-        help_text='중복되지 않는 닉네임을 입력해주세요.'
-    )
-    image = forms.ImageField(
-        label='프로필 이미지',
-        required=False
-    )
-    bio = forms.CharField(
-        label='자기소개',
-        widget=forms.Textarea(attrs={'placeholder': '자기소개를 입력해주세요.'}),
-        required=False
-    )
     password1 = forms.CharField(
         label='비밀번호',
         widget=forms.PasswordInput(attrs={'placeholder': '비밀번호를 입력해주세요.'}),
@@ -49,19 +34,13 @@ class SignUpForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('school_name', 'department', 'student_id', 'nickname', 'image', 'bio', 'password1', 'password2')
+        fields = ('school_name', 'department', 'student_id', 'password1', 'password2')
 
     def clean_student_id(self):
         student_id = self.cleaned_data.get('student_id')
         if User.objects.filter(student_id=student_id).exists():
             raise forms.ValidationError('이미 사용 중인 학번(아이디)입니다.')
         return student_id
-    
-    def clean_nickname(self):
-        nickname = self.cleaned_data.get('nickname')
-        if User.objects.filter(nickname=nickname).exists():
-            raise forms.ValidationError('이미 사용 중인 닉네임입니다.')
-        return nickname
 
 class LoginForm(forms.Form):
     student_id = forms.CharField(
