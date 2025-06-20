@@ -24,6 +24,8 @@ urlpatterns = [
     path('intro/', views.intropage, name='intropage'),
     path('signin/', views.signin, name='signin'),
     path('signup/', views.signup, name='signup'),
+    path('intro-input/', views.introInputPage, name='introInputPage'),
+    path('registeration/', views.registeration, name='registeration'),
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
