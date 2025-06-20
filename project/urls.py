@@ -19,7 +19,7 @@ schema_view = get_schema_view(
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('accounts/', include('accounts.urls')),
+    # path('accounts/', include('accounts.urls')),
     path('home/', views.mainpage, name='mainpage'),
     path('intro/', views.intropage, name='intropage'),
     path('signin/', views.signin, name='signin'),
@@ -28,4 +28,5 @@ urlpatterns = [
     path('registeration/', views.registeration, name='registeration'),
     re_path(r'^swagger/$', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
+    path('profile-modification/', views.profileModification, name='profileModification'),   
 ]

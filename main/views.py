@@ -19,3 +19,6 @@ def introInputPage(request):
 
 def registeration(request):
     return render(request, 'main/registeration.html')
+
+def profileModification(request):
+    return render(request, 'main/profileModification.html')

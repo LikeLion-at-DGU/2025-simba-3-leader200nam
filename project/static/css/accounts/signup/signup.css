@@ -118,7 +118,6 @@ button {
   margin-left: 5px;
 }
 
-/* Valid (blue border and text) */
 .input-valid {
   border: 2px solid #1061ff !important;
 }
@@ -127,7 +126,6 @@ button {
   color: #1061ff !important;
 }
 
-/* Invalid (red border and text) */
 .input-invalid {
   border: 2px solid #ff3b30 !important;
 }
