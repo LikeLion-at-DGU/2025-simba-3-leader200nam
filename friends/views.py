@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.db.models import Q
 from .models import Friend, FriendCode
-from django.contrib.auth.models import User
+from accounts.models import User
 
 @login_required
 def friend_list(request):
@@ -24,15 +24,15 @@ def search_friends(request):
     if query:
         friends = Friend.objects.filter(
             user=request.user,
-            friend__username__icontains=query
+            friend__nickname__icontains=query
         ).select_related('friend')
     else:
         friends = Friend.objects.filter(user=request.user).select_related('friend')
     
     friend_list = [{
         'id': friend.friend.id,
-        'username': friend.friend.username,
-        'profile_image': friend.friend.profile.image.url if hasattr(friend.friend, 'profile') else None
+        'username': friend.friend.nickname,
+        'profile_image': friend.friend.image.url if friend.friend.image else None
     } for friend in friends]
     
     return JsonResponse({'friends': friend_list})
@@ -69,8 +69,8 @@ def add_friend(request):
                 'status': 'success',
                 'friend': {
                     'id': friend_code_obj.user.id,
-                    'username': friend_code_obj.user.username,
-                    'profile_image': friend_code_obj.user.profile.image.url if hasattr(friend_code_obj.user, 'profile') else None
+                    'username': friend_code_obj.user.nickname,
+                    'profile_image': friend_code_obj.user.image.url if friend_code_obj.user.image else None
                 }
             })
         except FriendCode.DoesNotExist:
@@ -85,9 +85,9 @@ def get_friend_profile(request, friend_id):
         friend = User.objects.get(id=friend_id)
         profile_data = {
             'id': friend.id,
-            'username': friend.username,
-            'profile_image': friend.profile.image.url if hasattr(friend, 'profile') else None,
-            'bio': friend.profile.bio if hasattr(friend, 'profile') else None
+            'username': friend.nickname,
+            'profile_image': friend.image.url if friend.image else None,
+            'bio': friend.bio
         }
         return JsonResponse({'status': 'success', 'profile': profile_data})
     except User.DoesNotExist:
