@@ -7,17 +7,14 @@
       src="{% static 'images/back-icon.svg' %}"
       alt="back icon"
       class="back-icon"
+      onclick="history.back()"
+      style="cursor: pointer"
     />
     <h1 class="signup-title">회원가입하기</h1>
   </div>
   <div class="signup-box">
     <form id="signup-form" method="POST" action="{% url 'signup' %}">
-      {% csrf_token %} {% for field in form %} {% for error in field.errors %}
-      <p style="color: red">{{ error }}</p>
-      {% endfor %} {% endfor %} {% for error in form.non_field_errors %}
-      <p style="color: red">{{ error }}</p>
-      {% endfor %}
-
+      {% csrf_token %}
       <div class="input-group">
         <label for="univ_name" class="input-label">학교명</label>
         <div class="univ-input">
@@ -27,6 +24,7 @@
             name="univ_name"
             placeholder="본인의 학교를 입력해주세요."
             required
+            class="required-input"
           />
         </div>
         <p class="input-condition">OO대학교 형식으로 입력해주세요.</p>
@@ -40,6 +38,7 @@
             name="major_name"
             placeholder="본인의 학과를 입력해주세요."
             required
+            class="required-input"
           />
         </div>
         <p class="input-condition">
@@ -56,6 +55,7 @@
             placeholder="본인의 학번을 입력해주세요."
             maxlength="10"
             required
+            class="required-input"
           />
         </div>
         <p class="input-condition">숫자 10자를 입력해주세요.</p>
@@ -69,6 +69,7 @@
             name="password1"
             placeholder="비밀번호를 입력해주세요"
             required
+            class="required-input"
           />
           <img
             src="{% static 'images/toggle-off-icon.svg' %}"
@@ -92,6 +93,7 @@
             name="password2"
             placeholder="비밀번호를 입력해주세요"
             required
+            class="required-input"
           />
           <img
             src="{% static 'images/toggle-off-icon.svg' %}"
@@ -104,7 +106,7 @@
         </div>
         <p class="input-condition">비밀번호와 일치하지않습니다.</p>
       </div>
-      <button type="submit" class="signin-button">회원가입하기</button>
+      <button type="submit" class="signin-button" disabled>회원가입하기</button>
     </form>
   </div>
 </div>

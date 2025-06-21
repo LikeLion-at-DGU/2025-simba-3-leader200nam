@@ -33,7 +33,7 @@ function showNextSlide() {
     }
 
     setTimeout(() => {
-      window.location.href = "/home/";
+      window.location.href = "/intro-input/";
     }, 1500);
   }
 }

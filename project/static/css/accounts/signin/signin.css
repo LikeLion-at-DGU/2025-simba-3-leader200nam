@@ -91,6 +91,7 @@ button {
   font-weight: 400;
   line-height: normal;
   margin-bottom: 29px;
+  transition: background 0.3s ease, color 0.3s ease;
 }
 
 .signup-link {
@@ -105,4 +106,10 @@ button {
   font-style: normal;
   font-weight: 500;
   line-height: normal;
+}
+
+button:disabled {
+  background: #c4c4c4;
+  color: #ffffff88;
+  cursor: not-allowed;
 }

@@ -16,13 +16,17 @@
         />
       </a>
       <div class="friend-popup" id="friendPopup">
-        <p>친구 목록 또는 알림 등</p>
-        <ul>
-          <li>친구 1</li>
-          <li>친구 2</li>
-          <li>친구 3</li>
-        </ul>
-        <button id="closePopup">닫기</button>
+        <div class="popup-header">
+          <p class="user-name">{{user.nickname}}</p>
+          <p class="level">LV.1</p>
+        </div>
+        <div class="popup-border"></div>
+        <div class="links">
+          <a class="profile" href="{% url 'profileModification' %}"
+            >프로필 수정하기</a
+          >
+          <p class="logout">로그아웃</p>
+        </div>
       </div>
     </div>
   </div>
