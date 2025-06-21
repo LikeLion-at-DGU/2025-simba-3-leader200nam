@@ -49,15 +49,39 @@ def login_view(request):
         if form.is_valid():
             number_name = form.cleaned_data['number_name']
             password = form.cleaned_data['password']
-            user = authenticate(request, number_name=number_name, password=password)
+            
+            print("\n" + "="*50)
+            print("=== 로그인 시도 ===")
+            print(f"학번: {number_name}")
+            
+            # 1. 사용자가 DB에 존재하는지 확인
+            try:
+                user_obj = User.objects.get(number_name=number_name)
+                print(f"✅ 사용자를 찾았습니다: {user_obj.number_name}")
+                # 2. 비밀번호가 일치하는지 확인
+                if user_obj.check_password(password):
+                    print("✅ 비밀번호가 일치합니다.")
+                else:
+                    print("❌ 비밀번호가 일치하지 않습니다!")
+            except User.DoesNotExist:
+                print("❌ 해당 학번의 사용자가 DB에 없습니다.")
+
+            # 3. Django 인증 시도
+            user = authenticate(request, username=number_name, password=password)
+            
             if user is not None:
+                print("✅ Django 인증(authenticate) 성공!")
                 login(request, user)
-                return redirect('mainpage')  # 메인페이지로 이동 (URL 이름에 맞게 수정)
+                print("="*50)
+                return redirect('mainpage')
             else:
+                print("❌ Django 인증(authenticate) 실패!")
                 error = '학번 또는 비밀번호가 올바르지 않습니다.'
+                print("="*50)
     else:
         form = LoginForm()
-    return render(request, 'login.html', {'form': form, 'error': error})
+    
+    return render(request, 'signin.html', {'form': form, 'error': error})
 
 def logout_view(request):
     logout(request)
@@ -98,12 +122,12 @@ def profile_update(request):
 def mainpage(request):
     # 닉네임 없으면 닉네임 입력 페이지로 리다이렉트
     if not request.user.nickname:
-        return redirect('accounts:set_nickname')
+        return redirect('set_nickname')
     # 레벨 계산(예: 100exp당 1레벨)
     exp = getattr(request.user, 'exp', 0)
     level = exp // 100 + 1
     # 학교명
-    school = request.user.school_name
+    school = request.user.univ_name
     # 이번 주 퀘스트
     today = date.today()
     month = today.month
