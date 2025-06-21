@@ -3,7 +3,7 @@ from django.conf import settings
 import secrets
 
 def generate_code():
-        return secrets.token_hex(4) 
+    return secrets.token_hex(4) 
 
 class Friend(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='friends')
@@ -21,4 +21,3 @@ class FriendCode(models.Model):
     
     def __str__(self):
         return f"{self.user.username}'s friend code: {self.code}" 
-

@@ -1,13 +1,13 @@
-document.addEventListener('DOMContentLoaded', function() {
-  const menuItems = document.querySelectorAll('.menu-item');
+// document.addEventListener('DOMContentLoaded', function() {
+//   const menuItems = document.querySelectorAll('.menu-item');
 
-  menuItems.forEach(item => {
-      item.addEventListener('click', function() {
-          menuItems.forEach(i => {
-              i.classList.remove('active');
-          });
+//   menuItems.forEach(item => {
+//       item.addEventListener('click', function() {
+//           menuItems.forEach(i => {
+//               i.classList.remove('active');
+//           });
 
-          this.classList.add('active');
-      });
-  });
-});
+//           this.classList.add('active');
+//       });
+//   });
+// });

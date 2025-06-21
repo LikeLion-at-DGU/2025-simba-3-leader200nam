@@ -1,11 +1,16 @@
 .signup-container {
   padding: 17px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #header {
   display: flex;
   align-items: center;
   margin-bottom: 31px;
+  width: 100%;
+  justify-content: flex-start;
 }
 
 .back-icon {
@@ -118,7 +123,6 @@ button {
   margin-left: 5px;
 }
 
-/* Valid (blue border and text) */
 .input-valid {
   border: 2px solid #1061ff !important;
 }
@@ -127,7 +131,6 @@ button {
   color: #1061ff !important;
 }
 
-/* Invalid (red border and text) */
 .input-invalid {
   border: 2px solid #ff3b30 !important;
 }

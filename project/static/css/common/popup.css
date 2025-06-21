@@ -1,0 +1,40 @@
+/* static/css/common/popup.css */
+
+.friend-icon-wrapper {
+  position: relative; /* 팝업을 이 요소에 대해 상대적으로 위치시키기 위함 */
+  display: inline-block; /* 내부 요소가 공간을 차지하게 함 */
+}
+
+.friend-popup {
+  display: none; /* 기본적으로 숨김 */
+  position: absolute; /* 아이콘을 기준으로 위치 */
+  top: 100%; /* 아이콘 바로 아래 */
+  right: 0; /* 아이콘 오른쪽 정렬 (필요에 따라 left: 0; 또는 원하는 값으로 조절) */
+  width: 250px; /* 팝업의 너비 */
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  z-index: 1000; /* 다른 요소 위에 표시되도록 */
+}
+
+/* 팝업이 활성화되었을 때 보이기 */
+.friend-popup.show {
+  display: block;
+}
+
+/* 닫기 버튼 스타일 */
+.friend-popup button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #0f3cbe;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.friend-popup button:hover {
+  background-color: #0c3099;
+}

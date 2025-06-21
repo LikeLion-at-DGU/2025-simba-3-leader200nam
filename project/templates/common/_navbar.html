@@ -1,25 +1,42 @@
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/common/nav.css' %}" />
+<link rel="stylesheet" href="{% static 'css/common/popup.css' %}" />
 
 <nav class="navbar-container">
   <div class="logo-bar">
     <a class="logo-img" href="{% url 'mainpage' %}">
       <img src="{% static 'images/CAMPERCENT.svg' %}" alt="Campercent Logo" />
     </a>
-    <a class="friend-icon" href="{% url 'mainpage' %}">
-      <!-- Todo: 친구 페이지 제작 후 URL 수정 -->
-      <img src="{% static 'images/friend.svg' %}" alt="Friend List" />
-    </a>
+    <div class="friend-icon-wrapper">
+      <a class="friend-icon" href="#">
+        <img
+          src="{% static 'images/friend.svg' %}"
+          alt="Friend List"
+          id="friendIcon"
+        />
+      </a>
+      <div class="friend-popup" id="friendPopup">
+        <p>친구 목록 또는 알림 등</p>
+        <ul>
+          <li>친구 1</li>
+          <li>친구 2</li>
+          <li>친구 3</li>
+        </ul>
+        <button id="closePopup">닫기</button>
+      </div>
+    </div>
   </div>
   <div class="menu-bar">
-    <!--Todo: 각 페이지 제작 후 URL 수정-->
     <ul class="menu-list">
-      <li class="menu-item">
-        <a href="#">RANK</a>
+      <li
+        class="menu-item {% if request.resolver_match.url_name == 'rankPage' %}active{% endif %}"
+      >
+        <a href="{% url 'rankPage' %}">RANK</a>
       </li>
-      <li class="menu-item active">
-        <!--js active 적용. 현재는 디자인을 위해서-->
-        <a href="#">HOME</a>
+      <li
+        class="menu-item {% if request.resolver_match.url_name == 'mainpage' %}active{% endif %}"
+      >
+        <a href="{% url 'mainpage' %}">HOME</a>
       </li>
       <li class="menu-item">
         <a href="#">FREIEND</a>
@@ -31,3 +48,5 @@
   </div>
 </nav>
 <script src="{% static 'js/base/nav.js' %}"></script>
+<script src="{% static 'js/base/popup.js' %}"></script>
+{# 팝업 JS 파일 추가 #}

@@ -1,0 +1,72 @@
+{% extends "base.html" %} {% block content %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/page/rankPage.css' %}" />
+
+<div class="rank-container">
+  <div class="rank-header">
+    <p class="rank-title">동국대학교 2025년 주간 랭킹</p>
+    <img
+      src="{% static 'images/reset.svg' %}"
+      alt="reset icon"
+      class="reset-img"
+    />
+  </div>
+  <p class="date">매주 월요일 00:00에 초기화됩니다.</p>
+  <div class="rank-lists">
+    <div class="rank-list">
+      <img
+        src="{% static 'images/medal1.svg' %}"
+        alt="rank 1"
+        class="rank-img"
+      />
+      <div class="major-box">
+        <p class="major">광고홍보학과</p>
+        <p class="major-group">사회과학대학</p>
+      </div>
+      <p class="point">580exp</p>
+    </div>
+    <div class="rank-list">
+      <img
+        src="{% static 'images/medal2.svg' %}"
+        alt="rank 2"
+        class="rank-img"
+      />
+      <div class="major-box">
+        <p class="major">광고홍보학과</p>
+        <p class="major-group">사회과학대학</p>
+      </div>
+      <p class="point">580exp</p>
+    </div>
+    <div class="rank-list">
+      <img
+        src="{% static 'images/medal3.svg' %}"
+        alt="rank 3"
+        class="rank-img"
+      />
+      <div class="major-box">
+        <p class="major">광고홍보학과</p>
+        <p class="major-group">사회과학대학</p>
+      </div>
+      <p class="point">580exp</p>
+    </div>
+    <div class="rank-list">
+      <p class="order">4</p>
+      <div class="major-box">
+        <p class="major">광고홍보학과</p>
+        <p class="major-group">사회과학대학</p>
+      </div>
+      <p class="point">580exp</p>
+    </div>
+    <div class="rank-list">
+      <p class="order">5</p>
+      <div class="major-box">
+        <p class="major">광고홍보학과</p>
+        <p class="major-group">사회과학대학</p>
+      </div>
+      <p class="point">580exp</p>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/page/rankPage.js' %}"></script>
+
+{% endblock content %}

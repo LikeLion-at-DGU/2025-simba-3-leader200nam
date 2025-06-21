@@ -9,6 +9,12 @@ from feed.models import Feed
 from datetime import date
 
 # Create your views here.
+def signin(request):
+    return render(request, 'accounts/signin.html')
+
+def signup(request):
+    return render(request, 'accounts/signup.html')
+
 
 def signup(request):
     if request.method == 'POST':
