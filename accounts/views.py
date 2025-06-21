@@ -13,15 +13,13 @@ def signin(request):
     return render(request, 'accounts/signin.html')
 
 def signup(request):
-    return render(request, 'accounts/signup.html')
-
-
-def signup(request):
     if request.method == 'POST':
         form = SignUpForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')  # 로그인 페이지로 이동(추후 URL에 맞게 수정)
+            return redirect('signin')  # 회원가입 후 로그인 페이지로 리다이렉트
+        else:
+            print("Form is not valid. Errors:", form.errors)
     else:
         form = SignUpForm()
     return render(request, 'accounts/signup.html', {'form': form})
@@ -31,9 +29,9 @@ def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            student_id = form.cleaned_data['student_id']
+            number_name = form.cleaned_data['number_name']
             password = form.cleaned_data['password']
-            user = authenticate(request, student_id=student_id, password=password)
+            user = authenticate(request, number_name=number_name, password=password)
             if user is not None:
                 login(request, user)
                 return redirect('mainpage')  # 메인페이지로 이동 (URL 이름에 맞게 수정)
