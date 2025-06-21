@@ -8,7 +8,7 @@ class User(AbstractUser):
     school_name = models.CharField(max_length=100, verbose_name='학교명')
     department = models.CharField(max_length=100, verbose_name='학과명')
     student_id = models.CharField(max_length=20, unique=True, verbose_name='학번(아이디)')
-    nickname = models.CharField(max_length=30, verbose_name='닉네임')
+    nickname = models.CharField(max_length=30, null=True, blank=True, verbose_name='닉네임')
     image = models.ImageField(upload_to='profile_images/', null=True, blank=True, verbose_name='프로필 이미지')
     bio = models.TextField(blank=True, verbose_name='자기소개')
 
