@@ -21,34 +21,24 @@ class SignUpForm(UserCreationForm):
         widget=forms.TextInput(attrs={'placeholder': '본인의 학번을 입력해주세요.'}),
         help_text='숫자만 입력해주세요.'
     )
-    password = forms.CharField(
-        label='비밀번호',
-        widget=forms.PasswordInput(attrs={'placeholder': '비밀번호를 입력해주세요.'}),
-        help_text='한글, 숫자, 영문으로 4~12자 이내로 작성해주세요.'
-    )
-    password_check = forms.CharField(
-        label='비밀번호 확인',
-        widget=forms.PasswordInput(attrs={'placeholder': '비밀번호를 다시 입력해주세요.'}),
-        help_text='입력한 비밀번호와 똑같이 입력해주세요.'
-    )
-
-    def save(self, commit=True):
-      user = super().save(commit=False)
-      user.set_password(self.cleaned_data["password"])
-      if commit:
-          user.save()
-      return user
 
     class Meta:
         model = User
-        fields = ('univ_name', 'major_name', 'number_name', 'password', 'password_check')
+        fields = ('univ_name', 'major_name', 'number_name', 'password1', 'password2')
 
     def clean_number_name(self):
         number_name = self.cleaned_data.get('number_name')
         if User.objects.filter(number_name=number_name).exists():
             raise forms.ValidationError('이미 사용 중인 학번(아이디)입니다.')
         return number_name
-    
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        # username 필드를 number_name과 동일하게 설정
+        user.username = user.number_name
+        if commit:
+            user.save()
+        return user
 
 class LoginForm(forms.Form):
     number_name = forms.CharField(
