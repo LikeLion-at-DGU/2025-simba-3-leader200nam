@@ -9,10 +9,10 @@ def intropage(request):
     return render(request, 'intro/intropage.html')
 
 def signin(request):
-    return render(request, 'signin/signin.html')
+    return render(request, 'signin.html')
 
 def signup(request):
-    return render(request, 'signup/signup.html')
+    return render(request, 'signup.html')
 
 def introInputPage(request):
     return render(request, 'intro/introInputPage.html')
@@ -22,3 +22,6 @@ def registeration(request):
 
 def profileModification(request):
     return render(request, 'main/profileModification.html')
+
+def rankPage(request):
+    return render(request, 'main/rankPage.html')

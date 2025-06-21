@@ -1,11 +1,16 @@
 .signup-container {
   padding: 17px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #header {
   display: flex;
   align-items: center;
   margin-bottom: 31px;
+  width: 100%;
+  justify-content: flex-start;
 }
 
 .back-icon {

@@ -14,4 +14,6 @@ urlpatterns = [
     path('profile/update/', views.profile_update, name='profile_update'),
     # 닉네임 입력
     path('set-nickname/', views.set_nickname, name='set_nickname'),
+    path('signin/', views.signin, name='signin'),
+    path('signup/', views.signup, name='signup'),
 ] 
