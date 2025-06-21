@@ -2,14 +2,14 @@
 <link rel="stylesheet" href="{% static 'css/page/mainpage.css' %}" />
 <div class="main-container">
   <div class="main-box">
-    <div class="univ-name">동국대학교</div>
+    <div class="univ-name">{{user.univ_name}}</div>
     <img
       src="{% static 'images/ako1.svg' %}"
       alt="akoq Image"
       class="ako1-img"
     />
     <div class="level-container">
-      <span class="level-title">서누의 레벨</span>
+      <span class="level-title">{{user.nickname}}의 레벨</span>
       <div class="level">
         <span class="user-level">LV.1</span>
         <span class="level-count">280/500</span>

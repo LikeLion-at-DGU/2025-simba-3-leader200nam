@@ -12,6 +12,12 @@ from datetime import date
 def signin(request):
     return render(request, 'signin.html')
 
+def introInputPage(request):
+    return render(request, 'accounts/intro/introInputPage.html')
+
+def intropage(request):
+    return render(request, 'accounts/intro/intropage.html')
+
 def signup(request):
     print("=== signup 뷰 호출됨 ===")
     print(f"요청 메서드: {request.method}")
@@ -55,7 +61,7 @@ def login_view(request):
                 login(request, user)
                 # 닉네임이 없으면 닉네임 설정 페이지로 이동
                 if not user.nickname:
-                    return redirect('set_nickname')
+                    return redirect('intropage')
                 return redirect('mainpage')
             else:
                 error = '학번 또는 비밀번호가 올바르지 않습니다.'

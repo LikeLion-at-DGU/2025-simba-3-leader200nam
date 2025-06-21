@@ -7,6 +7,8 @@
       src="{% static 'images/logo-img.svg' %}"
       alt="Logo"
       class="signin-logo"
+      onclick="history.back()"
+      style="cursor: pointer"
     />
     <form id="login-form" method="POST" action="{% url 'signin' %}">
       {% csrf_token %}
@@ -42,7 +44,7 @@
           />
         </div>
       </div>
-      <button type="submit" class="signin-button">로그인</button>
+      <button type="submit" class="signin-button" disabled>로그인</button>
     </form>
     <div class="signup-link">
       <a href="{% url 'signup' %}">회원가입하기</a>

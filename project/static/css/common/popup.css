@@ -1,40 +1,74 @@
-/* static/css/common/popup.css */
-
 .friend-icon-wrapper {
-  position: relative; /* 팝업을 이 요소에 대해 상대적으로 위치시키기 위함 */
-  display: inline-block; /* 내부 요소가 공간을 차지하게 함 */
+  position: relative;
+  display: inline-block;
 }
 
 .friend-popup {
-  display: none; /* 기본적으로 숨김 */
-  position: absolute; /* 아이콘을 기준으로 위치 */
-  top: 100%; /* 아이콘 바로 아래 */
-  right: 0; /* 아이콘 오른쪽 정렬 (필요에 따라 left: 0; 또는 원하는 값으로 조절) */
-  width: 250px; /* 팝업의 너비 */
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 244px;
   background-color: white;
-  border: 1px solid #ddd;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 4px 9.6px 0px rgba(164, 164, 164, 0.25);
   padding: 15px;
-  z-index: 1000; /* 다른 요소 위에 표시되도록 */
+  z-index: 1000;
 }
 
-/* 팝업이 활성화되었을 때 보이기 */
 .friend-popup.show {
   display: block;
 }
 
-/* 닫기 버튼 스타일 */
-.friend-popup button {
-  margin-top: 10px;
-  padding: 5px 10px;
-  background-color: #0f3cbe;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  background-color: inherit;
 }
 
-.friend-popup button:hover {
-  background-color: #0c3099;
+.popup-border {
+  border: rgba(245, 245, 245, 0.95) 1px solid;
+  margin-bottom: 10px;
+}
+
+.user-name {
+  color: #2a2a2a;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: -0.5px;
+  background-color: inherit;
+}
+
+.level {
+  color: #1061ff;
+  text-align: center;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px; /* 170% */
+  letter-spacing: -0.5px;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: inherit;
+}
+
+.profile,
+.logout {
+  color: #8a8a8a;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px; /* 113.333% */
+  letter-spacing: -0.5px;
+  background-color: inherit;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
 }

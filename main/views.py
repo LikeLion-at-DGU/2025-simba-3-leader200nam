@@ -1,8 +1,8 @@
 from django.shortcuts import render
-
-# Create your views here.
+from accounts.models import User
 
 def mainpage(request):
+    user=User.objects.all();
     return render(request, 'main/mainpage.html')
 
 def intropage(request):
