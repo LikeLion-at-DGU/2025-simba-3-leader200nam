@@ -10,7 +10,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('home/', views.mainpage, name='mainpage'),
     path('intro/', views.intropage, name='intropage'),
-    path('signin/', views.signin, name='signin'),
+    path('signin/', accounts_views.login_view, name='signin'),
     path('signup/', accounts_views.signup, name='signup'),
     path('intro-input/', views.introInputPage, name='introInputPage'),
     path('registeration/', views.registeration, name='registeration'),
