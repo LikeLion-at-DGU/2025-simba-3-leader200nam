@@ -10,8 +10,13 @@
       onclick="history.back()"
       style="cursor: pointer"
     />
-    <form id="login-form" method="POST" action="{% url 'signin' %}">
+    <form id="login-form" method="POST" action="/signin/">
       {% csrf_token %}
+      {% if error %}
+      <div class="error-message" style="color: red; margin-bottom: 10px; text-align: center;">
+        {{ error }}
+      </div>
+      {% endif %}
       <div class="input-group">
         <label for="username" class="input-label">학번(아이디)</label>
         <div class="number-input">
@@ -51,6 +56,7 @@
     </div>
   </div>
 </div>
+
 <script src="{% static 'js/accounts/signin.js' %}"></script>
 
 {% endblock content %}
