@@ -13,49 +13,68 @@
   <div class="profile-modification-box">
     <div class="profile-img">
       <div class="profile-image-box" id="imageUploadBox">
-        <img
-          src="{% static 'images/profile.svg' %}"
-          alt="default profile image"
-          class="profile-image"
-          id="previewProfileImage"
-        />
+        {% if user.image %}
+          <img
+            src="{{ user.image.url }}"
+            alt="profile image"
+            class="profile-image"
+            id="previewProfileImage"
+          />
+        {% else %}
+          <img
+            src="{% static 'images/profile.svg' %}"
+            alt="default profile image"
+            class="profile-image"
+            id="previewProfileImage"
+          />
+        {% endif %}
       </div>
       <input
         type="file"
         id="profile-image-upload"
-        name="profile_image"
+        name="image"
         accept="image/*"
         style="display: none"
       />
       <p class="profile-image-text" id="changeProfileText">프로필 사진 변경</p>
     </div>
+    
+    {% if error %}
+    <div class="error-message" style="color: red; margin-bottom: 10px; text-align: center;">
+      {{ error }}
+    </div>
+    {% endif %}
+    
     <form
       id="profile-modification-form"
       method="POST"
       action="{% url 'profileModification' %}"
+      enctype="multipart/form-data"
     >
       {% csrf_token %}
       <div class="input-group">
-        <label for="name" class="input-label">이름</label>
+        <label for="nickname" class="input-label">닉네임</label>
         <div class="name-input">
           <input
             type="text"
-            id="name"
-            name="name"
-            placeholder="이름을 입력해주세요."
+            id="nickname"
+            name="nickname"
+            placeholder="닉네임을 입력해주세요."
+            value="{{ user.nickname|default:'' }}"
             required
           />
         </div>
         <p class="input-condition">2~15자 이내로 입력해주세요.</p>
       </div>
       <div class="input-group">
-        <label for="major-name" class="input-label">학과</label>
+        <label for="major_name" class="input-label">학과</label>
         <div class="major-input">
           <input
             type="text"
-            id="major-name"
-            name="major-name"
+            id="major_name"
+            name="major_name"
             placeholder="본인의 학과를 입력해주세요."
+            value="{{ user.major_name|default:'' }}"
             required
           />
         </div>
@@ -64,13 +83,14 @@
         </p>
       </div>
       <div class="input-group">
-        <label for="introduce" class="input-label">한줄소개</label>
+        <label for="bio" class="input-label">한줄소개</label>
         <div class="introduce-input">
           <input
             type="text"
-            id="introduce"
-            name="introduce"
+            id="bio"
+            name="bio"
             placeholder="한줄소개를 입력해주세요."
+            value="{{ user.bio|default:'' }}"
             maxlength="15"
             required
           />
