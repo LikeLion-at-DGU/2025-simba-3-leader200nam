@@ -81,3 +81,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 });
+
+document.getElementById('signup-form').addEventListener('submit', function(event) {
+    const submitButton = document.querySelector('.signin-button');
+    
+    // 버튼이 이미 비활성화 상태이면, 다시 제출하지 않음
+    if (submitButton.disabled) {
+        event.preventDefault();
+        return;
+    }
+
+    // 제출 버튼을 비활성화하고 텍스트 변경
+    submitButton.disabled = true;
+    submitButton.textContent = '처리 중...';
+});

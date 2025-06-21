@@ -10,19 +10,37 @@ from datetime import date
 
 # Create your views here.
 def signin(request):
-    return render(request, 'accounts/signin.html')
+    return render(request, 'signin.html')
 
 def signup(request):
+    print("=== signup 뷰 호출됨 ===")
+    print(f"요청 메서드: {request.method}")
+    
     if request.method == 'POST':
+        print("POST 요청 감지!")
+        print("POST 데이터:", dict(request.POST))
+        
         form = SignUpForm(request.POST)
+        print("폼 생성됨")
+        
         if form.is_valid():
-            form.save()
-            return redirect('signin')  # 회원가입 후 로그인 페이지로 리다이렉트
+            print("✅ 폼이 유효함!")
+            try:
+                user = form.save()
+                print(f"✅ 사용자 저장 완료: {user.number_name}")
+                return redirect('signin')
+            except Exception as e:
+                print(f"❌ 저장 실패: {e}")
+                import traceback
+                traceback.print_exc()
         else:
-            print("Form is not valid. Errors:", form.errors)
+            print("❌ 폼이 유효하지 않음")
+            print("폼 에러:", form.errors)
     else:
+        print("GET 요청 - 폼 표시")
         form = SignUpForm()
-    return render(request, 'accounts/signup.html', {'form': form})
+    
+    return render(request, 'signup.html', {'form': form})
 
 def login_view(request):
     error = None
@@ -39,7 +57,7 @@ def login_view(request):
                 error = '학번 또는 비밀번호가 올바르지 않습니다.'
     else:
         form = LoginForm()
-    return render(request, 'accounts/login.html', {'form': form, 'error': error})
+    return render(request, 'login.html', {'form': form, 'error': error})
 
 def logout_view(request):
     logout(request)
@@ -59,11 +77,11 @@ def set_nickname(request):
             return redirect('mainpage')
     else:
         form = NicknameForm(instance=request.user)
-    return render(request, 'accounts/set_nickname.html', {'form': form})
+    return render(request, 'set_nickname.html', {'form': form})
 
 @login_required
 def profile_view(request):
-    return render(request, 'accounts/profile.html', {'user': request.user})
+    return render(request, 'profile.html', {'user': request.user})
 
 @login_required
 def profile_update(request):
@@ -74,7 +92,7 @@ def profile_update(request):
             return redirect('accounts:profile')
     else:
         form = ProfileUpdateForm(instance=request.user)
-    return render(request, 'accounts/profile_update.html', {'form': form})
+    return render(request, 'profile_update.html', {'form': form})
 
 @login_required
 def mainpage(request):
