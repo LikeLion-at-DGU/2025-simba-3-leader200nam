@@ -3,7 +3,7 @@ const togglePasswordIcons = document.querySelectorAll(".toggle-icon");
 togglePasswordIcons.forEach((icon) => {
   icon.addEventListener("click", () => {
     const targetInputId =
-      icon.id === "toggle-password" ? "password" : "password-check";
+      icon.id === "toggle-password" ? "password" : "password_check";
     const targetInput = document.getElementById(targetInputId);
 
     const toggleOnIcon = icon.dataset.on;
@@ -22,9 +22,9 @@ togglePasswordIcons.forEach((icon) => {
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-  const numberInput = document.querySelector("#number-name");
+  const numberInput = document.querySelector("#number_name");
   const passwordInput = document.querySelector("#password");
-  const passwordCheckInput = document.querySelector("#password-check");
+  const passwordCheckInput = document.querySelector("#password_check");
 
   const numberCondition = numberInput
     .closest(".input-group")
@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // 학번
   numberInput.addEventListener("input", () => {
     const value = numberInput.value;
-    const isValid = /^\d{10}$/.test(value); 
+    const isValid = /^\d{10}$/.test(value);
     updateValidationState(numberInput, numberCondition, isValid);
   });
 

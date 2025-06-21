@@ -86,7 +86,7 @@ input {
 }
 
 .password-input,
-.password-check-input {
+.password_check-input {
   border-radius: 10px;
   border: 2px solid #979797;
   width: 100%;
