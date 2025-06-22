@@ -1,0 +1,166 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<link rel="stylesheet" href="{% static 'css/page/feedpage.css' %}" />
+
+<!-- 게시물 필터 -->
+<div class="filter-toggle">
+  <button class="filter-btn all-btn active">ALL</button>
+  <button class="filter-btn my-btn">MY</button>
+</div>
+
+<div class="feed-container">
+  <!-- 게시물 카드 1개 예시 -->
+  <div class="post-card">
+    <div class="post-header">
+      <img
+        src="{% static 'images/sample_profile2.jpg' %}"
+        alt="프로필"
+        class="profile-img"
+      />
+      <div class="profile-info">
+        <p class="username">서누</p>
+        <p class="location">광고홍보학과 과방</p>
+      </div>
+      <div class="more-wrapper">
+        <img
+          src="{% static 'images/more_icon.svg' %}"
+          class="more-icon"
+          alt="더보기"
+        />
+        <div class="more-menu hidden">
+          <button class="menu-item">게시물 신고</button>
+        </div>
+        <!-- 신고 모달 -->
+        <div class="report-modal hidden">
+          <div class="report-box">
+            <p class="report-title">해당 게시물을 신고하시겠습니까?</p>
+
+            <div class="report-reasons">
+              <div class="reason-item">
+                <img src="{% static 'images/Ellipse.svg' %}" alt="선택" />
+                <span>욕설 / 비속어</span>
+              </div>
+              <div class="reason-item">
+                <img src="{% static 'images/Ellipse.svg' %}" alt="선택" />
+                <span>불쾌감 조성</span>
+              </div>
+              <div class="reason-item">
+                <img src="{% static 'images/Ellipse.svg' %}" alt="선택" />
+                <span>무단광고 / 홍보</span>
+              </div>
+              <div class="reason-item">
+                <img src="{% static 'images/Ellipse.svg' %}" alt="선택" />
+                <span>음란 / 선정적</span>
+              </div>
+              <div class="reason-item">
+                <img src="{% static 'images/Ellipse.svg' %}" alt="선택" />
+                <span>기타:</span>
+              </div>
+            </div>
+
+            <div class="report-buttons">
+              <button class="cancel-button">취소</button>
+              <button class="hide-button">숨기기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <img
+      src="{% static 'images/sample_photo2.jpg' %}"
+      alt="게시물 사진"
+      class="post-img"
+    />
+
+    <div class="post-footer">
+      <p class="post-caption">동기들과 한 컷</p>
+      <div class="icon-group">
+        <img
+          src="{% static 'images/heart.svg' %}"
+          alt="좋아요"
+          class="icon heart-icon"
+        />
+        <span class="icon-count">27</span>
+        <img
+          src="{% static 'images/comment.svg' %}"
+          alt="댓글"
+          class="icon comment-icon"
+        />
+        <span class="icon-count">9</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 댓글 팝업 -->
+  <div class="comment-popup hidden">
+    <div class="comment-list">
+      <!-- 댓글 아이템 예시 -->
+      <div class="comment-item">
+        <div class="comment-content">
+          <img
+            src="{% static 'images/sample_profile1.jpg' %}"
+            class="comment-profile"
+          />
+          <div class="comment-text">
+            <span class="comment-username">김멋사</span>
+            <span class="comment-body">와 부럽다... 할 말이 없네....</span>
+          </div>
+        </div>
+        <span class="comment-time">1일</span>
+      </div>
+      <!-- 나머지 댓글은 생략 가능 -->
+    </div>
+
+    <!-- 댓글 입력창 -->
+    <div class="comment-input">
+      <input type="text" placeholder="댓글을 입력해주세요." />
+      <button>
+        <img src="{% static 'images/send.svg' %}" alt="보내기" />
+      </button>
+    </div>
+  </div>
+
+  <!--마이 게시물-->
+  <div class="post-card my-post">
+    <div class="post-header">
+      <img
+        src="{% static 'images/sample_profile2.jpg' %}"
+        alt="프로필"
+        class="profile-img"
+      />
+      <div class="profile-info">
+        <p class="username">서누</p>
+        <p class="location">광고홍보학과 과방</p>
+      </div>
+
+      <!-- 게시물 공개 버튼 -->
+      <div class="post-visibility">
+        <img
+          src="{% static 'images/lock.svg' %}"
+          class="lock-icon"
+          alt="공개 여부"
+        />
+        <span class="post-visibility-text">게시물 공개</span>
+      </div>
+    </div>
+
+    <img
+      src="{% static 'images/sample_photo2.jpg' %}"
+      alt="게시물 사진"
+      class="post-img"
+    />
+    <div class="post-footer">
+    <p class="post-caption">동기들과 한 컷</p>
+    <div class="icon-group">
+      <img src="{% static 'images/heart.svg' %}" alt="좋아요" class="icon heart-icon" />
+      <span class="icon-count">27</span>
+      <img src="{% static 'images/comment.svg' %}" alt="댓글" class="icon comment-icon" />
+      <span class="icon-count">9</span>
+    </div>
+  </div>
+  </div>
+  </div>
+
+  <script src="{% static 'js/page/feedpage.js' %}"></script>
+  {% endblock %}
+</div>

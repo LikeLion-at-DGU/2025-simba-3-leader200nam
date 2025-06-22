@@ -1,0 +1,344 @@
+body {
+  margin: 0;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  background: linear-gradient(#dbeaff, #fff);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.ending-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px 32px;
+  gap: 16px;
+}
+
+.next-icon {
+  width: 8px;
+  height: 16px;
+  flex-shrink: 0;
+  stroke-width: 3px;
+  stroke: #2a2a2a;
+}
+
+.top-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+.left-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 17px;
+}
+
+.target-img {
+  width: 154px;
+  height: 125px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.text-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 17px;
+}
+
+.exp-title {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: -0.5px;
+  background: linear-gradient(90deg, #113389 19.64%, #1061ff 80.36%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+}
+
+.exp-value {
+  display: flex;
+  width: 178px;
+  height: 34px;
+  justify-content: left;
+  align-items: center;
+  color: #1061ff;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: -0.5px;
+}
+
+.summary-text {
+  font-size: 15px;
+  font-weight: 400;
+  color: #2a2a2a;
+  line-height: 17px;
+  letter-spacing: -0.5px;
+  text-align: left;
+  width: 277px;
+}
+
+.left-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 17px;
+}
+
+.next-icon {
+  width: 8px;
+  height: 16px;
+  flex-shrink: 0;
+  stroke-width: 3px;
+  stroke: #2a2a2a;
+}
+
+.highlight {
+  color: #1061ff;
+}
+
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 112px);
+  gap: 10px;
+  justify-content: center;
+}
+
+.month-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 32px 6px 31px;
+  height: 116px;
+  border-radius: 10px;
+  padding-bottom: 16px;
+}
+
+.wide-box {
+  grid-column: span 2;
+  width: 192px !important;
+  height: 116px;
+  padding: 11px 20px;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.month-box img {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  margin-top: auto;
+}
+
+.month-label {
+  font-size: 12px;
+  color: #2a2a2a;
+  font-weight: 400;
+  margin-bottom: 4px;
+  align-self: center; /* 기본 정렬: 가운데 */
+}
+
+/* 1-2월: 왼쪽 정렬 */
+.month-1-2 .month-label {
+  align-self: flex-start;
+  position: absolute;
+  left: 20px;
+  top: 6px;
+}
+
+/* 7-8월: 오른쪽 정렬 */
+.month-7-8 .month-label {
+  align-self: flex-end;
+  position: absolute;
+  right: 20px;
+  top: 6px;
+}
+
+.month-label {
+  color: #fff;
+  text-align: center;
+  font-family: "Moneygraphy-Rounded";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px; /* 121.429% */
+  letter-spacing: -0.5px;
+  margin-bottom: 4px; /* 기존 유지 */
+}
+
+.month-1-2 img {
+  margin-left: auto;
+  padding-bottom: 10px;
+  width: 79px;
+  height: 80px;
+}
+
+.month-7-8 img {
+  padding-bottom: 16px;
+  padding-left: 16px;
+}
+
+/* Background colors */
+.month-1-2 {
+  background: #d1d9e0;
+}
+.month-3 {
+  background: #2cce14;
+}
+.month-4 {
+  background: #eab0e5;
+}
+.month-5 {
+  background: #2782ff;
+}
+.month-6 {
+  background: #d6d639;
+}
+.month-7-8 {
+  background: #4ae5f3;
+  justify-content: flex-start;
+  padding: 11px 20px;
+}
+.month-9 {
+  background: #f5d592;
+}
+.month-10 {
+  background: #f0b959;
+}
+.month-11 {
+  background: #e4811c;
+}
+.month-12 {
+  background: #fa8787;
+}
+
+/* 상세 뷰 숨김/보임 제어 */
+.hidden {
+  display: none;
+}
+
+.month-detail {
+  background-color: white;
+  padding: 18px 17px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 400px;
+  margin-top: 17px;
+  overflow-y: auto;
+  flex: 1;
+  top: 65px;
+  position: relative;
+}
+
+.month-detail-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 39px;
+}
+
+.month-detail-title {
+  color: #eab0e5;
+  font-family: "Moneygraphy-Rounded";
+  font-size: 34px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px; /* 53.125% */
+  letter-spacing: -0.5px;
+  margin-top: 10px;
+}
+
+.month-detail-line {
+  width: 280px;
+  height: 0;
+  border: none;
+  border-top: 0.5px solid #eab0e5;
+  flex-shrink: 0;
+}
+
+.month-detail-desc {
+  color: #979797;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px; /* 141.667% */
+  letter-spacing: -0.5px;
+}
+
+.month-detail-icon {
+  width: 54.872px;
+  height: 67px;
+  aspect-ratio: 54.87/67;
+}
+
+/* 게시물 카드 */
+.post-card {
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+}
+
+.post-image {
+  width: 100%;
+  height: 184px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #8a8a8a;
+}
+
+.post-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  gap: 185px;
+}
+
+.post-title {
+  color: #2a2a2a;
+  text-align: center;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  margin: 0;
+}
+
+.post-icons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+}
+
+.post-icons .icon {
+  width: 20px;
+  height: 18.35px;
+  flex-shrink: 0;
+}
+
+.post-icons span {
+  color: #2a2a2a;
+  font-family: "Pretendard", sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+}
