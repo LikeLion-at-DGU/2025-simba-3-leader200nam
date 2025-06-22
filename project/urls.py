@@ -24,6 +24,7 @@ urlpatterns = [
     path('ending/', views.ending, name='ending'),
     path('api/user-info/', views.get_user_info, name='get_user_info'),
     path('api/update-nickname/', views.update_nickname, name='update_nickname'),
+    
 ]
 
 # 미디어 파일 서빙
@@ -31,6 +32,6 @@ if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
     
-    
+
 
 
