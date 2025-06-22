@@ -42,11 +42,15 @@
       >
         <a href="{% url 'mainpage' %}">HOME</a>
       </li>
-      <li class="menu-item">
-        <a href="#">FREIEND</a>
+      <li
+        class="menu-item {% if request.resolver_match.app_name == 'friends' %}active{% endif %}"
+      >
+        <a href="{% url 'friends:friend_list' %}">FRIEND</a>
       </li>
-      <li class="menu-item">
-        <a href="#">FEED</a>
+      <li
+        class="menu-item {% if request.resolver_match.app_name == 'feed' %}active{% endif %}"
+      >
+        <a href="{% url 'feed:feed_list' %}">FEED</a>
       </li>
     </ul>
   </div>
