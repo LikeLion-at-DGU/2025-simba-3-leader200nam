@@ -27,4 +27,8 @@ urlpatterns = [
 
     # Quest 인증 완료 여부
     path('quest-auth-status/', views.quest_auth_status, name='quest_auth_status'),
+    
+    # Quest 인증 관련
+    path('quest/<int:quest_id>/auth/', views.quest_auth_page, name='quest_auth_page'),
+    path('quest/<int:quest_id>/auth/create/', views.quest_auth_feed_create, name='quest_auth_feed_create'),
 ]
