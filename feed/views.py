@@ -220,10 +220,18 @@ def quest_auth_status(request):
     week = int(request.GET.get('week', 0))
     if not month or not week:
         return JsonResponse({'error': 'month, week 쿼리 파라미터가 필요합니다.'}, status=400)
+    
     quests = Quest.objects.filter(month=month, week=week)
-    completed_count = Feed.objects.filter(author=request.user, quest__in=quests, is_completed=True).count()
+    completed_feeds = Feed.objects.filter(author=request.user, quest__in=quests, is_completed=True)
+    completed_quest_ids = list(completed_feeds.values_list('quest_id', flat=True))
+    completed_count = len(completed_quest_ids)
     is_all_completed = completed_count >= 3
-    return JsonResponse({'is_all_completed': is_all_completed, 'completed_count': completed_count})
+    
+    return JsonResponse({
+        'is_all_completed': is_all_completed, 
+        'completed_count': completed_count,
+        'completed_quests': completed_quest_ids
+    })
 
 @login_required
 def quest_auth_feed_create(request, quest_id):

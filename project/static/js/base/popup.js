@@ -1,29 +1,57 @@
-// static/js/common/popup.js
-
 document.addEventListener("DOMContentLoaded", function () {
   const friendIcon = document.getElementById("friendIcon");
   const friendPopup = document.getElementById("friendPopup");
   const closePopupButton = document.getElementById("closePopup");
 
-  // 아이콘 클릭 시 팝업 토글
+  // 사용자 정보 업데이트 함수
+  async function updateUserInfo() {
+    try {
+      const response = await fetch("/api/user-info/");
+      const userData = await response.json();
+
+      // 프로필 이미지 업데이트
+      const userProfileImg = document.querySelector(".user-profile");
+      if (userProfileImg) {
+        if (userData.image_url) {
+          userProfileImg.src = userData.image_url;
+        } else {
+          userProfileImg.src = "/static/images/profile-default.svg";
+        }
+      }
+
+      // 사용자 닉네임 업데이트
+      const userName = document.querySelector(".user-name");
+      if (userName) {
+        userName.textContent = userData.nickname || "서누";
+      }
+
+      // 레벨 업데이트
+      const levelElement = document.querySelector(".level");
+      if (levelElement) {
+        levelElement.textContent = `LV.${userData.level || 1}`;
+      }
+    } catch (error) {
+      console.error("사용자 정보 업데이트 중 오류:", error);
+    }
+  }
+
+  // 페이지 로드 시 사용자 정보 업데이트
+  updateUserInfo();
+
   if (friendIcon && friendPopup) {
-    // 요소가 존재하는지 확인 (안전성)
     friendIcon.addEventListener("click", function (event) {
-      event.preventDefault(); // <a> 태그의 기본 동작(페이지 이동) 방지
-      friendPopup.classList.toggle("show"); // 'show' 클래스 토글
+      event.preventDefault(); 
+      friendPopup.classList.toggle("show"); 
     });
   }
 
-  // 닫기 버튼 클릭 시 팝업 닫기
   if (closePopupButton && friendPopup) {
     closePopupButton.addEventListener("click", function () {
       friendPopup.classList.remove("show");
     });
   }
 
-  // 팝업 외부 클릭 시 팝업 닫기
   document.addEventListener("click", function (event) {
-    // 클릭된 요소가 아이콘도 아니고, 팝업 안의 요소도 아닐 때
     if (
       friendIcon &&
       friendPopup &&

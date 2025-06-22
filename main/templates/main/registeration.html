@@ -7,12 +7,17 @@
       src="{% static 'images/back-icon.svg' %}"
       alt="back icon"
       class="back-icon"
+      onclick="history.back()"
+      style="cursor: pointer"
     />
-    <h1 class="registeration-title">학과 과방 방문해보기</h1>
+    <h1 class="registeration-title">
+      {% if quest %}{{ quest.title }}{% else %}퀘스트 인증{% endif %}
+    </h1>
   </div>
 
   <form id="registeration" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
+    <input type="hidden" name="quest_id" id="questId" />
     <div class="registeration-box">
       <div class="image-upload-box" id="uploadBox">
         <img src="{% static 'images/image.svg' %}" alt="image icon"
@@ -23,11 +28,11 @@
       <input type="file" id="real-upload" name="image" accept="image/*" />
 
       <div class="input-group">
-        <label for="img-name" class="input-label">사진명</label>
+        <label for="image_name" class="input-label">사진명</label>
         <div class="img-input">
           <input
             type="text"
-            name="img-name"
+            name="image_name"
             placeholder="사진명을 입력해주세요"
             required
           />
@@ -36,11 +41,11 @@
       </div>
 
       <div class="input-group">
-        <label for="place" class="input-label">촬영장소</label>
+        <label for="location" class="input-label">촬영장소</label>
         <div class="place-input">
           <input
             type="text"
-            name="place"
+            name="location"
             placeholder="촬영 장소를 입력해주세요."
             required
           />
@@ -49,10 +54,10 @@
       </div>
 
       <div class="input-group">
-        <label for="description" class="input-label">메모</label>
+        <label for="memo" class="input-label">메모</label>
         <div class="description-input">
           <textarea
-            name="description"
+            name="memo"
             id="descriptionTextarea"
             placeholder="사진에 대한 설명을 입력해주세요"
             maxlength="150"
@@ -64,12 +69,12 @@
       <div class="public">
         <p class="feed-public">게시글 공개 여부</p>
         <label class="toggle-switch">
-          <input type="checkbox" id="visibilityToggle" />
+          <input type="checkbox" id="visibilityToggle" name="is_private" />
           <span class="slider"></span>
         </label>
       </div>
 
-      <button type="submit">등록하기</button>
+      <button type="submit" disabled>등록하기</button>
     </div>
   </form>
 </div>

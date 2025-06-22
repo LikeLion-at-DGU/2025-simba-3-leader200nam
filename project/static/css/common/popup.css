@@ -72,3 +72,18 @@
   cursor: pointer;
   transition: color 0.2s ease-in-out;
 }
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: inherit;
+}
+
+.user-profile {
+  width: 35px;
+  height: 35px;
+  object-fit: cover;
+  border-radius: 50%;
+  background-color: inherit;
+}
