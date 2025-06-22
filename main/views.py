@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from accounts.models import User
+
 from django.contrib import messages
 from django.http import JsonResponse
 from quest.models import Quest
@@ -12,8 +13,48 @@ import random
 
 @login_required
 def mainpage(request):
+
     user=User.objects.all();
     return render(request, 'main/mainpage.html')
+    # 현재 날짜 기준으로 월/주차 계산
+    now = datetime.now()
+    current_month = now.month
+    current_week = (now.day - 1) // 7 + 1
+    
+    # 해당 월/주차의 퀘스트 조회 (랜덤 3개)
+    quests = Quest.objects.filter(month=current_month, week=current_week)
+    if quests.count() >= 3:
+        current_quests = random.sample(list(quests), 3)
+    else:
+        current_quests = list(quests)
+    
+    # 사용자 정보
+    user_data = {
+        'nickname': request.user.nickname or '서누',
+        'univ_name': request.user.univ_name,
+        'major_name': request.user.major_name,
+        'bio': request.user.bio or ''
+    }
+    
+    # 퀘스트 정보
+    quest_data = [
+        {
+            'id': quest.id,
+            'title': quest.title,
+            'description': quest.description,
+            'exp': quest.exp
+        } for quest in current_quests
+    ]
+    
+    context = {
+        'user_data': user_data,
+        'quests': quest_data,
+        'current_month': current_month,
+        'current_week': current_week
+    }
+    
+    return render(request, 'main/mainpage.html', context)
+
 
     # 현재 날짜 기준으로 월/주차 계산
     now = datetime.now()
@@ -106,11 +147,14 @@ def profileModification(request):
     return render(request, 'main/profileModification.html', {'user': request.user})
 
 
+
 def rankPage(request):
     return render(request, 'main/rankPage.html')
 
+
 def ending(request):
     return render(request, 'ending/endingpage.html')
+
 
 # API 엔드포인트 - 사용자 정보 제공
 @login_required
