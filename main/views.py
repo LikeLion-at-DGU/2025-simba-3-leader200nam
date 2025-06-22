@@ -90,7 +90,8 @@ def registeration(request):
         image_name = request.POST.get('image_name')
         location = request.POST.get('location')
         memo = request.POST.get('memo', '')
-        is_private = request.POST.get('is_private', 'false').lower() == 'true'
+        is_public = request.POST.get('is_public', 'false').lower() == 'true'
+        is_private = not is_public  # 공개가 아니면 비공개
 
         if not (quest_id and image and image_name and location):
             messages.error(request, '필수 항목이 누락되었습니다.')

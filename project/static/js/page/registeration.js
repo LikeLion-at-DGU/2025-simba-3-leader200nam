@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const submitButton = document.querySelector('button[type="submit"]');
   const questIdInput = document.getElementById("questId");
+  const visibilityToggle = document.getElementById("visibilityToggle");
 
   const maxLength = 150;
 
@@ -40,6 +41,15 @@ document.addEventListener("DOMContentLoaded", function () {
       isImageUploaded && isImgNameValid && isPlaceValid;
 
     submitButton.disabled = !allRequiredFieldsFilled;
+  }
+
+  // 폼 제출 시 체크박스 상태 확인
+  const form = document.getElementById("registeration");
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      console.log("체크박스 상태:", visibilityToggle.checked);
+      console.log("is_public 값:", visibilityToggle.checked ? "true" : "false");
+    });
   }
 
   // 이미지 업로드 박스 클릭
