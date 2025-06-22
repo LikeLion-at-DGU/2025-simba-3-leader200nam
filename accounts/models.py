@@ -25,6 +25,7 @@ class User(AbstractUser):
     nickname = models.CharField(max_length=30, null=True, blank=True, verbose_name='닉네임')
     image = models.ImageField(upload_to='profile_images/', null=True, blank=True, verbose_name='프로필 이미지')
     bio = models.TextField(blank=True, verbose_name='자기소개', null=True)
+    exp = models.PositiveIntegerField(default=0, verbose_name='경험치')
 
     USERNAME_FIELD = 'number_name'
     REQUIRED_FIELDS = ['univ_name', 'major_name']
@@ -33,6 +34,11 @@ class User(AbstractUser):
 
     def __str__(self):
         return f"{self.univ_name} - {self.major_name} - {self.number_name}"
+
+    @property
+    def level(self):
+        """경험치를 기반으로 레벨 계산 (100exp당 1레벨)"""
+        return (self.exp // 100) + 1
 
 # 회원가입 시 FriendCode 자동 생성
 @receiver(post_save, sender=User)

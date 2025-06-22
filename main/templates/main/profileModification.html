@@ -10,6 +10,17 @@
     <h1 class="profile-modification-title">프로필 수정하기</h1>
   </div>
 
+  <!-- 메시지 표시 -->
+  {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+        <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
   <div class="profile-modification-box">
     <div class="profile-img">
       <div class="profile-image-box" id="imageUploadBox">
@@ -101,5 +112,5 @@
     </form>
   </div>
 </div>
-<script src="{% static 'js/page/profileModification.js' %}"></script>
+<script src="{% static 'js/page/profileModification.js' %}" />
 {% endblock content %}

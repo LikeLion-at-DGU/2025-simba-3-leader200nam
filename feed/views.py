@@ -236,4 +236,55 @@ def quest_auth_status(request):
     is_all_completed = completed_count >= 3
     return JsonResponse({'is_all_completed': is_all_completed, 'completed_count': completed_count})
 
+@login_required
+def quest_auth_feed_create(request, quest_id):
+    """퀘스트 인증을 위한 피드 생성"""
+    if request.method == 'POST':
+        quest = get_object_or_404(Quest, id=quest_id)
+        image = request.FILES.get('image')
+        image_name = request.POST.get('image_name', '')
+        location = request.POST.get('location', '')
+        memo = request.POST.get('memo', '')
+        content = request.POST.get('content', '')
+        
+        if not image:
+            return JsonResponse({'error': '이미지는 필수입니다.'}, status=400)
+        
+        # 퀘스트 인증 피드 생성
+        feed = Feed.objects.create(
+            author=request.user,
+            quest=quest,
+            image=image,
+            image_name=image_name,
+            location=location,
+            memo=memo,
+            content=content,
+            is_completed=True
+        )
+        
+        # 사용자 경험치 증가 (User 모델에 exp 필드가 있다고 가정)
+        if hasattr(request.user, 'exp'):
+            request.user.exp += quest.exp
+            request.user.save()
+        
+        return JsonResponse({
+            'status': 'success',
+            'message': '퀘스트 인증이 완료되었습니다!',
+            'feed_id': feed.id,
+            'exp_gained': quest.exp,
+            'quest_title': quest.title
+        })
+    
+    return JsonResponse({'error': 'POST 요청만 허용됩니다.'}, status=405)
+
+@login_required
+def quest_auth_page(request, quest_id):
+    """퀘스트 인증 페이지 렌더링"""
+    quest = get_object_or_404(Quest, id=quest_id)
+    
+    context = {
+        'quest': quest
+    }
+    return render(request, 'feed/quest_auth.html', context)
+
 
