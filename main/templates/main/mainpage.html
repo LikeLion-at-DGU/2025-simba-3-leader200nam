@@ -11,57 +11,64 @@
     <div class="level-container">
       <span class="level-title">{{user.nickname}}의 레벨</span>
       <div class="level">
-        <span class="user-level">LV.{{user.level}}</span>
-        <span class="level-count">{{user.exp}}/500</span>
+        <span class="user-level" id="userLevel">LV.{{user.level}}</span>
+        <span class="level-count" id="levelCount"
+          >{{user.exp|default:0}}/1000</span
+        >
       </div>
       <div class="bar-container">
-        <div class="bar-fill"></div>
+        <div
+          class="bar-fill"
+          style="width: {% widthratio user.exp|default:0 1000 100 %}%"
+        ></div>
       </div>
     </div>
   </div>
 
   <div class="main-quest">
     <div class="quest-header">
-      <span class="quest-title">3월 2주차 퀘스트</span>
-      <span class="quest-date">종료까지 05D 07H </span>
+      <span class="quest-title" id="questTitle">3월 2주차 퀘스트</span>
+      <span class="quest-date" id="questDueDate">종료까지 05D 07H</span>
     </div>
     <div class="quest-border"></div>
 
-    <div class="quest-lists">
-      <div class="quest-list">
-        <span class="quest-order">1</span>
-        <div class="quest-infos">
-          <p class="quest-name">학과 과방 방문해보기</p>
-          <span class="quest-description"
-            >동기와 선배들을 만나볼 수 있는 만남의 광장 !</span
-          >
+    <div id="questContainer">
+      {% for quest in quests %}
+      <div
+        class="quest-lists {% if quest.is_completed %}completed{% endif %}"
+        data-quest-id="{{ quest.id }}"
+        {%
+        if
+        quest.is_completed
+        %}style="cursor: default;"
+        {%
+        else
+        %}style="cursor: pointer;"
+        {%
+        endif
+        %}
+      >
+        <div class="quest-list">
+          <span class="quest-order">{{ forloop.counter }}</span>
+          <div class="quest-infos">
+            <p class="quest-name">{{ quest.title }}</p>
+            <span class="quest-description">{{ quest.description }}</span>
+          </div>
         </div>
+        <span class="quest-point">
+          {% if quest.is_completed %}
+          <img
+            src="{% static 'images/success.svg' %}"
+            alt="완료"
+            class="quest-completed-icon"
+          />
+          {% else %} (+{{ quest.exp }} exp) {% endif %}
+        </span>
       </div>
-      <span class="quest-point">(+50 exp)</span>
-    </div>
-
-    <div class="quest-lists">
-      <div class="quest-list">
-        <span class="quest-order">2</span>
-        <div class="quest-infos">
-          <span class="quest-name">상록원에서 학식 먹어보기</span>
-          <span class="quest-description">첫학식은 김삼철이 국룰이지</span>
-        </div>
-      </div>
-      <span class="quest-point">(+50 exp)</span>
-    </div>
-    <div class="quest-lists">
-      <div class="quest-list">
-        <span class="quest-order">3</span>
-        <div class="quest-infos">
-          <span class="quest-name">동기 3명과 인스타 맞팔하기</span>
-          <span class="quest-description">맞팔은 기본중에 기본이라고</span>
-        </div>
-      </div>
-      <span class="quest-point">(+50 exp)</span>
+      {% endfor %}
     </div>
   </div>
 </div>
-<script src="{% static 'js/page/mainpage.js' %}" />
+<script src="{% static 'js/page/mainpage.js' %}"></script>
 
 {% endblock content %}

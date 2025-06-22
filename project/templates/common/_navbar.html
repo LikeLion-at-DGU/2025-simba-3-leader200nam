@@ -17,7 +17,15 @@
       </a>
       <div class="friend-popup" id="friendPopup">
         <div class="popup-header">
-          <p class="user-name">{{user.nickname}}</p>
+          <div class="user-info">
+            <img
+              src="{% static 'images/profile-default.svg' %}"
+              alt="User Profile"
+              class="user-profile"
+            />
+            <p class="user-name">로딩중...</p>
+          </div>
+
           <p class="level">LV.1</p>
         </div>
         <div class="popup-border"></div>
@@ -25,18 +33,13 @@
           <a class="profile" href="{% url 'profileModification' %}"
             >프로필 수정하기</a
           >
-          <p class="logout">로그아웃</p>
+          <a class="logout" href="{% url 'logout' %}">로그아웃</a>
         </div>
       </div>
     </div>
   </div>
   <div class="menu-bar">
     <ul class="menu-list">
-      <li
-        class="menu-item {% if request.resolver_match.url_name == 'rankPage' %}active{% endif %}"
-      >
-        <a href="{% url 'rankPage' %}">RANK</a>
-      </li>
       <li
         class="menu-item {% if request.resolver_match.url_name == 'mainpage' %}active{% endif %}"
       >
@@ -57,4 +60,3 @@
 </nav>
 <script src="{% static 'js/base/nav.js' %}"></script>
 <script src="{% static 'js/base/popup.js' %}"></script>
-{# 팝업 JS 파일 추가 #}
