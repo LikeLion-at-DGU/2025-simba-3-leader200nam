@@ -1,0 +1,450 @@
+/* 전체 페이지 컨테이너 */
+.page-container {
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.search-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-bottom: 12px;
+}
+
+.search-input-wrapper {
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.1);
+  padding: 0 12px;
+  height: 42px;
+  width: 100%;
+}
+
+.search-icon {
+  width: 24px;
+  height: 24px;
+  aspect-ratio: 1 / 1;
+  flex-shrink: 0;
+  margin-right: 10px;
+  background-color: transparent;
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  font-size: 15px;
+  background: transparent;
+  flex: 1;
+}
+
+.add-btn {
+  display: inline-flex;
+  padding: 6px 14px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border-radius: 50px;
+  background: #0f3cbe;
+  color: #fff;
+  margin-top: 12px;
+  border: none;
+  cursor: pointer;
+}
+
+.friend-list {
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  overflow: visible;
+  padding: 18px 16px 18px 16px;
+  gap: 23px;
+}
+
+.friend {
+  display: flex;
+  align-items: center;
+  background-color: inherit;
+  gap: 17px;
+}
+
+.friend:last-child {
+  border-bottom: none;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  background-color: #ccc;
+  border-radius: 10px;
+}
+
+.friend-info,
+.name,
+.desc {
+  background-color: inherit;
+}
+
+.friend-info {
+  flex-grow: 1;
+}
+
+.name {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.desc {
+  font-size: 13px;
+  color: #666;
+}
+
+.menu {
+  font-size: 18px;
+  color: #999;
+  cursor: pointer;
+}
+
+.menu-wrapper {
+  position: relative;
+}
+
+.more-menu {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  border-radius: 10px;
+  border: 0.5px solid rgba(138, 138, 138, 0.7);
+  background: #ebebeb;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  width: 122px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  align-items: flex-start;
+  gap: 10px;
+  padding: 7px 13px;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.menu-item {
+  align-self: stretch;
+  background: none;
+  border: none;
+  color: #8a8a8a;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: -0.5px;
+  cursor: pointer;
+  text-align: left;
+}
+
+.menu-item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* 친구 추가 팝업 */
+.add-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  z-index: 2500;
+}
+
+.add-modal-inner {
+  position: relative;
+  margin-top: 375px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: transparent;
+}
+
+.ako-img {
+  position: absolute;
+  left: 172px;
+  bottom: 200px;
+  width: 123px;
+  height: 123px;
+  z-index: 1;
+  background: transparent;
+}
+
+.code-box {
+  width: 276px;
+  height: 129px;
+  border-radius: 20px;
+  background: #1061ff;
+  padding: 19px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  box-sizing: border-box;
+  z-index: 2;
+  position: relative;
+}
+
+.code-title {
+  color: #fff;
+  background-color: transparent;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: -0.5px;
+  margin-bottom: 21px;
+  text-align: left;
+  width: 100%;
+}
+
+.code-input-box {
+  width: 204px;
+  height: 53px;
+  background: #fff;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 12px;
+}
+
+.myinput {
+  font-family: "Moneygraphy-Rounded", sans-serif;
+}
+
+.code-input {
+  width: 143px;
+  border: none;
+  outline: none;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  font-size: 13px;
+  color: #8a8a8a;
+  background: transparent;
+  text-align: center;
+}
+
+.code-input-btn,
+.friend-add-btn {
+  margin-top: 31px;
+  width: 210px;
+  padding: 19px 50px;
+  border-radius: 20px;
+  background: #1061ff;
+  color: #fff;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: -0.5px;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* 정보수정창 전체 배경 */
+.edit-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.edit-content {
+  width: 358px;
+  height: 325px;
+  background: white;
+  border-radius: 12px;
+  position: relative;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+}
+
+.edit-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 100px;
+  background: url("<path-to-image>") lightgray 50% / cover no-repeat;
+  position: absolute;
+  top: 26px;
+  left: 129px;
+}
+
+.edit-name {
+  width: 253px;
+  position: absolute;
+  top: 150px;
+  left: 52px;
+  text-align: center;
+  color: #2a2a2a;
+  background-color: transparent;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 30px;
+  letter-spacing: -0.5px;
+  white-space: nowrap;
+}
+
+.edit-desc-box {
+  display: flex;
+  width: 238px;
+  padding: 0px 10px 3px 10px;
+  background: rgba(245, 245, 245, 0.95);
+  border-radius: 10px;
+  position: absolute;
+  top: 196px;
+  left: 60px;
+}
+
+.edit-desc {
+  width: 218px;
+  height: 58px;
+  background: transparent;
+  border: none;
+  resize: none;
+  color: #8a8a8a;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 30px;
+  letter-spacing: -0.5px;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+}
+
+.edit-save-btn {
+  display: flex;
+  width: 75px;
+  height: 27px;
+  padding: 4px 21px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  position: absolute;
+  top: 285px;
+  left: 276px;
+  border: none;
+  color: #0f3cbe;
+  background: none;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  cursor: pointer;
+  white-space: nowrap;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+}
+
+.delete-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.delete-modal-content {
+  width: 358px;
+  height: 153px;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 3px 3px 2px 0px rgba(164, 164, 164, 0.25);
+  position: relative;
+  padding: 19px 16px;
+  box-sizing: border-box;
+}
+
+.delete-title {
+  color: #2a2a2a;
+  background-color: transparent;
+  font-family: Pretendard;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 30px;
+  letter-spacing: -0.5px;
+  margin-bottom: 13px;
+}
+
+.delete-subtext {
+  color: #8a8a8a;
+  background-color: transparent;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 30px;
+  letter-spacing: -0.5px;
+  margin-bottom: 20px;
+  font-style: normal;
+}
+
+.delete-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  position: absolute;
+  bottom: 16px;
+  right: 16px;
+  white-space: nowrap;
+  background-color: transparent;
+}
+
+.cancel-btn,
+.delete-btn {
+  width: 73px;
+  height: 18px;
+  border: none;
+  border-radius: 10px;
+  font-family: "Moneygraphy-Rounded";
+  font-size: 16px;
+  background: none;
+  cursor: pointer;
+}
+
+.cancel-btn {
+  color: #2a2a2a;
+}
+
+.delete-btn {
+  color: #f03f40;
+}
+
+.memo-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}

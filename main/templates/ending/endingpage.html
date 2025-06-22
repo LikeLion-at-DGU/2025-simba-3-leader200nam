@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ending Page</title>
+    <link rel="stylesheet" href="{% static 'css/page/endingpage.css' %}" />
+  </head>
+  <body>
+    <div class="ending-container">
+      <div class="left-container">
+        <img
+          src="{% static 'images/next.svg' %}"
+          alt="화살표"
+          class="next-icon"
+        />
+        <div class="top-section">
+          <div class="left-column">
+            <div class="text-section">
+              <p class="exp-title">올해 얻은 경험치</p>
+              <div class="exp-value">12,680 EXP</div>
+            </div>
+          </div>
+          <img
+            src="{% static 'images/arrow.png' %}"
+            alt="Target"
+            class="target-img"
+          />
+        </div>
+
+        <p class="summary-text">
+          올해 <span class="highlight">27</span>곳에서
+          <span class="highlight">93</span>개의 멋진 추억을 남겼어요.<br />아래의
+          블럭을 클릭하여 추억을 확인해보세요 !
+        </p>
+      </div>
+
+      <div class="month-grid">
+        <div class="month-box wide-box month-1-2">
+          <p class="month-label">1-2월</p>
+          <img src="{% static 'images/snowman.png' %}" alt="1-2월" />
+        </div>
+        <div class="month-box month-3">
+          <p class="month-label">3월</p>
+          <img src="{% static 'images/plant.png' %}" alt="3월" />
+        </div>
+        <div class="month-box month-4">
+          <p class="month-label">4월</p>
+          <img src="{% static 'images/flower.png' %}" alt="4월" />
+        </div>
+        <div class="month-box month-5">
+          <p class="month-label">5월</p>
+          <img src="{% static 'images/sound.png' %}" alt="5월" />
+        </div>
+        <div class="month-box month-6">
+          <p class="month-label">6월</p>
+          <img src="{% static 'images/pencil.png' %}" alt="6월" />
+        </div>
+        <div class="month-box wide-box month-7-8">
+          <p class="month-label">7-8월</p>
+          <img src="{% static 'images/chair.png' %}" alt="7월" />
+          <img src="{% static 'images/parasol.png' %}" alt="8월" />
+        </div>
+        <div class="month-box month-9">
+          <p class="month-label">9월</p>
+          <img src="{% static 'images/acorn.png' %}" alt="9월" />
+        </div>
+        <div class="month-box month-10">
+          <p class="month-label">10월</p>
+          <img src="{% static 'images/leave.png' %}" alt="10월" />
+        </div>
+        <div class="month-box month-11">
+          <p class="month-label">11월</p>
+          <img src="{% static 'images/muffler.png' %}" alt="11월" />
+        </div>
+        <div class="month-box month-12">
+          <p class="month-label">12월</p>
+          <img src="{% static 'images/santa.png' %}" alt="12월" />
+        </div>
+      </div>
+    </div>
+
+    <div class="month-detail hidden" id="month-4-detail">
+      <div class="month-detail-header">
+        <div class="month-detail-body">
+          <span class="month-detail-title">4월</span>
+          <hr class="month-detail-line" />
+          <span class="month-detail-desc">벚꽃만큼 너의 4월도 예뻤을 거야</span>
+        </div>
+        <img
+          src="{% static 'images/flower.png' %}"
+          alt="4월 아이콘"
+          class="month-detail-icon"
+        />
+      </div>
+
+      <div class="post-card">
+        <div class="post-image"></div>
+        <div class="post-info">
+          <span class="post-title">동기들과 한 컷</span>
+          <div class="post-icons">
+            <img
+              src="{% static 'images/heart.svg' %}"
+              alt="좋아요"
+              class="icon"
+            />
+            <span>27</span>
+            <img
+              src="{% static 'images/comment.svg' %}"
+              alt="댓글"
+              class="icon"
+            />
+            <span>9</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="{% static 'js/page/endingpage.js' %}"></script>
+  </body>
+</html>
