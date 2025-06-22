@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from quest.models import Quest
 from datetime import datetime
+from friends.models import Friend, FriendCode
 import random
 
 # Create your views here.

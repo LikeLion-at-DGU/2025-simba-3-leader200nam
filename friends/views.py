@@ -4,6 +4,8 @@ from django.http import JsonResponse
 from django.db.models import Q
 from .models import Friend, FriendCode
 from accounts.models import User
+from django.contrib import messages
+import json
 
 @login_required
 def friend_list(request):
@@ -52,31 +54,39 @@ def add_friend(request):
     # 친구 추가
     if request.method == 'POST':
         friend_code = request.POST.get('friend_code')
+        memo = request.POST.get('memo', '')
+
         try:
+            # 친구 코드로 사용자 찾기
             friend_code_obj = FriendCode.objects.get(code=friend_code)
+
+            # 자기 자신 추가 방지
             if friend_code_obj.user == request.user:
-                return JsonResponse({'status': 'error', 'message': 'Cannot add yourself as friend'})
-            
-            # 이미 친구인지 확인
-            if Friend.objects.filter(user=request.user, friend=friend_code_obj.user).exists():
-                return JsonResponse({'status': 'error', 'message': 'Already friends'})
-            
-            # 친구 관계 생성
-            Friend.objects.create(user=request.user, friend=friend_code_obj.user)
+                messages.error(request, '자기 자신은 친구로 추가할 수 없습니다.')
+                return redirect('friends:friend_list')
+
+            # 기존 친구 관계가 있다면 삭제 (양방향 모두)
+            Friend.objects.filter(
+                Q(user=request.user, friend=friend_code_obj.user) |
+                Q(user=friend_code_obj.user, friend=request.user)
+            ).delete()
+
+            # 친구 관계 생성 (상호 관계)
+            new_friend = Friend.objects.create(user=request.user, friend=friend_code_obj.user)
             Friend.objects.create(user=friend_code_obj.user, friend=request.user)
-            
-            return JsonResponse({
-                'status': 'success',
-                'friend': {
-                    'id': friend_code_obj.user.id,
-                    'username': friend_code_obj.user.nickname,
-                    'profile_image': friend_code_obj.user.image.url if friend_code_obj.user.image else None
-                }
-            })
+
+            # 메모가 작성되어 있으면 저장
+            if memo:
+                new_friend.memo = memo
+                new_friend.save()
+
+            return redirect('friends:friend_list')
+
         except FriendCode.DoesNotExist:
-            return JsonResponse({'status': 'error', 'message': 'Invalid friend code'}, status=404)
-    
-    return JsonResponse({'status': 'error', 'message': 'Invalid request method'}, status=400)
+            messages.error(request, '유효하지 않은 친구 코드입니다.')
+            return redirect('friends:friend_list')
+
+    return redirect('friends:friend_list')
 
 @login_required
 def get_friend_profile(request, friend_id):
@@ -92,5 +102,52 @@ def get_friend_profile(request, friend_id):
         return JsonResponse({'status': 'success', 'profile': profile_data})
     except User.DoesNotExist:
         return JsonResponse({'status': 'error', 'message': 'User not found'}, status=404) 
+
+@login_required
+def search_by_code(request):
+    # 친구 코드로 사용자 정보 조회
+    code = request.GET.get('code')
+    
+    if not code:
+        return JsonResponse({'status': 'error', 'message': '친구 코드가 필요합니다.'}, status=400)
+    
+    try:
+        friend_code_obj = FriendCode.objects.get(code=code)
+        user = friend_code_obj.user
+        
+        # 자기 자신인지 확인
+        if user == request.user:
+            return JsonResponse({'status': 'error', 'message': '자기 자신은 친구로 추가할 수 없습니다.'}, status=400)
+        
+        user_data = {
+            'id': user.id,
+            'username': user.username,
+            'nickname': user.nickname,
+            'profile_image': user.image.url if user.image else None,
+            'bio': user.bio
+        }
+        
+        return JsonResponse({'status': 'success', 'user': user_data})
+        
+    except FriendCode.DoesNotExist:
+        return JsonResponse({'status': 'error', 'message': '유효하지 않은 친구 코드입니다.'}, status=404)
+
+@login_required
+def update_memo(request, friend_id):
+    # 친구 메모 업데이트
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        memo = data.get('memo', '')
+        
+        # 친구 관계 조회
+        friend = Friend.objects.get(user=request.user, friend_id=friend_id)
+        
+        # 메모 업데이트
+        friend.memo = memo
+        friend.save()
+        
+        return JsonResponse({'status': 'success'})
+    
+    return JsonResponse({'status': 'error'}, status=405)
 
 # Create your views here.

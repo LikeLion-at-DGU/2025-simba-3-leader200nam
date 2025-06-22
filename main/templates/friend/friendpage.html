@@ -1,6 +1,8 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 <link rel="stylesheet" href="{% static 'css/page/friendpage.css' %}" />
 
+{% csrf_token %}
+
 <div class="page-container">
   <div class="search-section">
     <div class="search-input-wrapper">
@@ -15,20 +17,27 @@
   </div>
 
   <div class="friend-list">
+    {% for item in friends %}
     <div class="friend">
-      <div class="avatar"></div>
+      <div class="avatar" {% if item.friend.image %}style="background-image: url('{{ item.friend.image.url }}')"{% endif %}></div>
       <div class="friend-info">
-        <div class="name">장선우</div>
-        <div class="desc">광고홍보학과 동기</div>
+        <div class="name">{{ item.friend.nickname }}</div>
+        <div class="desc">{{ item.memo }}</div>
       </div>
       <div class="menu-wrapper">
         <div class="menu">⋮</div>
         <div class="more-menu hidden">
-          <button class="menu-item edit-btn">정보 수정</button>
-          <button class="menu-item delete-friend-btn">친구 삭제</button>
+          <button class="friend-menu-item edit-btn">정보 수정</button>
+          <button
+            class="friend-menu-item delete-friend-btn"
+            data-id="{{ item.friend.id }}"
+          >
+            친구 삭제
+          </button>
         </div>
       </div>
     </div>
+    {% endfor %}
   </div>
 </div>
 
@@ -37,11 +46,11 @@
   <div class="edit-content">
     <div
       class="edit-avatar"
-      style="background-image: url('/static/images/Ako.png')"
+      style="background-image: url('{% static 'images/Ako.png' %}')"
     ></div>
-    <div class="edit-name">‘멋사랑’</div>
+    <div class="edit-name"></div>
     <div class="edit-desc-box">
-      <textarea class="edit-desc" readonly>산악 동호회에서 만날 사람</textarea>
+      <textarea class="edit-desc" placeholder="메모를 작성해주세요 (ex. 학과 친구, 동아리)"></textarea>
     </div>
     <button class="edit-save-btn">수정하기</button>
   </div>
@@ -50,7 +59,7 @@
 <!-- 친구 삭제 확인 팝업 -->
 <div class="delete-modal hidden" id="deleteModal">
   <div class="delete-modal-content">
-    <p class="delete-title">‘장선우’ 님을 친구 삭제하시겠습니까?</p>
+    <p class="delete-title">친구 삭제</p>
     <p class="delete-subtext">상대방은 해당 사실을 알 수 없어요</p>
     <div class="delete-buttons">
       <button class="cancel-btn">취소</button>
@@ -64,8 +73,8 @@
   <div class="add-modal-inner">
     <img src="{% static 'images/Ako.png' %}" alt="Ako" class="ako-img" />
     <div class="code-box">
-      <div class="code-title">서누</div>
-      <div class="code-input-box myinput">나의 코드</div>
+      <div class="code-title">{{ user.nickname }}</div>
+      <div class="code-input-box myinput">나의 코드: {{ friend_code }}</div>
     </div>
     <button class="code-input-btn">친구코드 입력</button>
   </div>
@@ -95,14 +104,18 @@
 
 <!-- 친구 추가 완료 후 메모 작성 팝업 -->
 <div class="memo-modal hidden">
+    <form method="POST" action="{% url 'friends:add_friend' %}" class="edit-content">
+    {% csrf_token %}
   <div class="edit-content">
     <div
       class="edit-avatar"
-      style="background-image: url('/static/images/Ako.png')"
+      style="background-image: url('{% static 'images/Ako.png' %}')"
     ></div>
-    <div class="edit-name">‘멋사랑’ 님과 친구 추가되었어요</div>
+    <div class="edit-name">친구 추가 완료</div>
+    <input type="hidden" name="friend_code" id="hiddenFriendCode" />
     <div class="edit-desc-box">
       <textarea
+        name="memo"
         class="edit-desc"
         placeholder="메모를 작성해주세요. (ex. 학과 친구, 동아리)"
       ></textarea>
