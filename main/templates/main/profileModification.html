@@ -6,56 +6,22 @@
       src="{% static 'images/back-icon.svg' %}"
       alt="back icon"
       class="back-icon"
+      onclick="history.back()"
+      style="cursor: pointer"
     />
     <h1 class="profile-modification-title">프로필 수정하기</h1>
   </div>
 
-  <!-- 메시지 표시 -->
-  {% if messages %}
-    <div class="messages">
-      {% for message in messages %}
-        <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
-          {{ message }}
-        </div>
-      {% endfor %}
-    </div>
-  {% endif %}
-
   <div class="profile-modification-box">
-    <div class="profile-img">
-      <div class="profile-image-box" id="imageUploadBox">
-        {% if user.image %}
-          <img
-            src="{{ user.image.url }}"
-            alt="profile image"
-            class="profile-image"
-            id="previewProfileImage"
-          />
-        {% else %}
-          <img
-            src="{% static 'images/profile.svg' %}"
-            alt="default profile image"
-            class="profile-image"
-            id="previewProfileImage"
-          />
-        {% endif %}
-      </div>
-      <input
-        type="file"
-        id="profile-image-upload"
-        name="image"
-        accept="image/*"
-        style="display: none"
-      />
-      <p class="profile-image-text" id="changeProfileText">프로필 사진 변경</p>
-    </div>
-    
     {% if error %}
-    <div class="error-message" style="color: red; margin-bottom: 10px; text-align: center;">
+    <div
+      class="error-message"
+      style="color: red; margin-bottom: 10px; text-align: center"
+    >
       {{ error }}
     </div>
     {% endif %}
-    
+
     <form
       id="profile-modification-form"
       method="POST"
@@ -63,6 +29,26 @@
       enctype="multipart/form-data"
     >
       {% csrf_token %}
+      <div class="profile-img">
+        <div class="profile-image-box" id="imageUploadBox">
+          <img
+            src="{% if user.image %}{{ user.image.url }}{% else %}{% static 'images/profile-default.svg' %}{% endif %}"
+            alt="default profile image"
+            class="profile-image {% if user.image %}uploaded{% endif %}"
+            id="previewProfileImage"
+          />
+        </div>
+        <input
+          type="file"
+          id="profile-image-upload"
+          name="image"
+          accept="image/*"
+          style="display: none"
+        />
+        <p class="profile-image-text" id="changeProfileText">
+          프로필 사진 변경
+        </p>
+      </div>
       <div class="input-group">
         <label for="nickname" class="input-label">닉네임</label>
         <div class="name-input">
@@ -112,5 +98,5 @@
     </form>
   </div>
 </div>
-<script src="{% static 'js/page/profileModification.js' %}" />
+<script src="{% static 'js/page/profileModification.js' %}"></script>
 {% endblock content %}
