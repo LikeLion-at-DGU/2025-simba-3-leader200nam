@@ -6,8 +6,14 @@ def generate_code():
     return secrets.token_hex(4) 
 
 class Friend(models.Model):
+    STATUS_CHOICES = (
+        ('pending', '대기 중'),
+        ('accepted', '수락됨'),
+        ('declined', '거절됨'),
+    )
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='friends')
     friend = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='friend_of')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='accepted')
     created_at = models.DateTimeField(auto_now_add=True)
     
     class Meta:

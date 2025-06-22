@@ -15,7 +15,7 @@ def friend_list(request):
         'friends': friends,
         'friend_code': friend_codes.code if friend_codes else None
     }
-    return render(request, 'friend/friend_list.html', context)
+    return render(request, 'friend/friendpage.html', context)
 
 @login_required
 def search_friends(request):

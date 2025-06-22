@@ -8,39 +8,28 @@ from quest.models import Quest
 
 # Create your views here.
 def feed(request):
-    return render(request, 'feed/feed.html')
+    return render(request, 'feed/feedpage.html')
 
 @login_required
 def feed_list(request):
     # 친구 관계에 있는 사용자들의 피드만 가져오기
+    # 이제 Friend 모델에 status 필드가 있으므로 필터링 가능
     friends = Friend.objects.filter(
-        Q(user=request.user) | Q(friend=request.user),
+        user=request.user,
         status='accepted'
-    ).values_list('user', 'friend')
-    
-    friend_ids = set()
-    for user_id, friend_id in friends:
-        friend_ids.add(user_id)
-        friend_ids.add(friend_id)
-    friend_ids.discard(request.user.id)
+    )
+    friend_ids = [friend.friend.id for friend in friends]
+    friend_ids.append(request.user.id)
     
     feeds = Feed.objects.filter(
         author_id__in=friend_ids,
-        is_private=False,
-        is_deleted=False
+        is_private=False
     ).order_by('-created_at')
     
-    return JsonResponse({
-        'feeds': [{
-            'id': feed.id,
-            'author': feed.author.username,
-            'content': feed.content,
-            'created_at': feed.created_at.isoformat(),
-            'likes_count': feed.likes.count(),
-            'comments_count': feed.comments.count(),
-            'is_liked': feed.likes.filter(user=request.user).exists()
-        } for feed in feeds]
-    })
+    context = {
+        'feeds': feeds
+    }
+    return render(request, 'feed/feedpage.html', context)
 
 @login_required
 def my_feed_list(request):
