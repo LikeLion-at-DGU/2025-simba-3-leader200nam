@@ -12,6 +12,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('quest/', include('quest.urls')),
     path('feed/', include('feed.urls')),
+    path('friends/', include('friends.urls')),
     path('home/', views.mainpage, name='mainpage'),
     path('intro/', views.intropage, name='intropage'),
     path('signin/', accounts_views.login_view, name='signin'),
@@ -20,6 +21,7 @@ urlpatterns = [
     path('registeration/', views.registeration, name='registeration'),
     path('profile-modification/', views.profileModification, name='profileModification'),   
     path('rank/', views.rankPage, name='rankPage'),
+    path('ending/', views.ending, name='ending'),
     path('api/user-info/', views.get_user_info, name='get_user_info'),
     path('api/update-nickname/', views.update_nickname, name='update_nickname'),
 ]

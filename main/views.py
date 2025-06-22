@@ -108,6 +108,9 @@ def profileModification(request):
 def rankPage(request):
     return render(request, 'main/rankPage.html')
 
+def ending(request):
+    return render(request, 'ending/endingpage.html')
+
 # API 엔드포인트 - 사용자 정보 제공
 @login_required
 def get_user_info(request):
