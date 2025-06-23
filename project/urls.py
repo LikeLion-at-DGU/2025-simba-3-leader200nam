@@ -22,6 +22,7 @@ urlpatterns = [
     path('profile-modification/', views.profileModification, name='profileModification'),   
     path('rank/', views.rankPage, name='rankPage'),
     path('ending/', views.ending, name='ending'),
+    path('ending2/', views.ending2, name='ending2'),
     path('api/user-info/', views.get_user_info, name='get_user_info'),
     path('api/update-nickname/', views.update_nickname, name='update_nickname'),
     

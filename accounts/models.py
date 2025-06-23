@@ -37,8 +37,26 @@ class User(AbstractUser):
 
     @property
     def level(self):
-        """경험치를 기반으로 레벨 계산 (100exp당 1레벨)"""
-        return (self.exp // 100) + 1
+        """경험치를 기반으로 레벨 계산 (1000exp당 1레벨)"""
+        return (int(self.exp) // 1000) + 1
+    
+    @property
+    def current_level_exp(self):
+        """현재 레벨에서의 경험치 (0-999)"""
+        return int(self.exp) % 1000
+    
+    @property
+    def ako_image(self):
+        """레벨에 따른 아코 이미지 반환"""
+        level = self.level
+        if level <= 1:
+            return 'ako1.svg'
+        elif level <= 2:
+            return 'ako2.svg'
+        elif level <= 3:
+            return 'ako3.svg'
+        else:
+            return 'ako4.svg'
 
 # 회원가입 시 FriendCode 자동 생성
 @receiver(post_save, sender=User)

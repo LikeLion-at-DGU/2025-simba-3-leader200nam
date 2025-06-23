@@ -81,8 +81,15 @@ def feed_create(request):
 
         # 경험치 증가 (User 모델에 exp 필드가 있다고 가정)
         if hasattr(request.user, 'exp'):
+            old_level = (request.user.exp // 1000) + 1
             request.user.exp += quest.exp
             request.user.save()
+            new_level = (request.user.exp // 1000) + 1
+            
+            # 레벨업이 발생했는지 확인
+            if new_level > old_level:
+                request.session['leveled_up'] = True
+                request.session['new_level'] = new_level
 
         return JsonResponse({
             'id': feed.id,
@@ -265,8 +272,15 @@ def quest_auth_feed_create(request, quest_id):
         
         # 사용자 경험치 증가 (User 모델에 exp 필드가 있다고 가정)
         if hasattr(request.user, 'exp'):
+            old_level = (request.user.exp // 1000) + 1
             request.user.exp += quest.exp
             request.user.save()
+            new_level = (request.user.exp // 1000) + 1
+            
+            # 레벨업이 발생했는지 확인
+            if new_level > old_level:
+                request.session['leveled_up'] = True
+                request.session['new_level'] = new_level
         
         return JsonResponse({
             'status': 'success',

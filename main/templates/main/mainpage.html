@@ -4,22 +4,23 @@
   <div class="main-box">
     <div class="univ-name">{{user.univ_name}}</div>
     <img
-      src="{% static 'images/ako1.svg' %}"
+      src="{% static 'images/'|add:user.ako_image %}"
       alt="akoq Image"
       class="ako1-img"
+      id="akoImage"
     />
     <div class="level-container">
       <span class="level-title">{{user.nickname}}의 레벨</span>
       <div class="level">
         <span class="user-level" id="userLevel">LV.{{user.level}}</span>
         <span class="level-count" id="levelCount"
-          >{{user.exp|default:0}}/1000</span
+          >{{user.current_level_exp}}/1000</span
         >
       </div>
       <div class="bar-container">
         <div
           class="bar-fill"
-          style="width: {% widthratio user.exp|default:0 1000 100 %}%"
+          style="width: {% widthratio user.current_level_exp 1000 100 %}%"
         ></div>
       </div>
     </div>
@@ -69,6 +70,53 @@
     </div>
   </div>
 </div>
+
+<!-- 진화 모달 -->
+<div id="evolutionModal" class="evolution-modal hidden">
+  <div class="evolution-modal-content">
+    <div class="evolution-body">
+      <img
+        id="evolutionAkoImage"
+        src=""
+        alt="진화된 아코"
+        class="evolution-ako-img"
+      />
+      <p class="evolution-text">아코가 진화했습니다!</p>
+      <p class="evolution-level-text">레벨 <span id="newLevel"></span> 달성!</p>
+    </div>
+    <button class="evolution-close-btn" onclick="closeEvolutionModal()">
+      확인
+    </button>
+  </div>
+</div>
+
+<!-- 퀘스트 완료 모달 -->
+<div id="questCompleteModal" class="evolution-modal hidden">
+  <div class="evolution-modal-content">
+    <div class="evolution-body">
+      <p class="evolution-text">
+        모든 퀘스트를 완료했어요!<br />다음 주차의 새로운 퀘스트를 기다려주세요
+      </p>
+    </div>
+    <button class="evolution-close-btn" onclick="closeQuestCompleteModal()">
+      확인
+    </button>
+  </div>
+</div>
+
 <script src="{% static 'js/page/mainpage.js' %}"></script>
+
+<script>
+  // 레벨업 정보를 JavaScript로 전달
+  {% if leveled_up and new_level %}
+    window.leveledUp = true;
+    window.newLevel = {{ new_level }};
+  {% else %}
+    window.leveledUp = false;
+    window.newLevel = null;
+  {% endif %}
+  // 퀘스트 완료 플래그 JS로 전달
+  window.allQuestsCompleted = {{ all_quests_completed|yesno:"true,false" }};
+</script>
 
 {% endblock %}
