@@ -17,7 +17,12 @@
 
   <form id="registeration" method="POST" enctype="multipart/form-data">
     {% csrf_token %}
-    <input type="hidden" name="quest_id" id="questId" />
+    <input
+      type="hidden"
+      name="quest_id"
+      id="questId"
+      value="{{ quest.id|default:'' }}"
+    />
     <div class="registeration-box">
       <div class="image-upload-box" id="uploadBox">
         <img src="{% static 'images/image.svg' %}" alt="image icon"
@@ -85,4 +90,12 @@
 </div>
 
 <script src="{% static 'js/page/registeration.js' %}"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    var questIdInput = document.getElementById("questId");
+    if (questIdInput && '{{ quest.id|default:"" }}') {
+      questIdInput.value = "{{ quest.id }}";
+    }
+  });
+</script>
 {% endblock content %}

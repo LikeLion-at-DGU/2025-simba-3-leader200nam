@@ -19,13 +19,12 @@
         <div class="popup-header">
           <div class="user-info">
             <img
-              src="{% static 'images/profile-default.svg' %}"
-              alt="User Profile"
               class="user-profile"
+              src="{% static 'images/profile-default.svg' %}"
+              alt="프로필"
             />
-            <p class="user-name">로딩중...</p>
+            <p class="user-name">{{user.nickname}}</p>
           </div>
-
           <p class="level">LV.1</p>
         </div>
         <div class="popup-border"></div>

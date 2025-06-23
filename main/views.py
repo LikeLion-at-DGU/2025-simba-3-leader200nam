@@ -48,7 +48,9 @@ def mainpage(request):
         'major_name': request.user.major_name,
         'bio': request.user.bio or '',
         'exp': getattr(request.user, 'exp', 0),
-        'level': (getattr(request.user, 'exp', 0) // 1000) + 1
+        'level': (getattr(request.user, 'exp', 0) // 1000) + 1,
+        'current_level_exp': getattr(request.user, 'exp', 0) % 1000,
+        'ako_image': request.user.ako_image
     }
     
     # 퀘스트 정보 (완료 상태 포함)
@@ -63,11 +65,28 @@ def mainpage(request):
             'is_completed': is_completed
         })
     
+    # 모든 퀘스트 완료 여부 체크
+    is_all_completed = all(q['is_completed'] for q in quest_data) if quest_data else False
+
+    # 주차별로 고유 플래그 키 생성
+    quest_flag_key = f'all_quests_completed_flag_{current_month}_{current_week}'
+
+    # 이번 주차 퀘스트를 처음 모두 완료한 경우에만 True 저장
+    if is_all_completed and not request.session.get(quest_flag_key, False):
+        request.session['all_quests_completed'] = True
+        request.session[quest_flag_key] = True
+    elif not is_all_completed:
+        # 새로운 주차가 시작되면 플래그를 초기화
+        request.session[quest_flag_key] = False
+
     context = {
         'user': user_data,
         'quests': quest_data,
         'current_month': current_month,
-        'current_week': current_week
+        'current_week': current_week,
+        'leveled_up': request.session.pop('leveled_up', False),
+        'new_level': request.session.pop('new_level', None),
+        'all_quests_completed': request.session.pop('all_quests_completed', False),
     }
     
     return render(request, 'main/mainpage.html', context)
@@ -92,7 +111,7 @@ def registeration(request):
         image_name = request.POST.get('image_name')
         location = request.POST.get('location')
         memo = request.POST.get('memo', '')
-        is_public = request.POST.get('is_public', 'false').lower() == 'true'
+        is_public = request.POST.get('is_public') == 'on'
         is_private = not is_public  # 공개가 아니면 비공개
 
         if not (quest_id and image and image_name and location):
@@ -122,8 +141,15 @@ def registeration(request):
             
             # 사용자 경험치 증가
             if hasattr(request.user, 'exp'):
+                old_level = (request.user.exp // 1000) + 1
                 request.user.exp += quest.exp
                 request.user.save()
+                new_level = (request.user.exp // 1000) + 1
+                
+                # 레벨업이 발생했는지 확인
+                if new_level > old_level:
+                    request.session['leveled_up'] = True
+                    request.session['new_level'] = new_level
             
             messages.success(request, f'퀘스트 인증이 완료되었습니다! (+{quest.exp} exp)')
             return redirect('mainpage')
@@ -218,13 +244,46 @@ def ending(request):
         location__isnull=False
     ).exclude(location='').values('location').distinct().count()
     
+    # 사용자 정보
+    user_data = {
+        'nickname': request.user.nickname or '서누',
+        'univ_name': request.user.univ_name,
+        'major_name': request.user.major_name,
+        'bio': request.user.bio or '',
+        'exp': user_exp,
+        'level': (user_exp // 1000) + 1,
+        'current_level_exp': user_exp % 1000,
+        'ako_image': request.user.ako_image
+    }
+    
     context = {
+        'user': user_data,
         'user_exp': user_exp,
         'total_posts': total_posts,
         'unique_locations': unique_locations,
     }
     
     return render(request, 'ending/endingpage.html', context)
+
+def ending2(request):
+    # 사용자 정보
+    user_exp = getattr(request.user, 'exp', 0)
+    user_data = {
+        'nickname': request.user.nickname or '서누',
+        'univ_name': request.user.univ_name,
+        'major_name': request.user.major_name,
+        'bio': request.user.bio or '',
+        'exp': user_exp,
+        'level': (user_exp // 1000) + 1,
+        'current_level_exp': user_exp % 1000,
+        'ako_image': request.user.ako_image
+    }
+    
+    context = {
+        'user': user_data
+    }
+    
+    return render(request, 'ending2/ending2page.html', context)
 
 # API 엔드포인트 - 사용자 정보 제공
 @login_required

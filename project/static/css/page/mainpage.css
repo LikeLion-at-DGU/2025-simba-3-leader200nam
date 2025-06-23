@@ -40,8 +40,8 @@
   top: 36px;
   left: 50%;
   transform: translateX(-50%);
-  width: 222px;
-  height: 222px;
+  width: 200px;
+  height: 200px;
   background-color: inherit;
   z-index: 1;
 }
@@ -54,11 +54,10 @@
     rgba(255, 255, 255, 0.5) 0%,
     rgba(255, 255, 255, 0.9) 100%
   );
-  /* level-container를 main-box의 가장 아래로 밀어냅니다. */
-  margin-top: auto; /* 남은 수직 공간을 모두 차지하여 아래로 밀어냄 */
-  width: 100%; /* 부모 너비에 맞게 */
-  box-sizing: border-box; /* 패딩 포함 너비 계산 */
-  z-index: 2; /* ako1-img 위에 오도록 z-index 설정 (선택 사항) */
+  margin-top: auto;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 2;
 }
 
 .level-title {
@@ -248,4 +247,82 @@
   font-weight: 400;
   line-height: normal;
   background-color: white !important;
+}
+
+/* 진화 모달 스타일 */
+.evolution-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.evolution-modal-content {
+  background: white;
+  border-radius: 20px;
+  padding: 25px 20px;
+  text-align: center;
+  max-width: 300px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.evolution-body {
+  margin-bottom: 25px;
+  background-color: inherit;
+}
+
+.evolution-ako-img {
+  width: 174px;
+  height: 174px;
+  margin-bottom: 15px;
+  background-color: inherit;
+}
+
+.evolution-text {
+  color: #000;
+  text-align: center;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px; /* 140% */
+  background-color: inherit;
+  margin-top: 5px;
+}
+
+.evolution-level-text {
+  color: #094aec;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+  background-color: inherit;
+}
+
+.evolution-close-btn {
+  background: #094aec;
+  color: white;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 30px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.evolution-close-btn:hover {
+  background: #0d4fd1;
+}
+
+.hidden {
+  display: none !important;
 }
