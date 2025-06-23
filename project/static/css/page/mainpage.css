@@ -286,7 +286,7 @@
 }
 
 .evolution-text {
-  color: #000;
+  color: #094aec;
   text-align: center;
   font-family: "Moneygraphy-Rounded", sans-serif;
   font-size: 18px;
@@ -298,9 +298,9 @@
 }
 
 .evolution-level-text {
-  color: #094aec;
+  color: #8a8a8a;
   font-family: "Moneygraphy-Rounded", sans-serif;
-  font-size: 20px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 28px;

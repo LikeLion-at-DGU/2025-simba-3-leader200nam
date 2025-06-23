@@ -38,6 +38,16 @@ document.addEventListener("DOMContentLoaded", () => {
     showQuestCompleteModal();
   }
 
+  if (window.userExp >= 4320) {
+    // 오늘 날짜 key
+    const today = new Date().toISOString().slice(0, 10);
+    const trueAkoShownDate = localStorage.getItem("trueAkoModalShownDate");
+    if (trueAkoShownDate !== today) {
+      showTrueAkoModal();
+      localStorage.setItem("trueAkoModalShownDate", today);
+    }
+  }
+
   // 진화 체크 함수
   function checkEvolution() {
     // 서버에서 전달받은 레벨업 정보 확인
@@ -246,4 +256,11 @@ function showQuestCompleteModal() {
 }
 window.closeQuestCompleteModal = function () {
   document.getElementById("questCompleteModal").classList.add("hidden");
+};
+
+function showTrueAkoModal() {
+  document.getElementById("trueAkoModal").classList.remove("hidden");
+}
+window.closeTrueAkoModal = function () {
+  document.getElementById("trueAkoModal").classList.add("hidden");
 };

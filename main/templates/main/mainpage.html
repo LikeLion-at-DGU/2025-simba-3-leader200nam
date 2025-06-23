@@ -14,13 +14,13 @@
       <div class="level">
         <span class="user-level" id="userLevel">LV.{{user.level}}</span>
         <span class="level-count" id="levelCount"
-          >{{user.current_level_exp}}/1000</span
+          >{{user.current_level_exp}}/{{user.max_level_exp}}</span
         >
       </div>
       <div class="bar-container">
         <div
           class="bar-fill"
-          style="width: {% widthratio user.current_level_exp 1000 100 %}%"
+          style="width: {% widthratio user.current_level_exp user.max_level_exp 100 %}%"
         ></div>
       </div>
     </div>
@@ -104,6 +104,21 @@
   </div>
 </div>
 
+<!-- 진정한 아코 모달 -->
+<div id="trueAkoModal" class="evolution-modal hidden">
+  <div class="evolution-modal-content">
+    <div class="evolution-body">
+      <p class="evolution-text">진정한 아코가 되었습니다!</p>
+      <p class="evolution-level-text">
+        {{user.nickname}}님의 추억을 선물해드릴게요!
+      </p>
+    </div>
+    <button class="evolution-close-btn" onclick="closeTrueAkoModal()">
+      확인
+    </button>
+  </div>
+</div>
+
 <script src="{% static 'js/page/mainpage.js' %}"></script>
 
 <script>
@@ -117,6 +132,8 @@
   {% endif %}
   // 퀘스트 완료 플래그 JS로 전달
   window.allQuestsCompleted = {{ all_quests_completed|yesno:"true,false" }};
+  // 진정한 아코 경험치 JS로 전달
+  window.userExp = {{ user.exp }};
 </script>
 
 {% endblock %}
