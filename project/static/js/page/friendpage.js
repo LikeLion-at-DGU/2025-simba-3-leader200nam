@@ -1,5 +1,43 @@
 document.addEventListener("DOMContentLoaded", () => {
   // ------------------------
+  // 0. 친구 검색 기능
+  // ------------------------
+  const searchInput = document.querySelector(".search-input");
+  const friendList = document.querySelector(".friend-list");
+  const friends = document.querySelectorAll(".friend");
+
+  searchInput.addEventListener("input", (e) => {
+    const searchTerm = e.target.value.toLowerCase().trim();
+    const noResults = document.querySelector(".no-results");
+    let visibleCount = 0;
+
+    friends.forEach((friend) => {
+      const nameElement = friend.querySelector(".name");
+      const descElement = friend.querySelector(".desc");
+
+      if (nameElement && descElement) {
+        const name = nameElement.textContent.toLowerCase();
+        const desc = descElement.textContent.toLowerCase();
+
+        // 이름이나 메모에 검색어가 포함되어 있으면 표시
+        if (name.includes(searchTerm) || desc.includes(searchTerm)) {
+          friend.style.display = "flex";
+          visibleCount++;
+        } else {
+          friend.style.display = "none";
+        }
+      }
+    });
+
+    // 검색 결과가 없을 때 friend-list 전체 숨기기
+    if (searchTerm && visibleCount === 0) {
+      friendList.style.display = "none";
+    } else {
+      friendList.style.display = "flex";
+    }
+  });
+
+  // ------------------------
   // 1. 더보기 메뉴 열고 닫기
   // ------------------------
   const menus = document.querySelectorAll(".menu");
@@ -35,15 +73,67 @@ document.addEventListener("DOMContentLoaded", () => {
       const friendCard = btn.closest(".friend");
       const name = friendCard.querySelector(".name").innerText;
       const desc = friendCard.querySelector(".desc").innerText;
-      modalName.innerText = name;
+      const friendId = friendCard
+        .querySelector(".delete-friend-btn")
+        .getAttribute("data-id");
+      const avatar = friendCard.querySelector(".avatar");
+      const avatarStyle = avatar.style.backgroundImage;
+
+      modalName.innerText = `'${name}'`;
       modalDesc.value = desc;
+
+      // 친구 ID를 저장
+      modalDesc.setAttribute("data-friend-id", friendId);
+
+      // 친구의 프로필 사진 설정
+      const editAvatar = editModal.querySelector(".edit-avatar");
+      if (avatarStyle && avatarStyle !== "none") {
+        editAvatar.style.backgroundImage = avatarStyle;
+      } else {
+        editAvatar.style.backgroundImage = "none";
+      }
+
       editModal.classList.remove("hidden");
     });
   });
 
-  document.querySelector(".edit-save-btn").addEventListener("click", () => {
-    editModal.classList.add("hidden");
+  // textarea에서 엔터키 입력 방지
+  modalDesc.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+    }
   });
+
+  document
+    .querySelector(".edit-save-btn")
+    .addEventListener("click", async () => {
+      const friendId = modalDesc.getAttribute("data-friend-id");
+      const newMemo = modalDesc.value.trim();
+
+      const response = await fetch(`/friends/update-memo/${friendId}/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]")
+            .value,
+        },
+        body: JSON.stringify({
+          memo: newMemo,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.status === "success") {
+        const friendCard = document
+          .querySelector(`[data-id="${friendId}"]`)
+          .closest(".friend");
+        const descElement = friendCard.querySelector(".desc");
+        descElement.innerText = newMemo;
+
+        editModal.classList.add("hidden");
+      }
+    });
 
   editModal.addEventListener("click", (e) => {
     if (e.target === editModal) {
@@ -56,22 +146,43 @@ document.addEventListener("DOMContentLoaded", () => {
   // ------------------------
   const deleteButtons = document.querySelectorAll(".delete-friend-btn");
   const deleteModal = document.getElementById("deleteModal");
+  let targetDeleteBtn = null;
 
   deleteButtons.forEach((btn) => {
     btn.addEventListener("click", (e) => {
       e.stopPropagation();
+      const friendCard = btn.closest(".friend");
+      const friendName = friendCard.querySelector(".name").innerText;
+      deleteModal.querySelector(
+        ".delete-title"
+      ).innerText = `'${friendName}' 님을 친구 삭제하시겠습니까?`;
       deleteModal.classList.remove("hidden");
+      targetDeleteBtn = btn;
     });
   });
 
   document.querySelector(".cancel-btn").addEventListener("click", () => {
     deleteModal.classList.add("hidden");
+    targetDeleteBtn = null;
   });
 
-  deleteModal.addEventListener("click", (e) => {
-    if (e.target === deleteModal) {
-      deleteModal.classList.add("hidden");
+  document.querySelector(".delete-btn").addEventListener("click", async () => {
+    if (!targetDeleteBtn) return;
+    const friendId = targetDeleteBtn.getAttribute("data-id");
+    const response = await fetch(`/friends/delete/${friendId}/`, {
+      method: "POST",
+      headers: {
+        "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]")
+          .value,
+      },
+    });
+    const data = await response.json();
+    if (data.status === "success") {
+      const friendCard = targetDeleteBtn.closest(".friend");
+      friendCard.remove();
     }
+    deleteModal.classList.add("hidden");
+    targetDeleteBtn = null;
   });
 
   // ------------------------
@@ -111,21 +222,58 @@ document.addEventListener("DOMContentLoaded", () => {
   const memoModal = document.querySelector(".memo-modal");
   const memoConfirmBtn = document.querySelector(".memo-confirm-btn");
 
-  addConfirmBtn.addEventListener("click", () => {
-    addModal.classList.add("hidden");
-    memoModal.classList.remove("hidden");
+  addConfirmBtn.addEventListener("click", async () => {
+    const code = document.querySelector(".code-input").value;
 
-    memoConfirmBtn.addEventListener("click", () => {
-      memoModal.classList.add("hidden");
-    });
+    if (!code) {
+      alert("친구 코드를 입력해주세요.");
+      return;
+    }
 
-    const targetName = "멋사랑"; // 필요 시 동적으로 설정 가능
-    memoModal.querySelector(
-      ".edit-name"
-    ).innerText = `‘${targetName}’님과 친구 추가되었어요`;
+    // 친구 코드로 사용자 정보 조회
+    try {
+      const response = await fetch(`/friends/search-by-code/?code=${code}`);
+      const data = await response.json();
+
+      if (data.status === "success") {
+        addModal.classList.add("hidden");
+        memoModal.classList.remove("hidden");
+
+        document.getElementById("hiddenFriendCode").value = code;
+
+        // 실제 친구 이름 표시
+        const friendName =
+          data.user.nickname || data.user.username || "알 수 없음";
+        memoModal.querySelector(
+          ".edit-name"
+        ).innerText = `'${friendName}'님과 친구 추가되었어요`;
+
+        // 친구의 프로필 사진 설정
+        const memoAvatar = memoModal.querySelector(".edit-avatar");
+        if (data.user.profile_image) {
+          memoAvatar.style.backgroundImage = `url('${data.user.profile_image}')`;
+        } else {
+          memoAvatar.style.backgroundImage = "none";
+        }
+      } else {
+        alert(data.message || "유효하지 않은 친구 코드입니다.");
+      }
+    } catch (error) {
+      console.error("Error fetching friend info:", error);
+      alert("친구 정보를 가져오는 중 오류가 발생했습니다.");
+    }
   });
 
   memoConfirmBtn.addEventListener("click", () => {
-    memoModal.classList.add("hidden");
+    // 폼 제출
+    const form = memoModal.querySelector("form");
+    const memoTextarea = memoModal.querySelector("textarea[name='memo']");
+
+    // 메모가 비어있으면 기본값 설정
+    if (!memoTextarea.value.trim()) {
+      memoTextarea.value = "";
+    }
+
+    form.submit();
   });
 });

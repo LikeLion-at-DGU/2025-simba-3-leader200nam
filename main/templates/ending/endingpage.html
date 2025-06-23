@@ -1,11 +1,18 @@
-{% load static %}
+{% load static %} {% load humanize %}
 <!DOCTYPE html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Ending Page</title>
+    <link rel="stylesheet" href="{% static 'css/base/font.css' %}" />
     <link rel="stylesheet" href="{% static 'css/page/endingpage.css' %}" />
+    <style>
+      body {
+        background-image: url('{% static "images/winter.png" %}');
+        font-family: "Moneygraphy-Rounded", sans-serif;
+      }
+    </style>
   </head>
   <body>
     <div class="ending-container">
@@ -14,12 +21,15 @@
           src="{% static 'images/next.svg' %}"
           alt="화살표"
           class="next-icon"
+          id="next-icon"
         />
         <div class="top-section">
           <div class="left-column">
             <div class="text-section">
               <p class="exp-title">올해 얻은 경험치</p>
-              <div class="exp-value">12,680 EXP</div>
+              <div class="exp-value">
+                {{ user_exp|floatformat:0|intcomma }} EXP
+              </div>
             </div>
           </div>
           <img
@@ -30,69 +40,125 @@
         </div>
 
         <p class="summary-text">
-          올해 <span class="highlight">27</span>곳에서
-          <span class="highlight">93</span>개의 멋진 추억을 남겼어요.<br />아래의
-          블럭을 클릭하여 추억을 확인해보세요 !
+          올해 <span class="highlight">{{ unique_locations }}</span>곳에서
+          <span class="highlight">{{ total_posts }}</span>개의 멋진 추억을
+          남겼어요.<br />아래의 블럭을 클릭하여 추억을 확인해보세요 !
         </p>
       </div>
 
       <div class="month-grid">
-        <div class="month-box wide-box month-1-2">
-          <p class="month-label">1-2월</p>
-          <img src="{% static 'images/snowman.png' %}" alt="1-2월" />
-        </div>
-        <div class="month-box month-3">
+        <div
+          class="month-box month-3"
+          data-title="3월"
+          data-desc="너라는 새싹이 자라기 시작한 3월이야"
+          data-img="{% static 'images/plant.png' %}"
+          data-color="#2cce14"
+        >
           <p class="month-label">3월</p>
           <img src="{% static 'images/plant.png' %}" alt="3월" />
         </div>
-        <div class="month-box month-4">
+        <div
+          class="month-box month-4"
+          data-title="4월"
+          data-desc="벚꽃만큼 너의 4월도 예뻤을 거야"
+          data-img="{% static 'images/flower.png' %}"
+          data-color="#eab0e5"
+        >
           <p class="month-label">4월</p>
           <img src="{% static 'images/flower.png' %}" alt="4월" />
         </div>
-        <div class="month-box month-5">
+        <div
+          class="month-box month-5"
+          data-title="5월"
+          data-desc="새내기의 푸르름이 묻어나는 5월이었어"
+          data-img="{% static 'images/sound.png' %}"
+          data-color="#2782ff"
+        >
           <p class="month-label">5월</p>
           <img src="{% static 'images/sound.png' %}" alt="5월" />
         </div>
-        <div class="month-box month-6">
+        <div
+          class="month-box month-6"
+          data-title="6월"
+          data-desc="첫 대학교, 첫학기가 마무리 될 때쯤이야"
+          data-img="{% static 'images/pencil.png' %}"
+          data-color="#d6d639"
+        >
           <p class="month-label">6월</p>
           <img src="{% static 'images/pencil.png' %}" alt="6월" />
         </div>
-        <div class="month-box wide-box month-7-8">
+        <div
+          class="month-box wide-box month-7-8"
+          data-title="7-8월"
+          data-desc="여름의 빛나는 태양만큼, 너도 빛났기를 바랄게"
+          data-img="{% static 'images/chair.png' %}"
+          data-color="#4ae5f3"
+        >
           <p class="month-label">7-8월</p>
           <img src="{% static 'images/chair.png' %}" alt="7월" />
           <img src="{% static 'images/parasol.png' %}" alt="8월" />
         </div>
-        <div class="month-box month-9">
+        <div
+          class="month-box month-9"
+          data-title="9월"
+          data-desc="서늘한 바람과 그 밤공기, 아직 기억해?"
+          data-img="{% static 'images/acorn.png' %}"
+          data-color="#f5d592"
+        >
           <p class="month-label">9월</p>
           <img src="{% static 'images/acorn.png' %}" alt="9월" />
         </div>
-        <div class="month-box month-10">
+        <div
+          class="month-box month-10"
+          data-title="10월"
+          data-desc="단풍은 떨어질지라도, 너의 새내기는 빛날거야"
+          data-img="{% static 'images/leave.png' %}"
+          data-color="#f0b959"
+        >
           <p class="month-label">10월</p>
           <img src="{% static 'images/leave.png' %}" alt="10월" />
         </div>
-        <div class="month-box month-11">
+        <div
+          class="month-box month-11"
+          data-title="11월"
+          data-desc="겨울이 다가왔다는건 너의 새내기도 마무리가 된다는 거겠지"
+          data-img="{% static 'images/muffler.png' %}"
+          data-color="#e4811c"
+        >
           <p class="month-label">11월</p>
           <img src="{% static 'images/muffler.png' %}" alt="11월" />
         </div>
-        <div class="month-box month-12">
+        <div
+          class="month-box wide-box month-12"
+          data-title="12월"
+          data-desc="연말과 함께 멋진 기억으로 마무리 됐으면 좋겠다"
+          data-img="{% static 'images/cookie.png' %}"
+          data-color="#fa8787"
+        >
           <p class="month-label">12월</p>
-          <img src="{% static 'images/santa.png' %}" alt="12월" />
+          <img src="{% static 'images/cookie.png' %}" alt="쿠키" />
+          <img src="{% static 'images/tree.png' %}" alt="트리" />
+        </div>
+        <div class="month-box" style="background-color: #8a8a8a; color: white">
+          <p class="month-label">서누</p>
+          <img src="{% static 'images/good.png' %}" alt="서누" />
         </div>
       </div>
     </div>
 
-    <div class="month-detail hidden" id="month-4-detail">
+    <img
+      src="{% static 'images/next.svg' %}"
+      alt="화살표"
+      class="next-icon-detail hidden"
+    />
+    <div class="month-detail hidden" id="month-detail">
       <div class="month-detail-header">
         <div class="month-detail-body">
-          <span class="month-detail-title">4월</span>
+          <span class="month-detail-title" id="detail-title"></span>
           <hr class="month-detail-line" />
-          <span class="month-detail-desc">벚꽃만큼 너의 4월도 예뻤을 거야</span>
+          <span class="month-detail-desc" id="detail-desc"></span>
         </div>
-        <img
-          src="{% static 'images/flower.png' %}"
-          alt="4월 아이콘"
-          class="month-detail-icon"
-        />
+        <img src="" alt="" class="month-detail-icon" id="detail-img" />
       </div>
 
       <div class="post-card">
@@ -115,6 +181,16 @@
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- Ending2 섹션 -->
+    <div class="ending2-container hidden" id="ending2-container">
+      <h1 id="ending2Text"></h1>
+      <img
+        src="{% static 'images/Ako2.png' %}"
+        alt="Ako2 Image"
+        class="Ako2-img"
+      />
     </div>
 
     <script src="{% static 'js/page/endingpage.js' %}"></script>

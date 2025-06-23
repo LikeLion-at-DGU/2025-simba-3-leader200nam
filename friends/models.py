@@ -15,6 +15,7 @@ class Friend(models.Model):
     friend = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='friend_of')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='accepted')
     created_at = models.DateTimeField(auto_now_add=True)
+    memo = models.CharField(max_length=255, blank=True, null=True)
     
     class Meta:
         unique_together = ('user', 'friend')

@@ -26,6 +26,10 @@ def feed_list(request):
         is_private=False
     ).order_by('-created_at')
     
+    # 각 피드에 대한 '좋아요' 여부 추가
+    for feed in feeds:
+        feed.is_liked = feed.likes.filter(user=request.user).exists()
+
     context = {
         'feeds': feeds
     }

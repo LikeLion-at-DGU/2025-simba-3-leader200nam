@@ -7,8 +7,10 @@ from django.http import JsonResponse
 from quest.models import Quest
 from feed.models import Feed
 from datetime import datetime
+from friends.models import Friend, FriendCode
 import random
 from typing import TYPE_CHECKING
+from django.db.models import Count
 
 if TYPE_CHECKING:
     from django.http import HttpRequest
@@ -198,7 +200,31 @@ def rankPage(request):
     return render(request, 'main/rankPage.html')
 
 def ending(request):
-    return render(request, 'ending/endingpage.html')
+    # 사용자의 실제 데이터 계산
+    user_exp = getattr(request.user, 'exp', 0)
+    
+    # 사용자가 작성한 게시물 수 (완료된 것만)
+    total_posts = Feed.objects.filter(
+        author=request.user, 
+        is_completed=True,
+        is_deleted=False
+    ).count()
+    
+    # 사용자가 방문한 고유한 장소 수
+    unique_locations = Feed.objects.filter(
+        author=request.user, 
+        is_completed=True,
+        is_deleted=False,
+        location__isnull=False
+    ).exclude(location='').values('location').distinct().count()
+    
+    context = {
+        'user_exp': user_exp,
+        'total_posts': total_posts,
+        'unique_locations': unique_locations,
+    }
+    
+    return render(request, 'ending/endingpage.html', context)
 
 # API 엔드포인트 - 사용자 정보 제공
 @login_required

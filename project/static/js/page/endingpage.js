@@ -1,11 +1,90 @@
 document.addEventListener("DOMContentLoaded", function () {
-  const month4Box = document.querySelector(".month-4");
+  // 월별 그리드, 상세 뷰, 뒤로가기 아이콘 요소를 가져옵니다.
   const endingContainer = document.querySelector(".ending-container");
-  const monthDetail = document.getElementById("month-4-detail");
+  const monthDetail = document.getElementById("month-detail");
+  const nextIconDetail = document.querySelector(".next-icon-detail");
+  const nextIcon = document.getElementById("next-icon");
+  const ending2Container = document.getElementById("ending2-container");
 
-  month4Box.addEventListener("click", function () {
-    // 기존 요약 숨기고 상세 보기 노출
-    endingContainer.style.display = "none";
-    monthDetail.classList.remove("hidden");
+  // 월별 박스를 모두 가져옵니다.
+  const monthBoxes = document.querySelectorAll(".month-box[data-title]");
+
+  // 상세 뷰의 제목, 설명, 이미지, 선 요소를 가져옵니다.
+  const detailTitle = document.getElementById("detail-title");
+  const detailDesc = document.getElementById("detail-desc");
+  const detailImg = document.getElementById("detail-img");
+  const detailLine = monthDetail.querySelector(".month-detail-line");
+
+  // Ending2 관련 요소들
+  const ending2TextElement = document.getElementById("ending2Text");
+  const Ako2Img = document.querySelector(".Ako2-img");
+
+  // Ending2 콘텐츠
+  const ending2Contents = [
+    "새내기였던 너의\n여정을 잘 돌아봤어?",
+    "1년 동안 정말 고생했고\n즐거운 시간으로 기억됐으면 좋겠다",
+    "새내기가 그리워지면 언제든지 찾아오고\n졸업할 때까지 대학생활 파이팅 !",
+  ];
+
+  let currentSlide = 0;
+  const slideDisplayTime = 2000;
+
+  // 각 월별 박스에 클릭 이벤트를 추가합니다.
+  monthBoxes.forEach((box) => {
+    box.addEventListener("click", function () {
+      // 박스의 data 속성에서 정보를 가져옵니다.
+      const title = this.dataset.title;
+      const desc = this.dataset.desc;
+      const imgSrc = this.dataset.img;
+      const color = this.dataset.color;
+
+      // 상세 뷰의 내용을 동적으로 변경합니다.
+      detailTitle.textContent = title;
+      detailDesc.textContent = desc;
+      detailImg.src = imgSrc;
+      detailImg.alt = `${title} 아이콘`;
+      detailTitle.style.color = color;
+      detailLine.style.borderColor = color;
+
+      // 월별 그리드를 숨기고 상세 뷰와 뒤로가기 아이콘을 표시합니다.
+      endingContainer.style.display = "none";
+      monthDetail.classList.remove("hidden");
+      nextIconDetail.classList.remove("hidden");
+    });
   });
+
+  // 뒤로가기 아이콘에 클릭 이벤트를 추가합니다.
+  nextIconDetail.addEventListener("click", function () {
+    // 월별 그리드를 다시 표시하고 상세 뷰와 아이콘을 숨깁니다.
+    endingContainer.style.display = "flex";
+    monthDetail.classList.add("hidden");
+    nextIconDetail.classList.add("hidden");
+  });
+
+  // 메인 next-icon 클릭 시 ending2로 전환
+  nextIcon.addEventListener("click", function () {
+    endingContainer.style.display = "none";
+    ending2Container.classList.remove("hidden");
+    showNextSlide();
+  });
+
+  // Ending2 슬라이드 표시 함수
+  function showNextSlide() {
+    if (currentSlide < ending2Contents.length) {
+      ending2TextElement.classList.remove("fade-in");
+      Ako2Img.classList.remove("fade-in");
+
+      setTimeout(() => {
+        ending2TextElement.innerHTML = ending2Contents[currentSlide];
+        ending2TextElement.classList.add("fade-in");
+        Ako2Img.classList.add("fade-in");
+
+        currentSlide++;
+        setTimeout(showNextSlide, slideDisplayTime);
+      }, 800);
+    } else {
+      ending2TextElement.classList.remove("fade-in");
+      Ako2Img.classList.remove("fade-in");
+    }
+  }
 });
