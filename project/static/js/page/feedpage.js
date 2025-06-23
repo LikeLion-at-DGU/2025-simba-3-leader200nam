@@ -387,17 +387,13 @@ document.addEventListener("DOMContentLoaded", () => {
                   commentList.innerHTML += `
                     <div class="comment-item">
                       <div class="comment-content">
-                        <img src="/static/images/profile-default.svg" class="comment-profile" />
+                        <img src="${comment.author_image || '/static/images/profile-default.svg'}" class="comment-profile" />
                         <div class="comment-text">
-                          <span class="comment-username">${
-                            comment.author
-                          }</span>
+                          <span class="comment-username">${(comment.nickname && comment.nickname.trim()) || comment.username || '익명'}</span>
                           <span class="comment-body">${comment.content}</span>
                         </div>
                       </div>
-                      <span class="comment-time">${timeSince(
-                        comment.created_at
-                      )}</span>
+                      <span class="comment-time">${timeSince(comment.created_at)}</span>
                     </div>
                   `;
                 });
@@ -464,11 +460,9 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             newComment.innerHTML = `
               <div class="comment-content">
-                <img src="${
-                  data.author_image || "/static/images/profile-default.svg"
-                }" class="comment-profile" />
+                <img src="${data.author_image || '/static/images/profile-default.svg'}" class="comment-profile" />
                 <div class="comment-text">
-                  <span class="comment-username">${data.author}</span>
+                  <span class="comment-username">${(data.nickname && data.nickname.trim()) || data.username || '익명'}</span>
                   <span class="comment-body">${data.content}</span>
                 </div>
               </div>

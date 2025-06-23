@@ -80,7 +80,11 @@
   width: 42px;
   height: 42px;
   background-color: #ccc;
-  border-radius: 10px;
+  border-radius: 50%;
+  overflow: hidden;
+  object-fit: cover;
+  background-position: center;
+  background-size: cover;
 }
 
 .friend-info,
