@@ -10,13 +10,13 @@ urlpatterns = [
     path('create/', views.feed_create, name='feed_create'),
     path('<int:feed_id>/', views.feed_detail, name='feed_detail'),
     path('<int:feed_id>/update/', views.feed_update, name='feed_update'),
-    path('<int:feed_id>/delete/', views.feed_delete, name='feed_delete'),
+    path('post/<int:feed_id>/delete/', views.feed_delete, name='feed_delete'),
     
     # Privacy settings
-    path('<int:feed_id>/toggle_privacy/', views.toggle_privacy, name='toggle_privacy'),
+    path('post/<int:feed_id>/toggle-public/', views.toggle_public, name='toggle_public'),
     
     # Like functionality
-    path('<int:feed_id>/like/', views.feed_like, name='feed_like'),
+    path('post/<int:feed_id>/like/', views.feed_like, name='feed_like'),
     
     # Comment functionality
     path('<int:feed_id>/comment/', views.comment_create, name='comment_create'),
