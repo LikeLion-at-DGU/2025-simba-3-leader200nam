@@ -48,8 +48,9 @@ def mainpage(request):
         'major_name': request.user.major_name,
         'bio': request.user.bio or '',
         'exp': getattr(request.user, 'exp', 0),
-        'level': (getattr(request.user, 'exp', 0) // 1000) + 1,
-        'current_level_exp': getattr(request.user, 'exp', 0) % 1000,
+        'level': request.user.level,
+        'current_level_exp': request.user.current_level_exp,
+        'max_level_exp': request.user.max_level_exp,
         'ako_image': request.user.ako_image
     }
     
@@ -253,6 +254,7 @@ def ending(request):
         'exp': user_exp,
         'level': (user_exp // 1000) + 1,
         'current_level_exp': user_exp % 1000,
+        'max_level_exp': request.user.max_level_exp,
         'ako_image': request.user.ako_image
     }
     
@@ -276,6 +278,7 @@ def ending2(request):
         'exp': user_exp,
         'level': (user_exp // 1000) + 1,
         'current_level_exp': user_exp % 1000,
+        'max_level_exp': request.user.max_level_exp,
         'ako_image': request.user.ako_image
     }
     
