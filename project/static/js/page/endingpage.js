@@ -108,6 +108,12 @@ document.addEventListener("DOMContentLoaded", function () {
   nextIcon.addEventListener("click", function () {
     endingContainer.style.display = "none";
     ending2Container.classList.remove("hidden");
+    // 배경이미지 명시적으로 다시 설정
+    document.body.style.backgroundImage = "url('/static/images/winter.png')";
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundRepeat = "no-repeat";
+    document.body.style.backgroundPosition = "center center";
+    document.body.style.fontFamily = "Moneygraphy-Rounded, sans-serif";
     showNextSlide();
   });
 

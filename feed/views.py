@@ -26,7 +26,7 @@ def feed_list(request):
         author_id__in=friend_ids,
         is_private=False,
         is_deleted=False  # 삭제되지 않은 피드만
-    ).order_by('-created_at')
+    ).select_related('author').order_by('-created_at')
     
     # 각 피드에 대한 '좋아요' 및 '공개' 여부 추가
     for feed in feeds:
