@@ -107,6 +107,9 @@ def feed_create(request):
         })
     return JsonResponse({'error': 'Invalid request method'}, status=400)
 
+def get_display_name(user):
+    return user.nickname if user.nickname else user.username
+
 @login_required
 def feed_detail(request, feed_id):
     feed = get_object_or_404(Feed, id=feed_id)
@@ -128,7 +131,8 @@ def feed_detail(request, feed_id):
             'is_private': feed.is_private,
             'comments': [{
                 'id': comment.id,
-                'author': comment.author.username,
+                'nickname': get_display_name(comment.author),
+                'author_image': comment.author.image.url if comment.author.image else None,
                 'content': comment.content,
                 'created_at': comment.created_at.isoformat()
             } for comment in comments]
@@ -196,15 +200,10 @@ def comment_create(request, feed_id):
             author=request.user,
             content=content
         )
-        # 사용자 이름(닉네임 우선, 없으면 이름, 없으면 username)
-        author_name = getattr(request.user, 'nickname', None) or request.user.get_full_name() or request.user.username
-        # 프로필 이미지 URL 반환 (없으면 None)
-        author_image = request.user.image.url if hasattr(request.user, 'image') and request.user.image else None
-
         return JsonResponse({
             'id': comment.id,
-            'author': author_name,
-            'author_image': author_image,
+            'nickname': get_display_name(request.user),
+            'author_image': request.user.image.url if request.user.image else None,
             'content': comment.content,
             'created_at': comment.created_at.isoformat()
         })
