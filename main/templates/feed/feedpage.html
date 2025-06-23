@@ -12,6 +12,7 @@
   <div
     class="post-card {% if feed.author == user %}my-post{% endif %}"
     data-post-id="{{ feed.id }}"
+    data-author-id="{{ feed.author.id }}"
   >
     <div class="post-header">
       <img
@@ -26,75 +27,95 @@
         <p class="location">{{ feed.location }}</p>
       </div>
       <div class="more-wrapper">
+        {% if feed.author == user %}
+        <button
+          class="public-toggle-btn"
+          data-public-state="public"
+          style="
+            display: flex;
+            width: 93px;
+            height: 29px;
+            padding: 6px 12px 6px 13px;
+            justify-content: center;
+            align-items: center;
+            flex-shrink: 0;
+            border-radius: 10px;
+            background: #fff;
+            border: none;
+            cursor: pointer;
+          "
+        >
+          <img
+            src="{% static 'images/lock.svg' %}"
+            style="
+              width: 16px;
+              height: 16px;
+              flex-shrink: 0;
+              aspect-ratio: 1/1;
+              margin-right: 6px;
+            "
+            alt="lock"
+          />
+          <span
+            style="
+              color: #000;
+              font-family: '머니그라피TTF', sans-serif;
+              font-size: 10px;
+              font-style: normal;
+              font-weight: 400;
+              line-height: 17px;
+              letter-spacing: -0.5px;
+            "
+            >게시물 공개</span
+          >
+        </button>
         <img
-          src="{% static 'images/more_icon.svg' %}"
-          class="more-icon"
-          alt="더보기"
+          src="{% static 'images/Siren.svg' %}"
+          class="siren-report-btn"
+          style="
+            width: 20px;
+            height: 20px;
+            margin-left: 8px;
+            display: none;
+            cursor: pointer;
+          "
+          alt="신고"
         />
+        {% endif %}
         <div class="more-menu hidden">
-          <button class="menu-item report-button">게시물 신고</button>
-        </div>
-        <!-- 신고 모달 -->
-        <div class="report-modal hidden">
-          <div class="report-box">
-            <p class="report-title">해당 게시물을 신고하시겠습니까?</p>
-            <form class="report-reasons">
-              <label class="reason-item">
-                <input type="radio" name="report-reason" value="욕설" />
-                <img
-                  src="{% static 'images/Ellipse.svg' %}"
-                  class="check-icon"
-                  alt="선택"
-                />
-                <span>욕설 / 비속어</span>
-              </label>
-              <label class="reason-item">
-                <input type="radio" name="report-reason" value="불쾌감" />
-                <img
-                  src="{% static 'images/Ellipse.svg' %}"
-                  class="check-icon"
-                  alt="선택"
-                />
-                <span>불쾌감 조성</span>
-              </label>
-              <label class="reason-item">
-                <input type="radio" name="report-reason" value="광고" />
-                <img
-                  src="{% static 'images/Ellipse.svg' %}"
-                  class="check-icon"
-                  alt="선택"
-                />
-                <span>무단광고 / 홍보</span>
-              </label>
-              <label class="reason-item">
-                <input type="radio" name="report-reason" value="음란" />
-                <img
-                  src="{% static 'images/Ellipse.svg' %}"
-                  class="check-icon"
-                  alt="선택"
-                />
-                <span>음란 / 선정적</span>
-              </label>
-              <label class="reason-item">
-                <input type="radio" name="report-reason" value="기타" />
-                <img
-                  src="{% static 'images/Ellipse.svg' %}"
-                  class="check-icon"
-                  alt="선택"
-                />
-                <span>기타:</span>
-                <input
-                  type="text"
-                  class="etc-reason"
-                  name="report-reason-etc"
-                />
-              </label>
-            </form>
-            <div class="report-buttons">
-              <button class="cancel-button">취소</button>
-              <button class="hide-button">숨기기</button>
-            </div>
-          </div>
+          {% if feed.author == user %}
+          <button
+            class="menu-item toggle-public-button"
+            data-post-id="{{ feed.id }}"
+          >
+            <img
+              src="{% if feed.is_public %}{% static 'images/toggle-on-icon.svg' %}{% else %}{% static 'images/toggle-off-icon.svg' %}{% endif %}"
+              alt="toggle"
+            />
+            <span
+              >게시물 {% if feed.is_public %}공개{% else %}비공개{%endif%}</span
+            >
+          </button>
+          <button class="menu-item delete-button" data-post-id="{{ feed.id }}">
+            <img src="{% static 'images/delete-icon.svg' %}" alt="delete" />
+            <span>게시물 삭제</span>
+          </button>
+          {% else %}
+          <button class="menu-item report-button">
+            <img
+              src="{% static 'images/lock.svg' %}"
+              alt="report"
+              style="
+                width: 16px;
+                height: 16px;
+                flex-shrink: 0;
+                aspect-ratio: 1/1;
+                margin-right: 6px;
+              "
+            />
+            <span>게시물 신고</span>
+          </button>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -107,162 +128,133 @@
 
     <div class="post-footer">
       <p class="post-caption">{{ feed.content|default:feed.memo }}</p>
-      <div class="icon-group">
-        <img
-          src="{% if feed.is_liked %}{% static 'images/heart_filled.svg' %}{% else %}{% static 'images/heart.svg' %}{% endif %}"
-          alt="좋아요"
-          class="icon heart-icon {% if feed.is_liked %}liked{% endif %}"
-          data-post-id="{{ feed.id }}"
-        />
-        <span class="icon-count like-count" data-post-id="{{ feed.id }}"
-          >{{ feed.likes.count }}</span
-        >
-        <img
-          src="{% static 'images/comment.svg' %}"
-          alt="댓글"
-          class="icon comment-icon"
-        />
-        <span class="icon-count">{{ feed.comments.count }}</span>
+      <div class="post-actions">
+        <div class="icon-group">
+          <img
+            src="{% if feed.is_liked %}{% static 'images/heart_filled.svg' %}{% else %}{% static 'images/heart.svg' %}{% endif %}"
+            alt="좋아요"
+            class="icon heart-icon"
+            data-post-id="{{ feed.id }}"
+          />
+          <span class="icon-count like-count" data-post-id="{{ feed.id }}"
+            >{{ feed.likes.count }}</span
+          >
+          <img
+            src="{% static 'images/comment.svg' %}"
+            alt="댓글"
+            class="icon comment-icon"
+          />
+          <span class="icon-count">{{ feed.comments.count }}</span>
+        </div>
       </div>
     </div>
   </div>
   {% empty %}
-  <div class="post-card my-post">
-    <div class="post-header">
-      <img
-        src="{% static 'images/profile-default.svg' %}"
-        alt="프로필"
-        class="profile-img"
-      />
-      <div class="profile-info">
-        <p class="username">{{ user.nickname|default:user.username }}</p>
-        <p class="location">컴퓨터공학과 과방</p>
-      </div>
-      <div class="more-wrapper">
-        <img
-          src="{% static 'images/more_icon.svg' %}"
-          class="more-icon"
-          alt="더보기"
-        />
-        <div class="more-menu hidden">
-          <button class="menu-item report-button">게시물 신고</button>
-        </div>
-        <!-- 신고 모달 -->
-        <div class="report-modal hidden">
-          <div class="report-box">
-            <p class="report-title">해당 게시물을 신고하시겠습니까?</p>
-            <form class="report-reasons">
-              <label class="reason-item">
-                <input type="radio" name="report-reason" value="욕설" />
-                <img
-                  src="{% static 'images/Ellipse.svg' %}"
-                  class="check-icon"
-                  alt="선택"
-                />
-                <span>욕설 / 비속어</span>
-              </label>
-              <label class="reason-item">
-                <input type="radio" name="report-reason" value="불쾌감" />
-                <img
-                  src="{% static 'images/Ellipse.svg' %}"
-                  class="check-icon"
-                  alt="선택"
-                />
-                <span>불쾌감 조성</span>
-              </label>
-              <label class="reason-item">
-                <input type="radio" name="report-reason" value="광고" />
-                <img
-                  src="{% static 'images/Ellipse.svg' %}"
-                  class="check-icon"
-                  alt="선택"
-                />
-                <span>무단광고 / 홍보</span>
-              </label>
-              <label class="reason-item">
-                <input type="radio" name="report-reason" value="음란" />
-                <img
-                  src="{% static 'images/Ellipse.svg' %}"
-                  class="check-icon"
-                  alt="선택"
-                />
-                <span>음란 / 선정적</span>
-              </label>
-              <label class="reason-item">
-                <input type="radio" name="report-reason" value="기타" />
-                <img
-                  src="{% static 'images/Ellipse.svg' %}"
-                  class="check-icon"
-                  alt="선택"
-                />
-                <span>기타:</span>
-                <input
-                  type="text"
-                  class="etc-reason"
-                  name="report-reason-etc"
-                />
-              </label>
-            </form>
-            <div class="report-buttons">
-              <button class="cancel-button">취소</button>
-              <button class="hide-button">숨기기</button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="post-img no-image"></div>
-
-    <div class="post-footer">
-      <p class="post-caption">동기들과 한 컷</p>
-      <div class="icon-group">
-        <img
-          src="{% static 'images/heart.svg' %}"
-          alt="좋아요"
-          class="icon heart-icon"
-        />
-        <span class="icon-count like-count">0</span>
-        <img
-          src="{% static 'images/comment.svg' %}"
-          alt="댓글"
-          class="icon comment-icon"
-        />
-        <span class="icon-count">0</span>
-      </div>
-    </div>
+  <div class="no-feed-message">
+    <p>아직 게시물이 없습니다.<br />첫 게시물을 작성하고 친구를 늘려보세요!</p>
   </div>
   {% endfor %}
+</div>
 
-  <!-- 댓글 팝업 -->
-  <div class="comment-popup hidden">
-    <div class="comment-list">
-      <!-- 댓글 아이템 예시 -->
-      <div class="comment-item">
-        <div class="comment-content">
-          <img
-            src="{% static 'images/sample_profile1.jpg' %}"
-            class="comment-profile"
-          />
-          <div class="comment-text">
-            <span class="comment-username">김멋사</span>
-            <span class="comment-body">와 부럽다... 할 말이 없네....</span>
-          </div>
-        </div>
-        <span class="comment-time">1일</span>
-      </div>
-      <!-- 나머지 댓글은 생략 가능 -->
-    </div>
-
-    <!-- 댓글 입력창 -->
-    <div class="comment-input">
-      <input type="text" placeholder="댓글을 입력해주세요." />
-      <button>
-        <img src="{% static 'images/send.svg' %}" alt="보내기" />
-      </button>
+<!-- 신고 모달 (페이지에 하나만 존재) -->
+<div id="report-modal" class="report-modal hidden">
+  <div class="report-box">
+    <p class="report-title">해당 게시물을 신고하시겠습니까?</p>
+    <form class="report-reasons">
+      <label class="reason-item">
+        <input type="radio" name="report-reason" value="욕설" />
+        <img
+          src="{% static 'images/Ellipse.svg' %}"
+          class="check-icon"
+          alt="선택"
+        />
+        <span>욕설 / 비속어</span>
+      </label>
+      <label class="reason-item">
+        <input type="radio" name="report-reason" value="불쾌감" />
+        <img
+          src="{% static 'images/Ellipse.svg' %}"
+          class="check-icon"
+          alt="선택"
+        />
+        <span>불쾌감 조성</span>
+      </label>
+      <label class="reason-item">
+        <input type="radio" name="report-reason" value="광고" />
+        <img
+          src="{% static 'images/Ellipse.svg' %}"
+          class="check-icon"
+          alt="선택"
+        />
+        <span>무단광고 / 홍보</span>
+      </label>
+      <label class="reason-item">
+        <input type="radio" name="report-reason" value="음란" />
+        <img
+          src="{% static 'images/Ellipse.svg' %}"
+          class="check-icon"
+          alt="선택"
+          고
+        />
+        <span>음란 / 선정적</span>
+      </label>
+      <label class="reason-item">
+        <input type="radio" name="report-reason" value="기타" />
+        <img
+          src="{% static 'images/Ellipse.svg' %}"
+          class="check-icon"
+          alt="선택"
+        />
+        <span>기타:</span>
+        <input type="text" class="etc-reason" name="report-reason-etc" />
+      </label>
+    </form>
+    <div class="report-buttons">
+      <button class="cancel-button">취소</button>
+      <button class="hide-button" disabled>숨기기</button>
     </div>
   </div>
 </div>
 
+<!-- 댓글 팝업 -->
+<div class="comment-popup hidden">
+  <div class="comment-list">
+    {% for comment in selected_feed.comments.all %}
+    <div class="comment-item">
+      <div class="comment-content">
+        <img
+          src="{% if comment.author.image %}{{ comment.author.image.url }}{% else %}{% static 'images/profile-default.svg' %}{% endif %}"
+          class="comment-profile"
+        />
+        <div class="comment-text">
+          <span class="comment-username"
+            >{{ comment.author.nickname|default:comment.author.username }}</span
+          >
+          <span class="comment-body">{{ comment.content }}</span>
+        </div>
+      </div>
+      <span class="comment-time">{{ comment.created_at|timesince }} 전</span>
+    </div>
+    {% empty %}
+    <div class="comment-item">
+      <div class="comment-content">
+        <span class="comment-body">아직 댓글이 없습니다.</span>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- 댓글 입력창 -->
+  <div class="comment-input">
+    <input type="text" placeholder="댓글을 입력해주세요." />
+    <button>
+      <img src="{% static 'images/send.svg' %}" alt="보내기" />
+    </button>
+  </div>
+</div>
+
 <script src="{% static 'js/page/feedpage.js' %}"></script>
+<script>
+  window.userId = {{ user.id }};
+</script>
 {% endblock %}

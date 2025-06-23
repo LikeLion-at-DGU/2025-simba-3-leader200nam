@@ -23,12 +23,14 @@ def feed_list(request):
     
     feeds = Feed.objects.filter(
         author_id__in=friend_ids,
-        is_private=False
+        is_private=False,
+        is_deleted=False  # 삭제되지 않은 피드만
     ).order_by('-created_at')
     
-    # 각 피드에 대한 '좋아요' 여부 추가
+    # 각 피드에 대한 '좋아요' 및 '공개' 여부 추가
     for feed in feeds:
         feed.is_liked = feed.likes.filter(user=request.user).exists()
+        feed.is_public = not feed.is_private
 
     context = {
         'feeds': feeds
@@ -153,15 +155,16 @@ def feed_delete(request, feed_id):
     feed = get_object_or_404(Feed, id=feed_id, author=request.user)
     feed.is_deleted = True
     feed.save()
-    return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'ok'})
 
 @login_required
-def toggle_privacy(request, feed_id):
+def toggle_public(request, feed_id):
     feed = get_object_or_404(Feed, id=feed_id, author=request.user)
     feed.is_private = not feed.is_private
     feed.save()
     return JsonResponse({
-        'is_private': feed.is_private
+        'status': 'ok',
+        'is_public': not feed.is_private
     })
 
 @login_required
@@ -176,6 +179,7 @@ def feed_like(request, feed_id):
         is_liked = True
     
     return JsonResponse({
+        'status': 'ok',
         'is_liked': is_liked,
         'likes_count': feed.likes.count()
     })
@@ -191,10 +195,15 @@ def comment_create(request, feed_id):
             author=request.user,
             content=content
         )
-        
+        # 사용자 이름(닉네임 우선, 없으면 이름, 없으면 username)
+        author_name = getattr(request.user, 'nickname', None) or request.user.get_full_name() or request.user.username
+        # 프로필 이미지 URL 반환 (없으면 None)
+        author_image = request.user.image.url if hasattr(request.user, 'image') and request.user.image else None
+
         return JsonResponse({
             'id': comment.id,
-            'author': comment.author.username,
+            'author': author_name,
+            'author_image': author_image,
             'content': comment.content,
             'created_at': comment.created_at.isoformat()
         })
