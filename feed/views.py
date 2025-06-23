@@ -5,6 +5,7 @@ from django.db.models import Q
 from .models import Feed, Comment, Like, Report
 from friends.models import Friend
 from quest.models import Quest
+from django.views.decorators.http import require_GET
 
 # Create your views here.
 def feed(request):
@@ -310,5 +311,25 @@ def quest_auth_page(request, quest_id):
         'quest': quest
     }
     return render(request, 'feed/quest_auth.html', context)
+
+@require_GET
+@login_required
+def monthly_feeds(request):
+    month = int(request.GET.get('month', 0))
+    if not month:
+        return JsonResponse({'error': 'month 쿼리 파라미터가 필요합니다.'}, status=400)
+    feeds = Feed.objects.filter(author=request.user, created_at__month=month, is_deleted=False).order_by('-created_at')
+    feed_list = [
+        {
+            'id': feed.id,
+            'content': feed.content,
+            'image_url': feed.image.url if feed.image else '',
+            'likes_count': feed.likes.count(),
+            'comments_count': feed.comments.count(),
+            'created_at': feed.created_at.strftime('%Y-%m-%d'),
+        }
+        for feed in feeds
+    ]
+    return JsonResponse({'feeds': feed_list})
 
 

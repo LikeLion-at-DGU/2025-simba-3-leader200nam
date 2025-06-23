@@ -19,8 +19,11 @@ if TYPE_CHECKING:
 
 @login_required
 def mainpage(request):
-    # 현재 날짜 기준으로 월/주차 계산
+    # 오늘 날짜가 12월 31일이면 endingpage로 이동
     now = datetime.now()
+    if now.month == 12 and now.day == 31:
+        return render(request, 'main/ending/endingpage.html')
+    # 현재 날짜 기준으로 월/주차 계산
     current_month = now.month
     current_week = (now.day - 1) // 7 + 1
     

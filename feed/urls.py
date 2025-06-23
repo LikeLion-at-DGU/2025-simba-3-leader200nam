@@ -31,4 +31,6 @@ urlpatterns = [
     # Quest 인증 관련
     path('quest/<int:quest_id>/auth/', views.quest_auth_page, name='quest_auth_page'),
     path('quest/<int:quest_id>/auth/create/', views.quest_auth_feed_create, name='quest_auth_feed_create'),
+
+    path('monthly_feeds/', views.monthly_feeds, name='monthly_feeds'),
 ]
