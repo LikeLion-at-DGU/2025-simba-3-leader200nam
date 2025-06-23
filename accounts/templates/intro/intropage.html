@@ -4,8 +4,11 @@
 <div class="intro-container">
   <h1 id="introText"></h1>
   <div class="spinner" id="loadingSpinner" style="display: none"></div>
-  <img src="{% static 'images/ako1.svg' %}" alt="akoq Image" class="ako1-img" />
+  <img src="" alt="mascot Image" class="ako1-img" id="mascotImg" />
 </div>
+<script>
+  window.univName = '{{ user.univ_name|escapejs|default_if_none:"" }}';
+  console.log("window.univName set:", window.univName);
+</script>
 <script src="{% static 'js/page/intropage.js' %}"></script>
-
 {% endblock content %}

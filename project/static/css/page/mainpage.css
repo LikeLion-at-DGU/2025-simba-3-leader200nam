@@ -285,7 +285,8 @@
   background-color: inherit;
 }
 
-.evolution-text {
+.evolution-text,
+.evolution-text2 {
   color: #094aec;
   text-align: center;
   font-family: "Moneygraphy-Rounded", sans-serif;
@@ -295,6 +296,11 @@
   line-height: 28px; /* 140% */
   background-color: inherit;
   margin-top: 5px;
+}
+
+.evolution-text2 {
+  font-size: 14px;
+  color: #8a8a8a;
 }
 
 .evolution-level-text {

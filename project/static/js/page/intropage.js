@@ -1,6 +1,23 @@
+const univName = (window.univName || "학교명").trim();
+console.log("univName(raw):", univName, univName.length);
+const mascotName = univName === "건국대학교" ? "쿠" : "아코";
+const mascotImg = document.getElementById("mascotImg");
+console.log("mascotImg:", mascotImg);
+
+// 이미지 동적 변경
+if (mascotImg) {
+  if (univName === "건국대학교") {
+    mascotImg.src = "/static/images/koo1.svg";
+    console.log("koo1.svg set");
+  } else {
+    mascotImg.src = "/static/images/ako1.svg";
+    console.log("ako1.svg set");
+  }
+}
+
 const introContents = [
-  "안녕 !! \n<span class='highlight-text'>동국대학교</span>에 온 것을 정말로 환영해",
-  "나는 동국대학교 \n마스코트 <span class='highlight-text'>아코</span>라고 해",
+  `안녕 !! \n<span class='highlight-text'>${univName}</span>에 온 것을 정말로 환영해`,
+  `나는 ${univName} \n마스코트 <span class='highlight-text'>${mascotName}</span>라고 해`,
   "<span class='highlight-text'>같은 신입생</span>으로서\n멋진 첫학기를 보내보자 !",
   "그럼 혹시\n<span class='highlight-text'>너의 이름</span>은 뭐야?",
 ];

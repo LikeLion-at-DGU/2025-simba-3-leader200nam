@@ -12,8 +12,22 @@ from datetime import date
 def signin(request):
     return render(request, 'signin.html')
 
+@login_required
 def introInputPage(request):
-    return render(request, 'accounts/intro/introInputPage.html')
+    print("introInputPage 뷰 진입, method:", request.method)
+    if request.method == 'POST':
+        nickname = request.POST.get('name', '').strip()
+        print("닉네임 입력값:", nickname)
+        if 2 <= len(nickname) <= 6:
+            request.user.nickname = nickname
+            request.user.save()
+            print("닉네임 저장 성공, 메인페이지로 리다이렉트")
+            return redirect('mainpage')
+        else:
+            error = '닉네임은 2~6자 이내로 입력해주세요.'
+            print("닉네임 유효성 실패, 에러:", error)
+            return render(request, 'intro/introInputPage.html', {'error': error})
+    return render(request, 'intro/introInputPage.html')
 
 def intropage(request):
     return render(request, 'accounts/intro/intropage.html')
