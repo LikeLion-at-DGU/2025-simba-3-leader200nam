@@ -146,11 +146,6 @@
       </div>
     </div>
 
-    <img
-      src="{% static 'images/next.svg' %}"
-      alt="화살표"
-      class="next-icon-detail hidden"
-    />
     <div class="month-detail hidden" id="month-detail">
       <div class="month-detail-header">
         <div class="month-detail-body">
@@ -160,27 +155,7 @@
         </div>
         <img src="" alt="" class="month-detail-icon" id="detail-img" />
       </div>
-
-      <div class="post-card">
-        <div class="post-image"></div>
-        <div class="post-info">
-          <span class="post-title">동기들과 한 컷</span>
-          <div class="post-icons">
-            <img
-              src="{% static 'images/heart.svg' %}"
-              alt="좋아요"
-              class="icon"
-            />
-            <span>27</span>
-            <img
-              src="{% static 'images/comment.svg' %}"
-              alt="댓글"
-              class="icon"
-            />
-            <span>9</span>
-          </div>
-        </div>
-      </div>
+      <div id="month-feed-list"></div>
     </div>
 
     <!-- Ending2 섹션 -->
@@ -192,6 +167,12 @@
         class="Ako2-img"
       />
     </div>
+
+    <img
+      src="{% static 'images/next.svg' %}"
+      alt="화살표"
+      class="next-icon-detail hidden"
+    />
 
     <script src="{% static 'js/page/endingpage.js' %}"></script>
   </body>

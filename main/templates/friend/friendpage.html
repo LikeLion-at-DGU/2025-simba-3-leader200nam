@@ -16,6 +16,7 @@
     <button class="add-btn">친구추가하기</button>
   </div>
 
+  {% if friends %}
   <div class="friend-list">
     {% for item in friends %}
     <div class="friend">
@@ -39,6 +40,7 @@
     </div>
     {% endfor %}
   </div>
+  {% endif %}
 </div>
 
 <!-- 정보 수정 팝업 -->

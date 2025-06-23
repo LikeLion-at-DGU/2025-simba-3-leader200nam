@@ -37,6 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const desc = this.dataset.desc;
       const imgSrc = this.dataset.img;
       const color = this.dataset.color;
+      const monthNum = parseInt(title);
 
       // 상세 뷰의 내용을 동적으로 변경합니다.
       detailTitle.textContent = title;
@@ -46,10 +47,52 @@ document.addEventListener("DOMContentLoaded", function () {
       detailTitle.style.color = color;
       detailLine.style.borderColor = color;
 
+      // 디버깅용 콘솔 로그
+      console.log("endingContainer:", endingContainer);
+      console.log("monthDetail:", monthDetail);
+      console.log("nextIconDetail:", nextIconDetail);
+
+      // 월별 게시물 리스트 불러오기
+      const feedListDiv = document.getElementById("month-feed-list");
+      feedListDiv.innerHTML =
+        '<p style="color:#aaa; text-align:center;">로딩 중...</p>';
+      fetch(`/feed/monthly_feeds/?month=${monthNum}`)
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.feeds && data.feeds.length > 0) {
+            feedListDiv.innerHTML = "";
+            data.feeds.forEach((feed) => {
+              feedListDiv.innerHTML += `
+                <div class="post-card">
+                  <div class="post-image" style="background-image:url('${
+                    feed.image_url
+                  }'); background-size:cover;"></div>
+                  <div class="post-info">
+                    <span class="post-title">${feed.content || ""}</span>
+                    <div class="post-icons">
+                      <img src="/static/images/heart.svg" alt="좋아요" class="icon" />
+                      <span>${feed.likes_count}</span>
+                      <img src="/static/images/comment.svg" alt="댓글" class="icon" />
+                      <span>${feed.comments_count}</span>
+                    </div>
+                  </div>
+                </div>
+              `;
+            });
+          } else {
+            feedListDiv.innerHTML =
+              '<p style="color:#aaa; text-align:center;">이 달에 작성한 게시물이 없습니다.</p>';
+          }
+        });
+
       // 월별 그리드를 숨기고 상세 뷰와 뒤로가기 아이콘을 표시합니다.
       endingContainer.style.display = "none";
       monthDetail.classList.remove("hidden");
       nextIconDetail.classList.remove("hidden");
+      console.log(
+        "monthDetail hidden after remove:",
+        monthDetail.classList.contains("hidden")
+      );
     });
   });
 

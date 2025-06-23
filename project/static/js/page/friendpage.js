@@ -276,4 +276,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     form.submit();
   });
+
+  // ------------------------
+  // 5. 친구코드 클릭 시 복사
+  // ------------------------
+  const myCodeBox = document.querySelector(".code-input-box.myinput");
+  if (myCodeBox) {
+    myCodeBox.style.cursor = "pointer";
+    myCodeBox.title = "클릭 시 복사";
+    myCodeBox.addEventListener("click", () => {
+      // 코드 추출 ("나의 코드: XXXXXXX"에서 코드만)
+      const codeText = myCodeBox.textContent.split(":").pop().trim();
+      navigator.clipboard.writeText(codeText).then(() => {
+        // 복사 성공 시 피드백
+        const original = myCodeBox.textContent;
+        myCodeBox.textContent = "복사되었습니다!";
+        setTimeout(() => {
+          myCodeBox.textContent = original;
+        }, 1000);
+      });
+    });
+  }
 });
