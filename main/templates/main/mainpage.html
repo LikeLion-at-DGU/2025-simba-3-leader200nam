@@ -2,7 +2,12 @@
 <link rel="stylesheet" href="{% static 'css/page/mainpage.css' %}" />
 <div class="main-container">
   <div class="main-box">
-    <div class="univ-name">{{user.univ_name}}</div>
+    <div
+      class="univ-name"
+      style="{% if user.univ_name == '건국대학교' %}color: #036B3F;{% endif %}"
+    >
+      {{user.univ_name}}
+    </div>
     <img
       src="{% static 'images/'|add:user.ako_image %}"
       alt="akoq Image"
@@ -20,7 +25,7 @@
       <div class="bar-container">
         <div
           class="bar-fill"
-          style="width: {% widthratio user.current_level_exp user.max_level_exp 100 %}%"
+          style="width: {% widthratio user.current_level_exp user.max_level_exp 100 %}%;{% if user.univ_name == '건국대학교' %}background: linear-gradient(90deg, rgba(0, 157, 82, 0.10) 0%, #036B3F 100%);{% endif %}"
         ></div>
       </div>
     </div>
@@ -94,9 +99,8 @@
 <div id="questCompleteModal" class="evolution-modal hidden">
   <div class="evolution-modal-content">
     <div class="evolution-body">
-      <p class="evolution-text">
-        모든 퀘스트를 완료했어요!<br />다음 주차의 새로운 퀘스트를 기다려주세요
-      </p>
+      <p class="evolution-text">모든 퀘스트를 완료했어요!</p>
+      <p class="evolution-text2">다음 주차의 새로운 퀘스트를 기다려주세요</p>
     </div>
     <button class="evolution-close-btn" onclick="closeQuestCompleteModal()">
       확인

@@ -27,12 +27,9 @@ def mainpage(request):
     current_month = now.month
     current_week = (now.day - 1) // 7 + 1
     
-    # 해당 월/주차의 퀘스트 조회 (랜덤 3개)
+    # 해당 월/주차의 퀘스트 전체 조회
     quests = Quest.objects.filter(month=current_month, week=current_week)  # type: ignore
-    if quests.count() >= 3:
-        current_quests = random.sample(list(quests), 3)
-    else:
-        current_quests = list(quests)
+    current_quests = list(quests)
     
     # 사용자가 완료한 퀘스트 ID 목록
     completed_quest_ids = []
@@ -45,16 +42,23 @@ def mainpage(request):
         completed_quest_ids = [feed.quest.id for feed in completed_feeds]
     
     # 사용자 정보
+    level = request.user.level
+    univ_name = request.user.univ_name
+    if univ_name == "건국대학교":
+        ako_image = f"koo{level if level <= 5 else 5}.svg"
+    else:
+        ako_image = f"ako{level if level <= 5 else 5}.svg"
     user_data = {
         'nickname': request.user.nickname or '서누',
         'univ_name': request.user.univ_name,
         'major_name': request.user.major_name,
         'bio': request.user.bio or '',
+        'image_url': request.user.image.url if request.user.image else None,
         'exp': getattr(request.user, 'exp', 0),
         'level': request.user.level,
         'current_level_exp': request.user.current_level_exp,
         'max_level_exp': request.user.max_level_exp,
-        'ako_image': request.user.ako_image
+        'ako_image': ako_image
     }
     
     # 퀘스트 정보 (완료 상태 포함)
@@ -95,8 +99,13 @@ def mainpage(request):
     
     return render(request, 'main/mainpage.html', context)
 
+@login_required
 def intropage(request):
-    return render(request, 'intro/intropage.html')
+    user_data = {
+        'univ_name': request.user.univ_name,
+        'nickname': request.user.nickname or '',
+    }
+    return render(request, 'intro/intropage.html', {'user': user_data})
 
 def signin(request):
     return render(request, 'signin.html')
@@ -104,34 +113,44 @@ def signin(request):
 def signup(request):
     return render(request, 'signup.html')
 
+@login_required
 def introInputPage(request):
+    print("introInputPage 진입, method:", request.method)
+    print("현재 유저:", request.user, "is_authenticated:", request.user.is_authenticated)
+    if request.method == 'POST':
+        nickname = request.POST.get('name', '').strip()
+        print("닉네임 입력값:", nickname)
+        if 2 <= len(nickname) <= 6:
+            request.user.nickname = nickname
+            request.user.save()
+            print("닉네임 저장 성공, 메인페이지로 리다이렉트")
+            return redirect('mainpage')
+        else:
+            print("닉네임 유효성 실패")
+            return render(request, 'intro/introInputPage.html')
     return render(request, 'intro/introInputPage.html')
 
 def registeration(request):
     if request.method == 'POST':
-        # 퀘스트 인증 처리
         quest_id = request.POST.get('quest_id')
         image = request.FILES.get('image')
         image_name = request.POST.get('image_name')
         location = request.POST.get('location')
         memo = request.POST.get('memo', '')
         is_public = request.POST.get('is_public') == 'on'
-        is_private = not is_public  # 공개가 아니면 비공개
+        is_private = not is_public
 
+        # quest_id 누락 시 등록 페이지로 리다이렉트
         if not (quest_id and image and image_name and location):
             messages.error(request, '필수 항목이 누락되었습니다.')
             return redirect('registeration')
 
         try:
             quest = Quest.objects.get(id=quest_id)
-            
-            # 이미 완료된 퀘스트인지 확인
             existing_feed = Feed.objects.filter(author=request.user, quest=quest, is_completed=True).first()
             if existing_feed:
                 messages.error(request, '이미 완료된 퀘스트입니다.')
                 return redirect('mainpage')
-            
-            # 퀘스트 인증 피드 생성
             feed = Feed.objects.create(
                 author=request.user,
                 quest=quest,
@@ -142,47 +161,35 @@ def registeration(request):
                 is_private=is_private,
                 is_completed=True
             )
-            
-            # 사용자 경험치 증가
             if hasattr(request.user, 'exp'):
-                old_level = (request.user.exp // 1000) + 1
+                old_level = request.user.level
                 request.user.exp += quest.exp
                 request.user.save()
-                new_level = (request.user.exp // 1000) + 1
-                
-                # 레벨업이 발생했는지 확인
+                new_level = request.user.level
                 if new_level > old_level:
                     request.session['leveled_up'] = True
                     request.session['new_level'] = new_level
-            
             messages.success(request, f'퀘스트 인증이 완료되었습니다! (+{quest.exp} exp)')
             return redirect('mainpage')
-            
         except Quest.DoesNotExist:
             messages.error(request, '존재하지 않는 퀘스트입니다.')
             return redirect('mainpage')
         except Exception as e:
             messages.error(request, f'퀘스트 인증 중 오류가 발생했습니다: {e}')
             return redirect('registeration')
-    
     # GET 요청: 퀘스트 정보를 context에 포함
     quest_id = request.GET.get('quest_id')
     quest = None
-    
     if quest_id:
         try:
             quest = Quest.objects.get(id=quest_id)
-            
-            # 이미 완료된 퀘스트인지 확인
             existing_feed = Feed.objects.filter(author=request.user, quest=quest, is_completed=True).first()
             if existing_feed:
                 messages.error(request, '이미 완료된 퀘스트입니다.')
                 return redirect('mainpage')
-                
         except Quest.DoesNotExist:
             messages.error(request, '존재하지 않는 퀘스트입니다.')
             return redirect('mainpage')
-    
     context = {
         'quest': quest
     }
@@ -254,9 +261,10 @@ def ending(request):
         'univ_name': request.user.univ_name,
         'major_name': request.user.major_name,
         'bio': request.user.bio or '',
+        'image_url': request.user.image.url if request.user.image else None,
         'exp': user_exp,
-        'level': (user_exp // 1000) + 1,
-        'current_level_exp': user_exp % 1000,
+        'level': request.user.level,
+        'current_level_exp': request.user.current_level_exp,
         'max_level_exp': request.user.max_level_exp,
         'ako_image': request.user.ako_image
     }
@@ -278,9 +286,10 @@ def ending2(request):
         'univ_name': request.user.univ_name,
         'major_name': request.user.major_name,
         'bio': request.user.bio or '',
+        'image_url': request.user.image.url if request.user.image else None,
         'exp': user_exp,
-        'level': (user_exp // 1000) + 1,
-        'current_level_exp': user_exp % 1000,
+        'level': request.user.level,
+        'current_level_exp': request.user.current_level_exp,
         'max_level_exp': request.user.max_level_exp,
         'ako_image': request.user.ako_image
     }
@@ -302,7 +311,10 @@ def get_user_info(request):
         'bio': request.user.bio or '',
         'image_url': request.user.image.url if request.user.image else None,
         'exp': getattr(request.user, 'exp', 0),
-        'level': (getattr(request.user, 'exp', 0) // 1000) + 1
+        'level': request.user.level,
+        'current_level_exp': request.user.current_level_exp,
+        'max_level_exp': request.user.max_level_exp,
+        'ako_image': request.user.ako_image
     }
     return JsonResponse(user_data)
 

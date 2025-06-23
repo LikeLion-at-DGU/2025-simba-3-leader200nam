@@ -10,11 +10,11 @@ fileInput.addEventListener("change", () => {
   const file = fileInput.files[0];
   if (file) {
     previewImg.src = URL.createObjectURL(file);
-    previewImg.classList.add("uploaded"); // Add class when uploaded
+    previewImg.classList.add("uploaded"); 
   }
 });
 const changeText = document.getElementById("changeProfileText");
 
 changeText.addEventListener("click", () => {
-  fileInput.click(); // Triggers file selection
+  fileInput.click(); 
 });

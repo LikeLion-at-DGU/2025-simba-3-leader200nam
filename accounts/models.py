@@ -37,8 +37,10 @@ class User(AbstractUser):
 
     @property
     def level(self):
-        exp = int(self.exp)
-        if exp >= 4000:
+        exp = int(getattr(self, 'exp', 0))
+        if exp >= 4320:
+            return 5
+        elif exp >= 4000:
             return 5
         elif exp >= 3000:
             return 4
@@ -51,7 +53,7 @@ class User(AbstractUser):
 
     @property
     def current_level_exp(self):
-        exp = int(self.exp)
+        exp = int(getattr(self, 'exp', 0))
         if self.level == 5:
             return min(exp - 4000, 320)
         elif self.level == 4:

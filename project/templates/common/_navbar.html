@@ -20,7 +20,7 @@
           <div class="user-info">
             <img
               class="user-profile"
-              src="{% static 'images/profile-default.svg' %}"
+              src="{% if user.image_url %}{{ user.image_url }}{% else %}{% static 'images/profile-default.svg' %}{% endif %}"
               alt="프로필"
             />
             <p class="user-name">{{user.nickname}}</p>
