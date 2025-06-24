@@ -1,15 +1,15 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // 월별 그리드, 상세 뷰, 뒤로가기 아이콘 요소를 가져옵니다.
+  // 월별 그리드, 상세 뷰, 뒤로가기 아이콘 요소
   const endingContainer = document.querySelector(".ending-container");
   const monthDetail = document.getElementById("month-detail");
   const nextIconDetail = document.querySelector(".next-icon-detail");
   const nextIcon = document.getElementById("next-icon");
   const ending2Container = document.getElementById("ending2-container");
 
-  // 월별 박스를 모두 가져옵니다.
+  // 월별 박스를 모두 가져옴
   const monthBoxes = document.querySelectorAll(".month-box[data-title]");
 
-  // 상세 뷰의 제목, 설명, 이미지, 선 요소를 가져옵니다.
+  // 상세 뷰의 제목, 설명, 이미지, 선 요소를 가져옴
   const detailTitle = document.getElementById("detail-title");
   const detailDesc = document.getElementById("detail-desc");
   const detailImg = document.getElementById("detail-img");
@@ -29,28 +29,23 @@ document.addEventListener("DOMContentLoaded", function () {
   let currentSlide = 0;
   const slideDisplayTime = 2000;
 
-  // 각 월별 박스에 클릭 이벤트를 추가합니다.
+  // 각 월별 박스에 클릭 이벤트 추가
   monthBoxes.forEach((box) => {
     box.addEventListener("click", function () {
-      // 박스의 data 속성에서 정보를 가져옵니다.
+      // 박스의 data 속성에서 정보 가져옴
       const title = this.dataset.title;
       const desc = this.dataset.desc;
       const imgSrc = this.dataset.img;
       const color = this.dataset.color;
       const monthNum = parseInt(title);
 
-      // 상세 뷰의 내용을 동적으로 변경합니다.
+      // 상세 뷰의 내용 동적 변경
       detailTitle.textContent = title;
       detailDesc.textContent = desc;
       detailImg.src = imgSrc;
       detailImg.alt = `${title} 아이콘`;
       detailTitle.style.color = color;
       detailLine.style.borderColor = color;
-
-      // 디버깅용 콘솔 로그
-      console.log("endingContainer:", endingContainer);
-      console.log("monthDetail:", monthDetail);
-      console.log("nextIconDetail:", nextIconDetail);
 
       // 월별 게시물 리스트 불러오기
       const feedListDiv = document.getElementById("month-feed-list");
@@ -85,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
           }
         });
 
-      // 월별 그리드를 숨기고 상세 뷰와 뒤로가기 아이콘을 표시합니다.
+      // 월별 그리드를 숨기고 상세 뷰와 뒤로가기 아이콘 표시
       endingContainer.style.display = "none";
       monthDetail.classList.remove("hidden");
       nextIconDetail.classList.remove("hidden");
@@ -96,9 +91,9 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // 뒤로가기 아이콘에 클릭 이벤트를 추가합니다.
+  // 뒤로가기 아이콘에 클릭 이벤트 추가
   nextIconDetail.addEventListener("click", function () {
-    // 월별 그리드를 다시 표시하고 상세 뷰와 아이콘을 숨깁니다.
+    // 월별 그리드를 다시 표시하고 상세 뷰와 아이콘 숨김
     endingContainer.style.display = "flex";
     monthDetail.classList.add("hidden");
     nextIconDetail.classList.add("hidden");
@@ -117,7 +112,7 @@ document.addEventListener("DOMContentLoaded", function () {
     showNextSlide();
   });
 
-  // Ending2 슬라이드 표시 함수
+  // Ending2 표시 함수
   function showNextSlide() {
     if (currentSlide < ending2Contents.length) {
       ending2TextElement.classList.remove("fade-in");

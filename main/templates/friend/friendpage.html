@@ -51,8 +51,8 @@
       style="background-image: url('{% static 'images/Ako.png' %}')"
     ></div>
     <div class="edit-name"></div>
-    <div class="edit-desc-box">
-      <textarea class="edit-desc" placeholder="메모를 작성해주세요 (ex. 학과 친구, 동아리)"></textarea>
+    <div class="edit-desc-box revise">
+      <textarea class="edit-desc" placeholder="메모를 작성해주세요."></textarea>
     </div>
     <button class="edit-save-btn">수정하기</button>
   </div>
@@ -90,15 +90,18 @@
       <div class="code-title" style="text-align: left; width: 100%">
         친구코드
       </div>
-      <div class="code-input-box">
-        <input
-          type="text"
-          class="code-input"
-          placeholder="6자리 문자를 입력해주세요."
-          onfocus="this.placeholder = ''"
-          onblur="this.placeholder = '6자리 문자를 입력해주세요.'"
-        />
+      <div class="code-input-box-wrapper">
+        <div class="code-input-box">
+          <input
+            type="text"
+            class="code-input"
+            placeholder="6자리 문자를 입력해주세요."
+            onfocus="this.placeholder = ''"
+            onblur="this.placeholder = '6자리 문자를 입력해주세요.'"
+          />
+        </div>
       </div>
+      <div class="code-error-msg"></div>
     </div>
     <button class="friend-add-btn">친구 추가하기</button>
   </div>
@@ -119,7 +122,7 @@
       <textarea
         name="memo"
         class="edit-desc"
-        placeholder="메모를 작성해주세요. (ex. 학과 친구, 동아리)"
+        placeholder="메모를 작성해주세요."
       ></textarea>
     </div>
     <button class="edit-save-btn memo-confirm-btn">확인</button>

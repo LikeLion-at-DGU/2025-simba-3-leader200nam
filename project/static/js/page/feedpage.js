@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
     ? reportModal.querySelector(".etc-reason")
     : null;
 
-  // 페이지 로드 시 숨겨진 게시물 확인 (localStorage)
+  // 페이지 로드 시 숨겨진 게시물 확인
   const hiddenPosts = JSON.parse(localStorage.getItem("hiddenPosts")) || [];
 
   // 비공개 게시물 id를 저장할 Set
@@ -28,10 +28,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- 함수 정의 ---
 
-  /**
-   * 'ALL' 또는 'MY' 필터에 따라 게시물을 표시하거나 숨깁니다.
-   * localStorage에 저장된 숨겨진 게시물도 함께 처리합니다.
-   */
+  // 'ALL' 또는 'MY' 필터에 따라 게시물을 표시하거나 숨김
+  // localStorage에 저장된 숨겨진 게시물도 함께 처리
+
   function filterPosts() {
     const showMyPosts = myBtn && myBtn.classList.contains("active");
     postCards.forEach((card) => {
@@ -59,8 +58,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /**
-   * '숨기기' 버튼을 활성화합니다.
-   * @param {HTMLButtonElement} button - 대상 버튼
+   * '숨기기' 버튼을 활성화
+   * @param {HTMLButtonElement} button
    */
   function activateHideButton(button) {
     if (!button) return;
@@ -70,8 +69,8 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /**
-   * '숨기기' 버튼을 비활성화합니다.
-   * @param {HTMLButtonElement} button - 대상 버튼
+   * '숨기기' 버튼을 비활성화
+   * @param {HTMLButtonElement} button
    */
   function deactivateHideButton(button) {
     if (!button) return;
@@ -81,7 +80,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /**
-   * 신고 사유 선택 상태에 따라 '숨기기' 버튼의 활성화 여부를 결정합니다.
+   * 신고 사유 선택 상태에 따라 '숨기기' 버튼의 활성화 여부 결정
    */
   function updateHideButtonState() {
     if (!reportModal || !hideButton) return;
@@ -112,7 +111,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (sirenBtn) sirenBtn.style.display = "none";
       } else {
         if (publicBtn) publicBtn.style.display = "none";
-        if (sirenBtn) sirenBtn.style.display = "block";
+        if (sirenBtn) sirenBtn.style.display = "none";
       }
     });
   }
@@ -132,7 +131,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".public-toggle-btn").forEach((btn) => {
       const postCard = btn.closest(".post-card");
       const postId = postCard ? postCard.dataset.postId : null;
-      // 기존 리스너 제거: cloneNode로 교체
       const newBtn = btn.cloneNode(true);
       btn.parentNode.replaceChild(newBtn, btn);
 
@@ -196,7 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // --- 이벤트 리스너 설정 ---
 
-  // 필터 버튼 (ALL / MY)
+  // 필터 버튼 (ALL/MY)
   if (allBtn) {
     allBtn.addEventListener("click", () => {
       allBtn.classList.add("active");
@@ -355,12 +353,12 @@ document.addEventListener("DOMContentLoaded", () => {
         e.stopPropagation();
         currentPostId = postCard.dataset.postId;
 
-        // 댓글 목록 Ajax로 불러오기
+        // 댓글 목록 Ajax(새로고침하지 않고 통신)로 불러오기
         fetch(`/feed/${currentPostId}/`)
           .then((response) => response.json())
           .then((data) => {
             if (data.feed && data.feed.comments) {
-              commentList.innerHTML = ""; // 기존 댓글 비우기
+              commentList.innerHTML = "";
               if (data.feed.comments.length === 0) {
                 commentList.innerHTML = `
                   <div class="comment-item">
@@ -387,13 +385,22 @@ document.addEventListener("DOMContentLoaded", () => {
                   commentList.innerHTML += `
                     <div class="comment-item">
                       <div class="comment-content">
-                        <img src="${comment.author_image || '/static/images/profile-default.svg'}" class="comment-profile" />
+                        <img src="${
+                          comment.author_image ||
+                          "/static/images/profile-default.svg"
+                        }" class="comment-profile" />
                         <div class="comment-text">
-                          <span class="comment-username">${(comment.nickname && comment.nickname.trim()) || comment.username || '익명'}</span>
+                          <span class="comment-username">${
+                            (comment.nickname && comment.nickname.trim()) ||
+                            comment.username ||
+                            "익명"
+                          }</span>
                           <span class="comment-body">${comment.content}</span>
                         </div>
                       </div>
-                      <span class="comment-time">${timeSince(comment.created_at)}</span>
+                      <span class="comment-time">${timeSince(
+                        comment.created_at
+                      )}</span>
                     </div>
                   `;
                 });
@@ -406,7 +413,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // 댓글 입력창, 버튼, 리스트 요소 선택
   const commentInput = document.querySelector(".comment-input input");
   const commentSendBtn = document.querySelector(".comment-input button");
   const commentList = document.querySelector(".comment-list");
@@ -442,10 +448,10 @@ document.addEventListener("DOMContentLoaded", () => {
             ) {
               commentList.innerHTML = "";
             }
-            // 새 댓글 DOM 추가
+            // 새 댓글
             const newComment = document.createElement("div");
             newComment.className = "comment-item";
-            // 시간 포맷 함수 (간단 버전)
+            // 시간 포맷 함수
             function timeSince(dateString) {
               const now = new Date();
               const date = new Date(dateString);
@@ -460,9 +466,15 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             newComment.innerHTML = `
               <div class="comment-content">
-                <img src="${data.author_image || '/static/images/profile-default.svg'}" class="comment-profile" />
+                <img src="${
+                  data.author_image || "/static/images/profile-default.svg"
+                }" class="comment-profile" />
                 <div class="comment-text">
-                  <span class="comment-username">${(data.nickname && data.nickname.trim()) || data.username || '익명'}</span>
+                  <span class="comment-username">${
+                    (data.nickname && data.nickname.trim()) ||
+                    data.username ||
+                    "익명"
+                  }</span>
                   <span class="comment-body">${data.content}</span>
                 </div>
               </div>
@@ -528,7 +540,7 @@ document.addEventListener("DOMContentLoaded", () => {
       etcInput.addEventListener("input", updateHideButtonState);
     }
 
-    // 모달이 열릴 때 상태를 초기화하는 MutationObserver
+    // MutationObserver: 모달이 열릴 때 상태를 초기화
     const observer = new MutationObserver((mutations) => {
       mutations.forEach((mutation) => {
         if (
