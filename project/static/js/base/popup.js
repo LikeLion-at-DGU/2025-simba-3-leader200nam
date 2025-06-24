@@ -3,13 +3,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const friendPopup = document.getElementById("friendPopup");
   const closePopupButton = document.getElementById("closePopup");
 
-  // 사용자 정보 업데이트 함수
+  /* 사용자 정보 업데이트 함수 */
   async function updateUserInfo() {
     try {
       const response = await fetch("/api/user-info/");
       const userData = await response.json();
 
-      // 프로필 이미지 업데이트
+      /* 프로필 이미지 업데이트 */
       const userProfileImg = document.querySelector(".user-profile");
       const friendIcon = document.getElementById("friendIcon");
       if (userProfileImg) {
@@ -22,13 +22,13 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
 
-      // 사용자 닉네임 업데이트
+      /* 사용자 닉네임 업데이트 */
       const userName = document.querySelector(".user-name");
       if (userName) {
         userName.textContent = userData.nickname || "서누";
       }
 
-      // 레벨 업데이트
+      /* 레벨 업데이트 */
       const levelElement = document.querySelector(".level");
       if (levelElement) {
         levelElement.textContent = `LV.${userData.level || 1}`;
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // 페이지 로드 시 사용자 정보 업데이트
+  /* 사용자 정보 업데이트 */
   updateUserInfo();
 
   if (friendIcon && friendPopup) {

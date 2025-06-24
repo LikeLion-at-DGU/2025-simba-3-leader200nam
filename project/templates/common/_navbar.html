@@ -40,14 +40,14 @@
   <div class="menu-bar">
     <ul class="menu-list">
       <li
-        class="menu-item {% if request.resolver_match.url_name == 'mainpage' %}active{% endif %}"
-      >
-        <a href="{% url 'mainpage' %}">HOME</a>
-      </li>
-      <li
         class="menu-item {% if request.resolver_match.app_name == 'friends' %}active{% endif %}"
       >
         <a href="{% url 'friends:friend_list' %}">FRIEND</a>
+      </li>
+      <li
+        class="menu-item {% if request.resolver_match.url_name == 'mainpage' %}active{% endif %}"
+      >
+        <a href="{% url 'mainpage' %}">HOME</a>
       </li>
       <li
         class="menu-item {% if request.resolver_match.app_name == 'feed' %}active{% endif %}"
@@ -57,5 +57,4 @@
     </ul>
   </div>
 </nav>
-<script src="{% static 'js/base/nav.js' %}"></script>
 <script src="{% static 'js/base/popup.js' %}"></script>
