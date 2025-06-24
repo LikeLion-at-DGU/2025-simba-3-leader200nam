@@ -67,9 +67,11 @@ def login_view(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
-            number_name = form.cleaned_data['number_name']
+            username = form.cleaned_data['username']
             password = form.cleaned_data['password']
-            user = authenticate(request, username=number_name, password=password)
+            
+            # 아이디와 비밀번호로 인증
+            user = authenticate(request, username=username, password=password)
             
             if user is not None:
                 login(request, user)
@@ -78,7 +80,7 @@ def login_view(request):
                     return redirect('intropage')
                 return redirect('mainpage')
             else:
-                error = '학번 또는 비밀번호가 올바르지 않습니다.'
+                error = '아이디 또는 비밀번호가 올바르지 않습니다.'
     else:
         form = LoginForm()
     
