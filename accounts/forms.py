@@ -21,32 +21,17 @@ class SignUpForm(UserCreationForm):
         widget=forms.TextInput(attrs={'placeholder': '본인의 학과를 입력해주세요.'}),
         help_text='공식명칭으로 입력해주세요. (ex. 경영 -> 경영학과)'
     )
-    number_name = forms.CharField(
-        max_length=20,
-        label='학번',
-        widget=forms.TextInput(attrs={'placeholder': '본인의 학번을 입력해주세요.'}),
-        help_text='숫자만 입력해주세요.'
-    )
 
     class Meta:
         model = User
-        fields = ('username', 'univ_name', 'major_name', 'number_name', 'password1', 'password2')
+        fields = ('username', 'univ_name', 'major_name', 'password1', 'password2')
 
     def clean(self):
         cleaned_data = super().clean()
         username = cleaned_data.get('username')
-        number_name = cleaned_data.get('number_name')
-        univ_name = cleaned_data.get('univ_name')
-        
         # 아이디 중복 검사
         if username and User.objects.filter(username=username).exists():
             raise forms.ValidationError('이미 사용 중인 아이디입니다.')
-        
-        # 학번과 학교 조합 중복 검사
-        if number_name and univ_name:
-            if User.objects.filter(number_name=number_name, univ_name=univ_name).exists():
-                raise forms.ValidationError('이미 해당 학교에서 사용 중인 학번입니다.')
-        
         return cleaned_data
 
     def save(self, commit=True):
