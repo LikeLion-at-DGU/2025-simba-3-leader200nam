@@ -5,40 +5,34 @@ from django.dispatch import receiver
 from friends.models import FriendCode
 
 class UserManager(BaseUserManager):
-    def create_user(self, username, number_name, univ_name, major_name, password=None, **extra_fields):
+    def create_user(self, username, univ_name, major_name, password=None, **extra_fields):
         if not username:
             raise ValueError('아이디는 필수입니다.')
-        if not number_name:
-            raise ValueError('학번은 필수입니다.')
-        user = self.model(username=username, number_name=number_name, univ_name=univ_name, major_name=major_name, **extra_fields)
+        user = self.model(username=username, univ_name=univ_name, major_name=major_name, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, number_name, univ_name, major_name, password=None, **extra_fields):
+    def create_superuser(self, username, univ_name, major_name, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
-        return self.create_user(username, number_name, univ_name, major_name, password, **extra_fields)
+        return self.create_user(username, univ_name, major_name, password, **extra_fields)
 
 class User(AbstractUser):
     univ_name = models.CharField(max_length=100, verbose_name='학교명')
     major_name = models.CharField(max_length=100, verbose_name='학과명')
-    number_name = models.CharField(max_length=20, verbose_name='학번')
     nickname = models.CharField(max_length=30, null=True, blank=True, verbose_name='닉네임')
     image = models.ImageField(upload_to='profile_images/', null=True, blank=True, verbose_name='프로필 이미지')
     bio = models.TextField(blank=True, verbose_name='자기소개', null=True)
     exp = models.PositiveIntegerField(default=0, verbose_name='경험치')
 
     USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['univ_name', 'major_name', 'number_name']
+    REQUIRED_FIELDS = ['univ_name', 'major_name']
 
     objects = UserManager()
 
-    class Meta:
-        unique_together = ['number_name', 'univ_name']
-
     def __str__(self):
-        return f"{self.univ_name} - {self.major_name} - {self.number_name} ({self.username})"
+        return f"{self.univ_name} - {self.major_name} ({self.username})"
 
     @property
     def level(self):
