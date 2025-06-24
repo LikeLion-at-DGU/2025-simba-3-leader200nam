@@ -1,5 +1,5 @@
 /**
- * 비밀번호 + 비밀번호 확인 토글 기능
+ * 비밀번호 토글 기능
  */
 const togglePassword = document.getElementById("toggle-password");
 const passwordInput = document.getElementById("password");

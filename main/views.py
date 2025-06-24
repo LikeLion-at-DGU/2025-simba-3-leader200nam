@@ -300,6 +300,7 @@ def ending2(request):
     
     return render(request, 'ending2/ending2page.html', context)
 
+
 # API 엔드포인트 - 사용자 정보 제공
 @login_required
 def get_user_info(request):

@@ -4,7 +4,7 @@
 <div class="signin-container">
   <div class="signin-box">
     <img
-      src="{% static 'images/logo-img.svg' %}"
+      src="{% static 'images/refresh-logo.svg' %}"
       alt="Logo"
       class="signin-logo"
       onclick="history.back()"
@@ -13,13 +13,13 @@
     <form id="login-form" method="POST" action="/signin/">
       {% csrf_token %}
       <div class="input-group">
-        <label for="username" class="input-label">학번(아이디)</label>
+        <label for="username" class="input-label">아이디</label>
         <div class="number-input">
           <input
             type="text"
             id="username"
-            name="number_name"
-            placeholder="학번을 입력해주세요"
+            name="username"
+            placeholder="아이디를 입력해주세요"
             required
           />
         </div>
@@ -55,7 +55,7 @@
       {% endif %}
     </form>
     <div class="signup-link">
-      <a href="{% url 'signup' %}">회원가입하기</a>
+      아직 회원이 아니신가요?<a href="{% url 'signup' %}">회원가입하기</a>
     </div>
   </div>
 </div>
