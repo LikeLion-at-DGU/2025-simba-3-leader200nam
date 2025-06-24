@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   searchInput.addEventListener("input", (e) => {
     const searchTerm = e.target.value.toLowerCase().trim();
-    const noResults = document.querySelector(".no-results");
     let visibleCount = 0;
 
     friends.forEach((friend) => {
@@ -228,7 +227,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const memoTextarea = document.querySelector(
     ".memo-modal textarea[name='memo']"
   );
-  const codeBox = addModal ? addModal.querySelector(".code-box") : null;
   const codeErrorMsg = addModal
     ? addModal.querySelector(".code-error-msg")
     : null;
@@ -240,7 +238,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (codeErrorMsg) codeErrorMsg.textContent = "";
 
     if (!code) {
-      alert("친구 코드를 입력해주세요.");
+      if (codeErrorMsg) codeErrorMsg.textContent = "친구 코드를 입력해주세요.";
       return;
     }
 
@@ -275,8 +273,7 @@ document.addEventListener("DOMContentLoaded", () => {
           codeErrorMsg.textContent = "존재하지 않는 코드입니다!";
       }
     } catch (error) {
-      console.error("Error fetching friend info:", error);
-      alert("친구 정보를 가져오는 중 오류가 발생했습니다.");
+      if (codeErrorMsg) codeErrorMsg.textContent = "존재하지 않는 코드입니다!";
     }
   });
 
