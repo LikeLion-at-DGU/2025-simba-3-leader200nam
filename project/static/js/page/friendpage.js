@@ -99,11 +99,14 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // textarea에서 엔터키 입력 방지
-  modalDesc.addEventListener("keydown", (e) => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-    }
-  });
+  if (modalDesc) {
+    modalDesc.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        return false;
+      }
+    });
+  }
 
   document
     .querySelector(".edit-save-btn")
@@ -222,9 +225,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const addConfirmBtn = document.querySelector(".friend-add-btn");
   const memoModal = document.querySelector(".memo-modal");
   const memoConfirmBtn = document.querySelector(".memo-confirm-btn");
+  const memoTextarea = document.querySelector(
+    ".memo-modal textarea[name='memo']"
+  );
+  const codeBox = addModal ? addModal.querySelector(".code-box") : null;
+  const codeErrorMsg = addModal
+    ? addModal.querySelector(".code-error-msg")
+    : null;
 
   addConfirmBtn.addEventListener("click", async () => {
     const code = document.querySelector(".code-input").value;
+
+    // 에러 메시지 초기화
+    if (codeErrorMsg) codeErrorMsg.textContent = "";
 
     if (!code) {
       alert("친구 코드를 입력해주세요.");
@@ -237,19 +250,19 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await response.json();
 
       if (data.status === "success") {
+        if (data.already_added) {
+          if (codeErrorMsg)
+            codeErrorMsg.textContent = "이미 추가한 친구입니다!";
+          return;
+        }
         addModal.classList.add("hidden");
         memoModal.classList.remove("hidden");
-
         document.getElementById("hiddenFriendCode").value = code;
-
-        // 실제 친구 이름 표시
         const friendName =
           data.user.nickname || data.user.username || "알 수 없음";
         memoModal.querySelector(
           ".edit-name"
-        ).innerText = `'${friendName}'님과 친구 추가되었어요`;
-
-        // 친구의 프로필 사진 설정
+        ).innerText = `'${friendName}'님과\n친구 추가되었어요`;
         const memoAvatar = memoModal.querySelector(".edit-avatar");
         if (data.user.profile_image) {
           memoAvatar.style.backgroundImage = `url('${data.user.profile_image}')`;
@@ -258,13 +271,23 @@ document.addEventListener("DOMContentLoaded", () => {
             "url('/static/images/profile-default.svg')";
         }
       } else {
-        alert(data.message || "유효하지 않은 친구 코드입니다.");
+        if (codeErrorMsg)
+          codeErrorMsg.textContent = "존재하지 않는 코드입니다!";
       }
     } catch (error) {
       console.error("Error fetching friend info:", error);
       alert("친구 정보를 가져오는 중 오류가 발생했습니다.");
     }
   });
+
+  if (memoTextarea) {
+    memoTextarea.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        return false;
+      }
+    });
+  }
 
   memoConfirmBtn.addEventListener("click", () => {
     // 폼 제출
@@ -287,7 +310,7 @@ document.addEventListener("DOMContentLoaded", () => {
     myCodeBox.style.cursor = "pointer";
     myCodeBox.title = "클릭 시 복사";
     myCodeBox.addEventListener("click", () => {
-      // 코드 추출 ("나의 코드: XXXXXXX"에서 코드만)
+      // 코드 추출
       const codeText = myCodeBox.textContent.split(":").pop().trim();
       navigator.clipboard.writeText(codeText).then(() => {
         // 복사 성공 시 피드백

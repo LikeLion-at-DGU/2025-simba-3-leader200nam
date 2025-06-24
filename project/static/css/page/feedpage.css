@@ -1,5 +1,4 @@
 .feed-container {
-  padding: 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -51,7 +50,7 @@
 
 .profile-info {
   flex-grow: 1;
-  margin-left: 0.8rem;
+  margin-left: 17px;
 }
 
 .username {
@@ -198,7 +197,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4); /* 어두운 배경 */
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -245,7 +244,7 @@
 }
 
 .report-reasons input[type="radio"] {
-  display: none; /* 실제 라디오 버튼 숨기기 */
+  display: none;
 }
 
 /* 각 사유 항목 */
@@ -351,9 +350,9 @@
 
 .cancel-button,
 .hide-button {
-  flex: 1; /* ← 버튼들이 가로로 반반 차지하도록 */
+  flex: 1;
   height: 55px;
-  padding: 0; /* ← 내부 여백 제거 */
+  padding: 0;
   justify-content: center;
   align-items: center;
   border-radius: 10px;
@@ -397,10 +396,10 @@
 
 .comment-list {
   overflow-y: auto;
-  padding: 1rem;
+  padding: 32px 17px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 19px;
 }
 
 .comment-item {
@@ -488,7 +487,7 @@
   position: relative;
   width: 104.52px;
   height: 25px;
-  margin: 0 auto 1.5rem auto; /* 가운데 정렬 + 여백 */
+  margin: 0 auto 21px auto;
 }
 
 .filter-btn {
@@ -520,7 +519,7 @@
 }
 
 .my-btn {
-  left: 47.716px; /* 104.52px - 56.804px = 47.716px 겹치는 부분 */
+  left: 47.716px;
   color: #2a2a2a;
   z-index: 0;
 }
@@ -542,7 +541,7 @@
   flex-shrink: 0;
   border-radius: 10px;
   background: #fff;
-  gap: 6px; /* 아이콘과 글자 사이 여백 */
+  gap: 6px;
   margin-left: auto;
 }
 

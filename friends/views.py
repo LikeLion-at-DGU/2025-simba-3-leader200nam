@@ -57,25 +57,24 @@ def add_friend(request):
         memo = request.POST.get('memo', '')
 
         try:
-            # 친구 코드로 사용자 찾기
             friend_code_obj = FriendCode.objects.get(code=friend_code)
 
-            # 자기 자신 추가 방지
             if friend_code_obj.user == request.user:
                 messages.error(request, '자기 자신은 친구로 추가할 수 없습니다.')
                 return redirect('friends:friend_list')
 
-            # 기존 친구 관계가 있다면 삭제 (양방향 모두)
-            Friend.objects.filter(
+            # 이미 친구인지 확인 (양방향)
+            if Friend.objects.filter(
                 Q(user=request.user, friend=friend_code_obj.user) |
                 Q(user=friend_code_obj.user, friend=request.user)
-            ).delete()
+            ).exists():
+                messages.error(request, '이미 추가한 친구입니다!')
+                return redirect('friends:friend_list')
 
             # 친구 관계 생성 (상호 관계)
             new_friend = Friend.objects.create(user=request.user, friend=friend_code_obj.user)
             Friend.objects.create(user=friend_code_obj.user, friend=request.user)
 
-            # 메모가 작성되어 있으면 저장
             if memo:
                 new_friend.memo = memo
                 new_friend.save()
