@@ -4,9 +4,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Quest
 import random
 from datetime import datetime
-
-# Create your views here.
-
+# 퀘스트 목록 페이지 뷰 함수
 @login_required
 def quest_list(request):
     """현재 월/주차의 랜덤 퀘스트 3개 제공"""
@@ -18,7 +16,7 @@ def quest_list(request):
     # 해당 월/주차의 모든 퀘스트 조회
     quests = Quest.objects.filter(month=current_month, week=current_week)
     
-    # 3개 랜덤 선택 (3개보다 적으면 모두 반환)
+    # 3개 랜덤 선택 (3개보다 적으면 모두 반환) 추가적인 퀘스트가 들어갈 수 있기에
     if quests.count() >= 3:
         random_quests = random.sample(list(quests), 3)
     else:
@@ -37,11 +35,12 @@ def quest_list(request):
     
     return JsonResponse({
         'quests': quest_data,
-        'current_month': current_month,
-        'current_week': current_week
+        'month': current_month,
+        'week': current_week
     })
 
 @login_required
+# 로그인한 사용자만 접근 가능한 퀘스트 상세 정보 뷰 함수
 def quest_detail(request, quest_id):
     """퀘스트 상세 정보 제공"""
     quest = get_object_or_404(Quest, id=quest_id)
@@ -58,6 +57,7 @@ def quest_detail(request, quest_id):
     return JsonResponse({'quest': quest_data})
 
 @login_required
+# 로그인한 사용자만 접근 가능한 퀘스트 인증 페이지 뷰 함수
 def quest_page(request, quest_id):
     """퀘스트 인증 페이지 렌더링"""
     quest = get_object_or_404(Quest, id=quest_id)
@@ -68,6 +68,7 @@ def quest_page(request, quest_id):
     return render(request, 'quest/quest_auth.html', context)
 
 @login_required
+#로그인한 사용자만 접근 가능한 현재 퀘스트 조회 뷰 함수
 def get_current_quests(request):
     """메인 페이지용 현재 퀘스트 정보 제공"""
     now = datetime.now()
