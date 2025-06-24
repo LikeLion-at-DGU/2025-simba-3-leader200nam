@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from friends.models import FriendCode
 
+# 사용자 생성 및 슈퍼유저 생성을 담당하는 커스텀 매니저
 class UserManager(BaseUserManager):
     def create_user(self, username, univ_name, major_name, password=None, **extra_fields):
         if not username:
@@ -18,6 +19,7 @@ class UserManager(BaseUserManager):
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(username, univ_name, major_name, password, **extra_fields)
 
+# 사용자 모델 정의
 class User(AbstractUser):
     univ_name = models.CharField(max_length=100, verbose_name='학교명')
     major_name = models.CharField(max_length=100, verbose_name='학과명')
@@ -26,14 +28,15 @@ class User(AbstractUser):
     bio = models.TextField(blank=True, verbose_name='자기소개', null=True)
     exp = models.PositiveIntegerField(default=0, verbose_name='경험치')
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['univ_name', 'major_name']
+    USERNAME_FIELD = 'username'  # 로그인 시 사용할 필드
+    REQUIRED_FIELDS = ['univ_name', 'major_name']  # createsuperuser 시 추가로 요구되는 필드
 
-    objects = UserManager()
+    objects = UserManager()  # 커스텀 매니저 연결
 
     def __str__(self):
         return f"{self.univ_name} - {self.major_name} ({self.username})"
 
+    # 현재 경험치 기준으로 계산된 사용자 레벨 반환
     @property
     def level(self):
         exp = int(getattr(self, 'exp', 0))
@@ -50,6 +53,7 @@ class User(AbstractUser):
         else:
             return 1
 
+    # 현재 레벨 구간에서 얼마나 경험치를 쌓았는지
     @property
     def current_level_exp(self):
         exp = int(getattr(self, 'exp', 0))
@@ -64,10 +68,12 @@ class User(AbstractUser):
         else:
             return exp
 
+    # 현재 레벨의 최대 경험치 (레벨업 조건)
     @property
     def max_level_exp(self):
         return 320 if self.level == 5 else 1000
 
+    # 레벨별 캐릭터 이미지 이름 반환
     @property
     def ako_image(self):
         if self.level == 1:
@@ -81,7 +87,7 @@ class User(AbstractUser):
         else:
             return 'ako5.svg'
 
-# 회원가입 시 FriendCode 자동 생성
+# 회원가입 시 친구코드 자동 생성
 @receiver(post_save, sender=User)
 def create_friend_code(sender, instance, created, **kwargs):
     if created:
