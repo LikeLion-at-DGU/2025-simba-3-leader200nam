@@ -14,7 +14,6 @@ def feed(request):
 @login_required
 def feed_list(request):
     # 친구 관계에 있는 사용자들의 피드만 가져오기
-    # 이제 Friend 모델에 status 필드가 있으므로 필터링 가능
     friends = Friend.objects.filter(
         user=request.user,
         status='accepted'
@@ -22,13 +21,15 @@ def feed_list(request):
     friend_ids = [friend.friend.id for friend in friends]
     friend_ids.append(request.user.id)
     
+    # 본인 피드는 모두, 친구 피드는 공개만
     feeds = Feed.objects.filter(
-        author_id__in=friend_ids,
-        is_private=False,
-        is_deleted=False  # 삭제되지 않은 피드만
+        (
+            Q(author=request.user) | 
+            Q(author_id__in=friend_ids, is_private=False)
+        ),
+        is_deleted=False
     ).select_related('author').order_by('-created_at')
     
-    # 각 피드에 대한 '좋아요' 및 '공개' 여부 추가
     for feed in feeds:
         feed.is_liked = feed.likes.filter(user=request.user).exists()
         feed.is_public = not feed.is_private
