@@ -1,23 +1,53 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
-from django.db.models import Q
 from .models import Feed, Comment, Like, Report
 from friends.models import Friend
 from quest.models import Quest
 from django.views.decorators.http import require_GET
 
-# Create your views here.
-def feed(request):
-    return render(request, 'feed/feedpage.html')
+
+def get_display_name(user):
+    """사용자의 표시 이름을 반환하는 유틸리티 함수"""
+    return user.nickname if user.nickname else user.username
+
+def add_user_exp_and_check_levelup(user, exp_gain):
+    """사용자 경험치 추가 및 레벨업 확인"""
+    if hasattr(user, 'exp'):
+        old_level = (user.exp // 1000) + 1
+        user.exp += exp_gain
+        user.save()
+        new_level = (user.exp // 1000) + 1
+        
+        if new_level > old_level:
+            return True, new_level
+    return False, None
+
+def create_feed_with_quest(user, quest, **kwargs):
+    """퀘스트와 연관된 피드 생성"""
+    return Feed.objects.create(
+        author=user,
+        quest=quest,
+        is_completed=True,
+        **kwargs
+    )
+
+def api_response(data=None, message="Success", status="success", error=None, status_code=200):
+    """통일된 API 응답 형식"""
+    response = {'status': status}
+    if message:
+        response['message'] = message
+    if data is not None:
+        response['data'] = data
+    if error:
+        response['error'] = error
+    return JsonResponse(response, status=status_code)
 
 @login_required
 def feed_list(request):
     # 친구 관계에 있는 사용자들의 피드만 가져오기
-    friends = Friend.objects.filter(
-        user=request.user,
-        status='accepted'
-    )
+    friends = Friend.objects.filter(user=request.user).select_related('friend')
+
     friend_ids = [friend.friend.id for friend in friends]
     friend_ids.append(request.user.id)
     
@@ -40,6 +70,7 @@ def feed_list(request):
     return render(request, 'feed/feedpage.html', context)
 
 @login_required
+# 로그인한 사용자만 접근 가능한 내 피드 목록 뷰 함수
 def my_feed_list(request):
     feeds = Feed.objects.filter(
         author=request.user,
@@ -58,6 +89,7 @@ def my_feed_list(request):
     })
 
 @login_required
+# 로그인한 사용자만 접근 가능한 피드 생성 뷰 함수
 def feed_create(request):
     if request.method == 'POST':
         quest_id = request.POST.get('quest_id')
@@ -68,32 +100,25 @@ def feed_create(request):
         is_private = request.POST.get('is_private', 'false').lower() == 'true'
 
         if not (quest_id and image and image_name and location):
-            return JsonResponse({'error': '필수 항목이 누락되었습니다.'}, status=400)
+            return api_response(error='필수 항목이 누락되었습니다.', status="error", status_code=400)
 
         quest = get_object_or_404(Quest, id=quest_id)
 
-        feed = Feed.objects.create(
-            author=request.user,
+        feed = create_feed_with_quest(
+            user=request.user,
             quest=quest,
             image=image,
             image_name=image_name,
             location=location,
             memo=memo,
-            is_private=is_private,
-            is_completed=True
+            is_private=is_private
         )
 
-        # 경험치 증가 (User 모델에 exp 필드가 있다고 가정)
-        if hasattr(request.user, 'exp'):
-            old_level = (request.user.exp // 1000) + 1
-            request.user.exp += quest.exp
-            request.user.save()
-            new_level = (request.user.exp // 1000) + 1
-            
-            # 레벨업이 발생했는지 확인
-            if new_level > old_level:
-                request.session['leveled_up'] = True
-                request.session['new_level'] = new_level
+        # 경험치 증가 및 레벨업 확인
+        leveled_up, new_level = add_user_exp_and_check_levelup(request.user, quest.exp)
+        if leveled_up:
+            request.session['leveled_up'] = True
+            request.session['new_level'] = new_level
 
         return JsonResponse({
             'id': feed.id,
@@ -106,18 +131,16 @@ def feed_create(request):
             'created_at': feed.created_at.isoformat(),
             'exp_gained': quest.exp
         })
-    return JsonResponse({'error': 'Invalid request method'}, status=400)
-
-def get_display_name(user):
-    return user.nickname if user.nickname else user.username
+    return api_response(error='Invalid request method', status="error", status_code=400)
 
 @login_required
+#로그인한 사용자만 접근 가능한 피드 상세 정보 뷰 함수
 def feed_detail(request, feed_id):
     feed = get_object_or_404(Feed, id=feed_id)
     
     # 비공개 피드는 작성자만 볼 수 있음
     if feed.is_private and feed.author != request.user:
-        return JsonResponse({'error': 'Permission denied'}, status=403)
+        return api_response(error='Permission denied', status="error", status_code=403)
     
     comments = feed.comments.all().order_by('-created_at')
     
@@ -141,6 +164,7 @@ def feed_detail(request, feed_id):
     })
 
 @login_required
+# 로그인한 사용자만 접근 가능한 피드 수정 뷰 함수
 def feed_update(request, feed_id):
     feed = get_object_or_404(Feed, id=feed_id, author=request.user)
     
@@ -154,16 +178,18 @@ def feed_update(request, feed_id):
             'content': feed.content,
             'updated_at': feed.updated_at.isoformat()
         })
-    return JsonResponse({'error': 'Invalid request method'}, status=400)
+    return api_response(error='Invalid request method', status="error", status_code=400)
 
 @login_required
+# 로그인한 사용자만 접근 가능한 피드 삭제 뷰 함수
 def feed_delete(request, feed_id):
     feed = get_object_or_404(Feed, id=feed_id, author=request.user)
     feed.is_deleted = True
     feed.save()
-    return JsonResponse({'status': 'ok'})
+    return api_response(message="피드가 삭제되었습니다.")
 
 @login_required
+# 로그인한 사용자만 접근 가능한 피드 공개 여부 토글 뷰 함수
 def toggle_public(request, feed_id):
     feed = get_object_or_404(Feed, id=feed_id, author=request.user)
     feed.is_private = not feed.is_private
@@ -174,6 +200,7 @@ def toggle_public(request, feed_id):
     })
 
 @login_required
+# 로그인한 사용자만 접근 가능한 피드 좋아요 뷰 함수
 def feed_like(request, feed_id):
     feed = get_object_or_404(Feed, id=feed_id)
     like, created = Like.objects.get_or_create(feed=feed, user=request.user)
@@ -191,6 +218,7 @@ def feed_like(request, feed_id):
     })
 
 @login_required
+# 로그인한 사용자만 접근 가능한 피드 댓글 생성 뷰 함수
 def comment_create(request, feed_id):
     if request.method == 'POST':
         feed = get_object_or_404(Feed, id=feed_id)
@@ -208,15 +236,17 @@ def comment_create(request, feed_id):
             'content': comment.content,
             'created_at': comment.created_at.isoformat()
         })
-    return JsonResponse({'error': 'Invalid request method'}, status=400)
+    return api_response(error='Invalid request method', status="error", status_code=400)
 
 @login_required
+# 로그인한 사용자만 접근 가능한 피드 댓글 삭제 뷰 함수
 def comment_delete(request, feed_id, comment_id):
     comment = get_object_or_404(Comment, id=comment_id, author=request.user)
     comment.delete()
-    return JsonResponse({'status': 'success'})
+    return api_response(message="댓글이 삭제되었습니다.")
 
 @login_required
+# 로그인한 사용자만 접근 가능한 피드 신고 뷰 함수
 def feed_report(request, feed_id):
     if request.method == 'POST':
         feed = get_object_or_404(Feed, id=feed_id)
@@ -232,15 +262,16 @@ def feed_report(request, feed_id):
         feed.is_deleted = True
         feed.save()
         
-        return JsonResponse({'status': 'success'})
-    return JsonResponse({'error': 'Invalid request method'}, status=400)
+        return api_response(message="신고가 접수되었습니다.")
+    return api_response(error='Invalid request method', status="error", status_code=400)
 
 @login_required
+# 로그인한 사용자만 접근 가능한 퀘스트 인증 상태 확인 뷰 함수
 def quest_auth_status(request):
     month = int(request.GET.get('month', 0))
     week = int(request.GET.get('week', 0))
     if not month or not week:
-        return JsonResponse({'error': 'month, week 쿼리 파라미터가 필요합니다.'}, status=400)
+        return api_response(error='month, week 쿼리 파라미터가 필요합니다.', status="error", status_code=400)
     
     quests = Quest.objects.filter(month=month, week=week)
     completed_feeds = Feed.objects.filter(author=request.user, quest__in=quests, is_completed=True)
@@ -266,31 +297,24 @@ def quest_auth_feed_create(request, quest_id):
         content = request.POST.get('content', '')
         
         if not image:
-            return JsonResponse({'error': '이미지는 필수입니다.'}, status=400)
+            return api_response(error='이미지는 필수입니다.', status="error", status_code=400)
         
         # 퀘스트 인증 피드 생성
-        feed = Feed.objects.create(
-            author=request.user,
+        feed = create_feed_with_quest(
+            user=request.user,
             quest=quest,
             image=image,
             image_name=image_name,
             location=location,
             memo=memo,
-            content=content,
-            is_completed=True
+            content=content
         )
         
-        # 사용자 경험치 증가 (User 모델에 exp 필드가 있다고 가정)
-        if hasattr(request.user, 'exp'):
-            old_level = (request.user.exp // 1000) + 1
-            request.user.exp += quest.exp
-            request.user.save()
-            new_level = (request.user.exp // 1000) + 1
-            
-            # 레벨업이 발생했는지 확인
-            if new_level > old_level:
-                request.session['leveled_up'] = True
-                request.session['new_level'] = new_level
+        # 경험치 증가 및 레벨업 확인
+        leveled_up, new_level = add_user_exp_and_check_levelup(request.user, quest.exp)
+        if leveled_up:
+            request.session['leveled_up'] = True
+            request.session['new_level'] = new_level
         
         return JsonResponse({
             'status': 'success',
@@ -300,7 +324,7 @@ def quest_auth_feed_create(request, quest_id):
             'quest_title': quest.title
         })
     
-    return JsonResponse({'error': 'POST 요청만 허용됩니다.'}, status=405)
+    return api_response(error='POST 요청만 허용됩니다.', status="error", status_code=405)
 
 @login_required
 def quest_auth_page(request, quest_id):
@@ -314,10 +338,11 @@ def quest_auth_page(request, quest_id):
 
 @require_GET
 @login_required
+# 로그인한 사용자만 접근 가능한 월별 피드 목록 뷰 함수
 def monthly_feeds(request):
     month = int(request.GET.get('month', 0))
     if not month:
-        return JsonResponse({'error': 'month 쿼리 파라미터가 필요합니다.'}, status=400)
+        return api_response(error='month 쿼리 파라미터가 필요합니다.', status="error", status_code=400)
     feeds = Feed.objects.filter(author=request.user, created_at__month=month, is_deleted=False).order_by('-created_at')
     feed_list = [
         {
