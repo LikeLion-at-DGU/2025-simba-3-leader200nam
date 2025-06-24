@@ -13,8 +13,36 @@
     <h1 class="signup-title">회원가입하기</h1>
   </div>
   <div class="signup-box">
+    {% if form.errors %}
+    <div
+      class="form-errors"
+      style="color: red; text-align: center; margin-bottom: 10px"
+    >
+      {% for field, errors in form.errors.items %} {% for error in errors %}
+      <div>{{ error }}</div>
+      {% endfor %} {% endfor %}
+    </div>
+    {% endif %}
     <form id="signup-form" method="POST" action="{% url 'signup' %}">
       {% csrf_token %}
+      <div class="input-group">
+        <label for="username" class="input-label">아이디</label>
+        <div class="id-input">
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="아이디를 입력해주세요."
+            required
+            class="required-input"
+            minlength="4"
+          />
+        </div>
+        <div class="input-condition" id="username-condition">
+          4자 이상 입력해주세요.
+        </div>
+      </div>
+
       <div class="input-group">
         <label for="univ_name" class="input-label">학교명</label>
         <div class="univ-input">
@@ -27,7 +55,7 @@
             class="required-input"
           />
         </div>
-        <p class="input-condition">OO대학교 형식으로 입력해주세요.</p>
+        <div class="input-condition" id="univ-condition"></div>
       </div>
       <div class="input-group">
         <label for="major_name" class="input-label">학과명</label>
@@ -41,24 +69,7 @@
             class="required-input"
           />
         </div>
-        <p class="input-condition">
-          공식명칭으로 입력해주세요 (ex. 광홍 -> 광고홍보학과)
-        </p>
-      </div>
-      <div class="input-group">
-        <label for="number_name" class="input-label">학번(아이디)</label>
-        <div class="number-input">
-          <input
-            type="text"
-            id="number_name"
-            name="number_name"
-            placeholder="본인의 학번을 입력해주세요."
-            maxlength="10"
-            required
-            class="required-input"
-          />
-        </div>
-        <p class="input-condition">숫자 10자를 입력해주세요.</p>
+        <div class="input-condition" id="major-condition"></div>
       </div>
       <div class="input-group">
         <label for="password" class="input-label">비밀번호</label>
@@ -104,9 +115,9 @@
             data-off="{% static 'images/toggle-off-icon.svg' %}"
           />
         </div>
-        <p class="input-condition">비밀번호와 일치하지않습니다.</p>
+        <p class="input-condition"></p>
       </div>
-      <button type="submit" class="signin-button" disabled>회원가입하기</button>
+      <button type="submit" class="signin-button" disabled>회원가입</button>
     </form>
   </div>
 </div>

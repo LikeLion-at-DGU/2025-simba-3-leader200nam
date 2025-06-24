@@ -5,26 +5,26 @@
 <nav class="navbar-container">
   <div class="logo-bar">
     <a class="logo-img" href="{% url 'mainpage' %}">
-      <img src="{% static 'images/CAMPERCENT.svg' %}" alt="Campercent Logo" />
+      <img src="{% static 'images/nav-logo.svg' %}" alt="Campercent Logo" />
     </a>
     <div class="friend-icon-wrapper">
-      <a class="friend-icon" href="#">
-        <img
-          src="{% static 'images/friend.svg' %}"
-          alt="Friend List"
-          id="friendIcon"
-        />
-      </a>
+      <img
+        src="{% if user.image %}{{ user.image.url }}{% else %}{% static 'images/profile.svg' %}{% endif %}"
+        alt="Friend List"
+        id="friendIcon"
+        style="width: 40px; height: 40px; object-fit: cover; border-radius: 50%"
+      />
       <div class="friend-popup" id="friendPopup">
         <div class="popup-header">
           <div class="user-info">
             <img
+              src="{% if user.image %}{{ user.image.url }}{% else %}{% static 'images/profile.svg' %}{% endif %}"
+              alt="User Profile"
               class="user-profile"
-              src="{% if user.image_url %}{{ user.image_url }}{% else %}{% static 'images/profile-default.svg' %}{% endif %}"
-              alt="프로필"
             />
             <p class="user-name">{{user.nickname}}</p>
           </div>
+
           <p class="level">LV.1</p>
         </div>
         <div class="popup-border"></div>

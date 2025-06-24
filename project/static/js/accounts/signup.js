@@ -25,28 +25,18 @@ togglePasswordIcons.forEach((icon) => {
 });
 
 /**
- * 학번, 비밀번호 유효성 검사 및 상태 업데이트
+ * 비밀번호 유효성 검사
  */
 document.addEventListener("DOMContentLoaded", () => {
-  const numberInput = document.querySelector("#number_name");
   const passwordInput = document.querySelector("#password");
   const passwordCheckInput = document.querySelector("#password_check");
 
-  const numberCondition = numberInput
-    .closest(".input-group")
-    .querySelector(".input-condition");
   const passwordCondition = passwordInput
     .closest(".input-group")
     .querySelector(".input-condition");
   const passwordCheckCondition = passwordCheckInput
     .closest(".input-group")
     .querySelector(".input-condition");
-
-  // 학번 유효성 검사
-  numberInput.addEventListener("input", () => {
-    const isValid = /^\d{10}$/.test(numberInput.value);
-    updateValidationState(numberInput, numberCondition, isValid);
-  });
 
   // 비밀번호 유효성 검사
   passwordInput.addEventListener("input", () => {
@@ -83,6 +73,7 @@ document.addEventListener("DOMContentLoaded", () => {
       wrapper.classList.add("input-invalid");
       conditionText.style.display = "block";
       conditionText.classList.add("input-invalid-text");
+      passwordCheckInput.add.textContent = "비밀번호가 일치하지 않습니다.";
     }
   }
 });
@@ -124,4 +115,94 @@ document.addEventListener("DOMContentLoaded", () => {
   inputs.forEach((input) => input.addEventListener("input", validateInputs));
 
   validateInputs();
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  // 아이디 중복 검사
+  const usernameInput = document.getElementById("username");
+  const usernameCondition = document.getElementById("username-condition");
+  const usernameDiv = document.querySelector(".id-input");
+  usernameInput.addEventListener("blur", function () {
+    const username = this.value.trim();
+    if (username.length < 4) {
+      usernameCondition.textContent = "아이디는 4자 이상이어야 합니다.";
+      usernameCondition.style.color = "red";
+      usernameDiv.style.borderColor = "red";
+      return;
+    }
+    fetch(`/accounts/check-username/?username=${encodeURIComponent(username)}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.exists) {
+          usernameCondition.textContent = "중복되는 아이디입니다.";
+          usernameCondition.style.color = "red";
+          usernameDiv.style.borderColor = "red";
+        } else {
+          usernameCondition.textContent = "사용 가능한 아이디입니다.";
+          usernameCondition.style.color = "#007AFF";
+          usernameDiv.style.borderColor = "#007AFF";
+        }
+      });
+  });
+
+  // 학교명 유효성 검사
+  const univInput = document.getElementById("univ_name");
+  const univCondition = document.getElementById("univ-condition");
+  const univDiv = document.querySelector(".univ-input");
+  univInput.addEventListener("blur", function () {
+    const value = this.value.trim();
+    if (!value.endsWith("대학교")) {
+      univCondition.textContent = "학교명은 '대학교'로 끝나야 합니다.";
+      univCondition.style.color = "red";
+      univDiv.style.setProperty("border-color", "red", "important");
+    } else {
+      univCondition.textContent = "유효한 학교명입니다.";
+      univCondition.style.color = "#007AFF";
+      univDiv.style.setProperty("border-color", "#007AFF", "important");
+    }
+  });
+
+  // 학과명 유효성 검사
+  const majorInput = document.getElementById("major_name");
+  const majorCondition = document.getElementById("major-condition");
+  const majorDiv = document.querySelector(".major-input");
+  majorInput.addEventListener("blur", function () {
+    const value = this.value.trim();
+    if (!(value.endsWith("학과") || value.endsWith("전공"))) {
+      majorCondition.textContent =
+        "학과명은 '학과' 또는 '전공'으로 끝나야 합니다.";
+      majorCondition.style.color = "red";
+      majorDiv.style.setProperty("border-color", "red", "important");
+    } else {
+      majorCondition.textContent = "";
+      majorDiv.style.setProperty("border-color", "#007AFF", "important");
+    }
+  });
+});
+
+const passwordInput = document.querySelector("#password");
+const passwordCheckInput = document.querySelector("#password_check");
+
+// 비밀번호 확인 input의 .input-condition 찾기
+const passwordCheckCondition = passwordCheckInput
+  .closest(".input-group")
+  .querySelector(".input-condition");
+
+passwordCheckInput.addEventListener("input", () => {
+  if (passwordCheckInput.value !== passwordInput.value) {
+    passwordCheckCondition.textContent = "비밀번호가 일치하지 않습니다.";
+    passwordCheckCondition.style.color = "red";
+    passwordCheckInput.style.setProperty("border-color", "red", "important");
+  } else if (passwordCheckInput.value.length > 0) {
+    passwordCheckCondition.textContent = "비밀번호가 일치합니다.";
+    passwordCheckCondition.style.color = "#007AFF";
+    passwordCheckInput.style.setProperty(
+      "border-color",
+      "#007AFF",
+      "important"
+    );
+  } else {
+    passwordCheckCondition.textContent = "";
+    passwordCheckInput.style.removeProperty("border-color");
+  }
 });
