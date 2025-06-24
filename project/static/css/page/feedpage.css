@@ -17,10 +17,27 @@
   flex-direction: column;
 }
 
+.post-header,
+.post-footer,
+.username,
+.location,
+.more-wrapper,
+.icon-group,
+.siren-report-btn,
+.post-caption,
+.icon,
+.icon-count,
+.report-title,
+.report-reasons,
+.reason-item {
+  background: #fff;
+}
+
 .post-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 14px;
 }
 
 .profile-img {
@@ -29,7 +46,6 @@
   flex-shrink: 0;
   border-radius: 50%;
   object-fit: cover;
-  background: #eee;
   display: block;
 }
 
@@ -279,6 +295,7 @@
   justify-content: space-between;
   gap: 10px;
   margin-top: 20px;
+  background: inherit;
 }
 
 /* 기타 입력란 */
@@ -326,6 +343,12 @@
   cursor: pointer;
 }
 
+.hide-button:disabled {
+  background: rgba(245, 245, 245, 0.95) !important;
+  color: #8a8a8a !important;
+  cursor: not-allowed;
+}
+
 .cancel-button,
 .hide-button {
   flex: 1; /* ← 버튼들이 가로로 반반 차지하도록 */
@@ -343,7 +366,7 @@
 }
 
 .cancel-button {
-  background: none;
+  background: rgba(245, 245, 245, 0.95);
   color: #8a8a8a;
 }
 

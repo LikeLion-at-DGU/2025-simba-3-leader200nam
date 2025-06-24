@@ -20,7 +20,7 @@
   <div class="friend-list">
     {% for item in friends %}
     <div class="friend">
-      <div class="avatar" {% if item.friend.image %}style="background-image: url('{{ item.friend.image.url }}')"{% endif %}></div>
+      <div class="avatar" {% if item.friend.image %}style="background-image: url('{{ item.friend.image.url }}')"{% else %}style="background-image: url('{% static 'images/profile-default.svg' %}')"{% endif %}></div>
       <div class="friend-info">
         <div class="name">{{ item.friend.nickname }}</div>
         <div class="desc">{{ item.memo }}</div>
