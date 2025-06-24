@@ -144,3 +144,9 @@ button {
   line-height: normal;
   margin-top: 20px;
 }
+
+button:disabled {
+  background: #c4c4c4;
+  color: #ffffff88;
+  cursor: not-allowed;
+}
