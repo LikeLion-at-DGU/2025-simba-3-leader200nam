@@ -80,7 +80,8 @@ textarea {
 }
 
 .img-input,
-.place-input {
+.place-input,
+.description-input {
   border-radius: 10px;
   border: 2px solid #979797;
   width: 100%;
@@ -88,19 +89,6 @@ textarea {
   padding: 14px 17px;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
-  gap: 10px;
-}
-
-.description-input {
-  border-radius: 10px;
-  border: 2px solid #979797;
-  width: 100%;
-  height: 135px;
-  display: flex;
-  padding: 14px 17px;
-  flex-direction: column;
-  justify-content: start;
   align-items: flex-start;
   gap: 10px;
 }

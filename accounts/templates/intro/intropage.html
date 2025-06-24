@@ -8,7 +8,6 @@
 </div>
 <script>
   window.univName = '{{ user.univ_name|escapejs|default_if_none:"" }}';
-  console.log("window.univName set:", window.univName);
 </script>
 <script src="{% static 'js/page/intropage.js' %}"></script>
 {% endblock content %}

@@ -61,16 +61,17 @@
       </div>
 
       <div class="input-group">
-        <label for="memo" class="input-label">메모</label>
+        <label for="memo" class="input-label">사진 설명(선택)</label>
         <div class="description-input">
-          <textarea
+          <input
+            type="text"
             name="memo"
             id="descriptionTextarea"
             placeholder="사진에 대한 설명을 입력해주세요"
-            maxlength="150"
-          ></textarea>
+            maxlength="20"
+          />
         </div>
-        <p class="input-condition" id="charCount">(0/150)</p>
+        <p class="input-condition" id="charCount">(0/20)</p>
       </div>
 
       <div class="public">

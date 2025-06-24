@@ -76,7 +76,6 @@
   </div>
 </div>
 
-
 <!-- 진화 모달 -->
 <div id="evolutionModal" class="evolution-modal hidden">
   <div class="evolution-modal-content">
@@ -124,10 +123,7 @@
   </div>
 </div>
 
-<script src="{% static 'js/page/mainpage.js' %}"></script>
-
 <script>
-  // 레벨업 정보를 JavaScript로 전달
   {% if leveled_up and new_level %}
     window.leveledUp = true;
     window.newLevel = {{ new_level }};
@@ -135,10 +131,8 @@
     window.leveledUp = false;
     window.newLevel = null;
   {% endif %}
-  // 퀘스트 완료 플래그 JS로 전달
   window.allQuestsCompleted = {{ all_quests_completed|yesno:"true,false" }};
-  // 진정한 아코 경험치 JS로 전달
   window.userExp = {{ user.exp }};
 </script>
-
+<script src="{% static 'js/page/mainpage.js' %}"></script>
 {% endblock %}
