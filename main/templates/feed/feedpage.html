@@ -15,6 +15,7 @@
     class="post-card {% if feed.author == user %}my-post{% endif %}"
     data-post-id="{{ feed.id }}"
     data-author-id="{{ feed.author.id }}"
+    data-is-private="{% if not feed.is_public %}true{% else %}false{% endif %}"
   >
     <div class="post-header">
       <img
@@ -32,44 +33,10 @@
         {% if feed.author == user %}
         <button
           class="public-toggle-btn"
-          data-public-state="public"
-          style="
-            display: flex;
-            width: 93px;
-            height: 29px;
-            padding: 6px 12px 6px 13px;
-            justify-content: center;
-            align-items: center;
-            flex-shrink: 0;
-            border-radius: 10px;
-            background: #fff;
-            border: none;
-            cursor: pointer;
-          "
+          data-public-state="{% if feed.is_public %}public{% else %}private{% endif %}"
         >
-          <img
-            src="{% static 'images/lock.svg' %}"
-            style="
-              width: 16px;
-              height: 16px;
-              flex-shrink: 0;
-              aspect-ratio: 1/1;
-              margin-right: 6px;
-            "
-            alt="lock"
-          />
-          <span
-            style="
-              color: #000;
-              font-family: '머니그라피TTF', sans-serif;
-              font-size: 10px;
-              font-style: normal;
-              font-weight: 400;
-              line-height: 17px;
-              letter-spacing: -0.5px;
-            "
-            >게시물 공개</span
-          >
+          <img src="" alt="lock" />
+          <span></span>
         </button>
         {% endif %}
         <img

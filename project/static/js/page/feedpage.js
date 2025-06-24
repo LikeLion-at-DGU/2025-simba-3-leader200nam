@@ -37,7 +37,11 @@ document.addEventListener("DOMContentLoaded", () => {
       const postId = card.dataset.postId;
       const isMyPost = card.classList.contains("my-post");
       const isHidden = hiddenPosts.includes(postId);
-      const isPrivate = myPrivatePosts.has(postId);
+      // const isPrivate = card.dataset.isPrivate === "true";
+      // 버튼의 현재 상태를 기준으로 판단
+      const publicBtn = card.querySelector(".public-toggle-btn");
+      const isPrivate =
+        publicBtn && publicBtn.dataset.publicState === "private";
 
       if (isHidden) {
         card.style.display = "none";
@@ -126,70 +130,58 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // 게시물 공개/비공개 토글 버튼 동작
-  function setupPublicToggleBtns() {
-    document.querySelectorAll(".public-toggle-btn").forEach((btn) => {
-      const postCard = btn.closest(".post-card");
-      const postId = postCard ? postCard.dataset.postId : null;
-      const newBtn = btn.cloneNode(true);
-      btn.parentNode.replaceChild(newBtn, btn);
-
-      newBtn.addEventListener("click", function () {
-        const icon = newBtn.querySelector("img");
-        const text = newBtn.querySelector("span");
-        const isOpen = newBtn.dataset.publicState !== "private";
-        if (isOpen) {
-          // 비공개로 변경
-          newBtn.style.background = "#2782FF";
-          newBtn.style.borderRadius = "10px";
-          newBtn.style.display = "flex";
-          newBtn.style.alignItems = "center";
-          icon.src = "/static/images/lock2.svg";
-          icon.style.width = "16px";
-          icon.style.height = "16px";
-          icon.style.aspectRatio = "1/1";
-          icon.style.marginRight = "6px";
-          icon.style.background = "inherit";
-          text.textContent = "게시물 비공개";
-          text.style.color = "#000";
-          text.style.fontFamily = "Moneygraphy-Rounded, sans-serif";
-          text.style.fontSize = "10px";
-          text.style.fontStyle = "normal";
-          text.style.fontWeight = "400";
-          text.style.lineHeight = "17px";
-          text.style.letterSpacing = "-0.5px";
-          text.style.background = "inherit";
-          text.style.whiteSpace = "nowrap";
-          newBtn.dataset.publicState = "private";
-          if (postId) myPrivatePosts.add(postId);
-        } else {
-          // 공개로 변경
-          newBtn.style.background = "#FFF";
-          newBtn.style.borderRadius = "10px";
-          newBtn.style.display = "flex";
-          newBtn.style.alignItems = "center";
-          icon.src = "/static/images/lock.svg";
-          icon.style.width = "16px";
-          icon.style.height = "16px";
-          icon.style.aspectRatio = "1/1";
-          icon.style.marginRight = "6px";
-          icon.style.background = "inherit";
-          text.textContent = "게시물 공개";
-          text.style.color = "#000";
-          text.style.fontFamily = "Moneygraphy-Rounded, sans-serif";
-          text.style.fontSize = "10px";
-          text.style.fontStyle = "normal";
-          text.style.fontWeight = "400";
-          text.style.lineHeight = "17px";
-          text.style.letterSpacing = "-0.5px";
-          text.style.background = "inherit";
-          text.style.whiteSpace = "nowrap";
-          newBtn.dataset.publicState = "public";
-          if (postId) myPrivatePosts.delete(postId);
-        }
-        filterPosts(); // 상태 변경 후 필터링 적용
-      });
-    });
+  function applyPublicButtonStyle(btn) {
+    const isPrivate = btn.dataset.publicState === "private";
+    btn.style.display = "flex";
+    btn.style.width = "93px";
+    btn.style.height = "29px";
+    btn.style.padding = "6px 12px 6px 13px";
+    btn.style.justifyContent = "center";
+    btn.style.alignItems = "center";
+    btn.style.flexShrink = "0";
+    btn.style.borderRadius = "10px";
+    btn.style.background = isPrivate ? "#2782FF" : "#fff";
+    btn.style.border = "none";
+    btn.style.cursor = "pointer";
+    const icon = btn.querySelector("img");
+    const text = btn.querySelector("span");
+    if (isPrivate) {
+      icon.src = "/static/images/lock2.svg";
+      icon.style.width = "16px";
+      icon.style.height = "16px";
+      icon.style.flexShrink = "0";
+      icon.style.aspectRatio = "1/1";
+      icon.style.marginRight = "6px";
+      icon.style.background = "inherit";
+      text.textContent = "게시물 비공개";
+      text.style.color = "#000";
+      text.style.fontFamily = "'머니그라피TTF', sans-serif";
+      text.style.fontSize = "10px";
+      text.style.fontStyle = "normal";
+      text.style.fontWeight = "400";
+      text.style.lineHeight = "17px";
+      text.style.letterSpacing = "-0.5px";
+      text.style.background = "inherit";
+      text.style.whiteSpace = "nowrap";
+    } else {
+      icon.src = "/static/images/lock.svg";
+      icon.style.width = "16px";
+      icon.style.height = "16px";
+      icon.style.flexShrink = "0";
+      icon.style.aspectRatio = "1/1";
+      icon.style.marginRight = "6px";
+      icon.style.background = "inherit";
+      text.textContent = "게시물 공개";
+      text.style.color = "#000";
+      text.style.fontFamily = "'머니그라피TTF', sans-serif";
+      text.style.fontSize = "10px";
+      text.style.fontStyle = "normal";
+      text.style.fontWeight = "400";
+      text.style.lineHeight = "17px";
+      text.style.letterSpacing = "-0.5px";
+      text.style.background = "inherit";
+      text.style.whiteSpace = "nowrap";
+    }
   }
 
   // --- 이벤트 리스너 설정 ---
@@ -209,16 +201,40 @@ document.addEventListener("DOMContentLoaded", () => {
     myBtn.addEventListener("click", () => {
       myBtn.classList.add("active");
       if (allBtn) allBtn.classList.remove("active");
-      const userId = window.userId;
-      postCards.forEach((card) => {
-        if (card.dataset.authorId === String(userId)) {
-          card.style.display = "block";
-        } else {
-          card.style.display = "none";
-        }
-      });
+      filterPosts();
       updatePublicButtonVisibility("MY");
       setTimeout(setupPublicToggleBtns, 0);
+    });
+  }
+
+  // 페이지 로드 시 모든 public-toggle-btn 스타일 적용
+  document
+    .querySelectorAll(".public-toggle-btn")
+    .forEach(applyPublicButtonStyle);
+
+  // 게시물 공개/비공개 토글 버튼 동작
+  function setupPublicToggleBtns() {
+    document.querySelectorAll(".public-toggle-btn").forEach((btn) => {
+      const postCard = btn.closest(".post-card");
+      const postId = postCard ? postCard.dataset.postId : null;
+      const newBtn = btn.cloneNode(true);
+      btn.parentNode.replaceChild(newBtn, btn);
+
+      // 초기 스타일 적용
+      applyPublicButtonStyle(newBtn);
+
+      newBtn.addEventListener("click", function () {
+        // 토글
+        newBtn.dataset.publicState =
+          newBtn.dataset.publicState === "private" ? "public" : "private";
+        applyPublicButtonStyle(newBtn);
+        if (newBtn.dataset.publicState === "private") {
+          if (postId) myPrivatePosts.add(postId);
+        } else {
+          if (postId) myPrivatePosts.delete(postId);
+        }
+        filterPosts(); // 상태 변경 후 필터링 적용
+      });
     });
   }
 
@@ -280,7 +296,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 text.textContent = "게시물 비공개";
               }
             } else {
-              alert(data.message || "상태 변경에 실패했습니다.");
+              // 실패 시 웹페이지 내 안내 메시지 표시 (예: 콘솔)
+              console.error(data.message || "상태 변경에 실패했습니다.");
             }
           })
           .catch((error) => console.error("Error:", error));
@@ -293,22 +310,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (deleteButton) {
       deleteButton.addEventListener("click", (e) => {
         e.stopPropagation();
-        if (confirm("정말로 게시물을 삭제하시겠습니까?")) {
-          const postId = deleteButton.dataset.postId;
-          const csrfToken = document.querySelector(
-            "[name=csrfmiddlewaretoken]"
-          ).value;
-          fetch(`/feed/post/${postId}/delete/`, {
-            method: "POST",
-            headers: { "X-CSRFToken": csrfToken },
+        // confirm 삭제, 바로 삭제 진행
+        const postId = deleteButton.dataset.postId;
+        const csrfToken = document.querySelector(
+          "[name=csrfmiddlewaretoken]"
+        ).value;
+        fetch(`/feed/post/${postId}/delete/`, {
+          method: "POST",
+          headers: { "X-CSRFToken": csrfToken },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "ok") postCard.remove();
+            else console.error(data.message || "게시물 삭제에 실패했습니다.");
           })
-            .then((response) => response.json())
-            .then((data) => {
-              if (data.status === "ok") postCard.remove();
-              else alert(data.message || "게시물 삭제에 실패했습니다.");
-            })
-            .catch((error) => console.error("Error:", error));
-        }
+          .catch((error) => console.error("Error:", error));
         if (moreMenu) moreMenu.classList.add("hidden");
       });
     }
@@ -339,7 +355,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 this.closest(".icon-group").querySelector(".like-count");
               if (likeCountSpan) likeCountSpan.textContent = data.likes_count;
             } else {
-              alert(data.message || "좋아요 처리에 실패했습니다.");
+              // 좋아요 처리 실패 시 alert 삭제, 콘솔로 대체
+              console.error(data.message || "좋아요 처리에 실패했습니다.");
             }
           })
           .catch((error) => console.error("Error:", error));
@@ -483,7 +500,8 @@ document.addEventListener("DOMContentLoaded", () => {
             commentList.appendChild(newComment);
             commentInput.value = "";
           } else {
-            alert("댓글 등록에 실패했습니다.");
+            // 댓글 등록 실패 시 alert 삭제, 콘솔로 대체
+            console.error("댓글 등록에 실패했습니다.");
           }
         });
     });

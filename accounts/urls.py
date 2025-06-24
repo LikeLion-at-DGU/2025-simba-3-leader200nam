@@ -8,8 +8,7 @@ urlpatterns = [
     # 마이페이지
     path('profile/', views.profile_view, name='profile'),
     path('profile/update/', views.profile_update, name='profile_update'),
-    # 닉네임 입력
-    path('set-nickname/', views.set_nickname, name='set_nickname'),
+    
     path('signin/', views.signin, name='signin'),
     path('check-username/', views.check_username, name='check_username'),
 ] 
