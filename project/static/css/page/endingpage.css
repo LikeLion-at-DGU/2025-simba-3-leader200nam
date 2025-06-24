@@ -387,7 +387,6 @@ body {
   font-family: "Moneygraphy-Rounded", sans-serif;
   overflow: hidden;
   position: relative;
-  /* background: linear-gradient(#dbeaff, #fff); 삭제 또는 주석처리 */
   background: none !important;
 }
 

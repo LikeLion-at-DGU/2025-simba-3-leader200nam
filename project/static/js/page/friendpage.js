@@ -90,7 +90,8 @@ document.addEventListener("DOMContentLoaded", () => {
       if (avatarStyle && avatarStyle !== "none") {
         editAvatar.style.backgroundImage = avatarStyle;
       } else {
-        editAvatar.style.backgroundImage = "none";
+        editAvatar.style.backgroundImage =
+          "url('/static/images/profile-default.svg')";
       }
 
       editModal.classList.remove("hidden");
@@ -253,7 +254,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (data.user.profile_image) {
           memoAvatar.style.backgroundImage = `url('${data.user.profile_image}')`;
         } else {
-          memoAvatar.style.backgroundImage = "none";
+          memoAvatar.style.backgroundImage =
+            "url('/static/images/profile-default.svg')";
         }
       } else {
         alert(data.message || "유효하지 않은 친구 코드입니다.");

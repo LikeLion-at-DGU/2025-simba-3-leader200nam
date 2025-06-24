@@ -79,7 +79,6 @@
 .avatar {
   width: 42px;
   height: 42px;
-  background-color: #ccc;
   border-radius: 50%;
   overflow: hidden;
   object-fit: cover;
@@ -449,52 +448,4 @@
   justify-content: center;
   align-items: center;
   z-index: 2000;
-}
-
-/* 메시지 스타일 */
-.messages {
-  margin-bottom: 20px;
-}
-
-.message {
-  padding: 10px 15px;
-  margin-bottom: 10px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.message.success {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-
-.message.error {
-  background-color: #f8d7da;
-  color: #721c24;
-  border: 1px solid #f5c6cb;
-}
-
-.message.warning {
-  background-color: #fff3cd;
-  color: #856404;
-  border: 1px solid #ffeaa7;
-}
-
-.message.info {
-  background-color: #d1ecf1;
-  color: #0c5460;
-  border: 1px solid #bee5eb;
-}
-
-.no-results {
-  text-align: center;
-  padding: 40px 20px;
-  color: #666;
-  font-size: 14px;
-}
-
-.no-results p {
-  margin: 0;
 }
