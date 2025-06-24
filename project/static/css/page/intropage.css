@@ -19,7 +19,6 @@ body {
   transition: opacity 0.8s ease-in-out;
 }
 
-/* 텍스트 스타일 */
 #introText {
   margin-top: 185px;
   color: #2a2a2a;
@@ -47,13 +46,14 @@ body {
   border-radius: 50%;
   width: 50px;
   height: 50px;
-  animation: spin 1.2s linear infinite, fade-in-out 2.4s ease-in-out infinite;
+  animation: spin 2s cubic-bezier(0.4, 0, 0.2, 1) infinite,
+    fade-in-out 3s ease-in-out infinite;
   position: absolute;
   margin-top: 180px;
   left: 50%;
   transform: translateX(-50%);
-  filter: blur(0.5px);
-  box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
+  filter: blur(2px); /* stronger blur */
+  box-shadow: 0 0 15px rgba(16, 97, 255, 0.7); /* stronger glow */
 }
 
 /* 스피너 회전 애니메이션 */

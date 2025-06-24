@@ -1,9 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  /**
-   * 공통 함수들
-   */
-
-  /* 유효성 상태에 따라 메시지와 스타일 설정 */
+  /* 중복 함수: 유효성 상태에 따라 메시지와 스타일 설정 */
   function showMessage(conditionElement, message, isValid, inputDiv) {
     conditionElement.textContent = message;
     conditionElement.style.color = isValid ? "#007AFF" : "red";
