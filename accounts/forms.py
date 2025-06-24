@@ -3,6 +3,12 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import User
 
 class SignUpForm(UserCreationForm):
+    username = forms.CharField(
+        max_length=150,
+        label='아이디',
+        widget=forms.TextInput(attrs={'placeholder': '사용할 아이디를 입력해주세요.'}),
+        help_text='영문, 숫자, 특수문자(_)만 사용 가능합니다.'
+    )
     univ_name = forms.CharField(
         max_length=100,
         label='학교명',
@@ -17,33 +23,42 @@ class SignUpForm(UserCreationForm):
     )
     number_name = forms.CharField(
         max_length=20,
-        label='학번(아이디)',
+        label='학번',
         widget=forms.TextInput(attrs={'placeholder': '본인의 학번을 입력해주세요.'}),
         help_text='숫자만 입력해주세요.'
     )
 
     class Meta:
         model = User
-        fields = ('univ_name', 'major_name', 'number_name', 'password1', 'password2')
+        fields = ('username', 'univ_name', 'major_name', 'number_name', 'password1', 'password2')
 
-    def clean_number_name(self):
-        number_name = self.cleaned_data.get('number_name')
-        if User.objects.filter(number_name=number_name).exists():
-            raise forms.ValidationError('이미 사용 중인 학번(아이디)입니다.')
-        return number_name
+    def clean(self):
+        cleaned_data = super().clean()
+        username = cleaned_data.get('username')
+        number_name = cleaned_data.get('number_name')
+        univ_name = cleaned_data.get('univ_name')
+        
+        # 아이디 중복 검사
+        if username and User.objects.filter(username=username).exists():
+            raise forms.ValidationError('이미 사용 중인 아이디입니다.')
+        
+        # 학번과 학교 조합 중복 검사
+        if number_name and univ_name:
+            if User.objects.filter(number_name=number_name, univ_name=univ_name).exists():
+                raise forms.ValidationError('이미 해당 학교에서 사용 중인 학번입니다.')
+        
+        return cleaned_data
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        # username 필드를 number_name과 동일하게 설정
-        user.username = user.number_name
         if commit:
             user.save()
         return user
 
 class LoginForm(forms.Form):
-    number_name = forms.CharField(
-        label='학번(아이디)',
-        widget=forms.TextInput(attrs={'placeholder': '학번을 입력해주세요.'})
+    username = forms.CharField(
+        label='아이디',
+        widget=forms.TextInput(attrs={'placeholder': '아이디를 입력해주세요.'})
     )
     password = forms.CharField(
         label='비밀번호',
