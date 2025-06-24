@@ -75,9 +75,7 @@
             required
           />
         </div>
-        <p class="input-condition">
-          공식명칭으로 입력해주세요 (ex. 광홍 -> 광고홍보학과)
-        </p>
+        <p class="input-condition">공식명칭으로 입력해주세요.</p>
       </div>
       <div class="input-group">
         <label for="bio" class="input-label">한줄소개</label>
@@ -88,11 +86,11 @@
             name="bio"
             placeholder="한줄소개를 입력해주세요."
             value="{{ user.bio|default:'' }}"
-            maxlength="15"
+            maxlength="20"
             required
           />
         </div>
-        <p class="input-condition" id="description">(0/15)</p>
+        <p class="input-condition" id="description">(0/20)</p>
       </div>
       <button type="submit" class="submit-button">수정하기</button>
     </form>
