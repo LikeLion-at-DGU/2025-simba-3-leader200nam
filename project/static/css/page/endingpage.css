@@ -145,7 +145,7 @@ body {
   color: #2a2a2a;
   font-weight: 400;
   margin-bottom: 4px;
-  align-self: center; /* 기본 정렬: 가운데 */
+  align-self: center;
 }
 
 /* 1-2월: 왼쪽 정렬 */
@@ -171,9 +171,9 @@ body {
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
-  line-height: 17px; /* 121.429% */
+  line-height: 17px;
   letter-spacing: -0.5px;
-  margin-bottom: 4px; /* 기존 유지 */
+  margin-bottom: 4px;
 }
 
 .month-1-2 img {
@@ -293,7 +293,7 @@ body {
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
-  line-height: 17px; /* 141.667% */
+  line-height: 17px;
   letter-spacing: -0.5px;
 }
 
@@ -411,7 +411,7 @@ body {
   font-weight: 400;
   font-family: "Moneygraphy-Rounded", sans-serif;
   line-height: 30px;
-  white-space: pre-line; /* \n 줄바꿈 적용 */
+  white-space: pre-line;
   opacity: 0;
   transition: opacity 0.8s ease-in-out;
 }

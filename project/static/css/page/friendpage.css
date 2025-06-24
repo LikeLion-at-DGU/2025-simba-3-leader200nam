@@ -110,6 +110,7 @@
   font-size: 18px;
   color: #999;
   cursor: pointer;
+  background: #fff;
 }
 
 .menu-wrapper {
@@ -182,7 +183,7 @@
 .ako-img {
   position: absolute;
   left: 172px;
-  bottom: 200px;
+  bottom: 220px;
   width: 123px;
   height: 123px;
   z-index: 1;
@@ -191,13 +192,13 @@
 
 .code-box {
   width: 276px;
-  height: 129px;
+  height: 150px;
   border-radius: 20px;
   background: #1061ff;
   padding: 19px;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   box-sizing: border-box;
   z-index: 2;
   position: relative;
@@ -216,6 +217,12 @@
   width: 100%;
 }
 
+.code-input-box-wrapper {
+  margin-top: 10px;
+  border-radius: 10px;
+  background: #fff;
+}
+
 .code-input-box {
   width: 204px;
   height: 53px;
@@ -224,11 +231,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 12px;
 }
 
 .myinput {
   font-family: "Moneygraphy-Rounded", sans-serif;
+  margin-top: 10px;
 }
 
 .code-input {
@@ -297,7 +304,7 @@
 .edit-name {
   width: 253px;
   position: absolute;
-  top: 150px;
+  top: 140px;
   left: 52px;
   text-align: center;
   color: #2a2a2a;
@@ -317,7 +324,7 @@
   background: rgba(245, 245, 245, 0.95);
   border-radius: 10px;
   position: absolute;
-  top: 196px;
+  top: 210px;
   left: 60px;
 }
 
@@ -328,12 +335,16 @@
   border: none;
   resize: none;
   color: #8a8a8a;
-  font-size: 10px;
+  font-size: 14px;
   font-style: normal;
   font-weight: 400;
   line-height: 30px;
   letter-spacing: -0.5px;
   font-family: "Moneygraphy-Rounded", sans-serif;
+}
+
+.revise {
+  top: 195px !important;
 }
 
 .edit-save-btn {
@@ -448,4 +459,14 @@
   justify-content: center;
   align-items: center;
   z-index: 2000;
+}
+
+.code-error-msg {
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  font-size: 13px;
+  color: #f03f40;
+  background: transparent;
+  margin-top: 8px;
+  min-height: 20px;
+  text-align: left;
 }
