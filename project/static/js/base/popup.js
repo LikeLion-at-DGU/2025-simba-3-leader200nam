@@ -11,11 +11,14 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // 프로필 이미지 업데이트
       const userProfileImg = document.querySelector(".user-profile");
+      const friendIcon = document.getElementById("friendIcon");
       if (userProfileImg) {
         if (userData.image_url) {
           userProfileImg.src = userData.image_url;
+          friendIcon.src = userData.image_url;
         } else {
-          userProfileImg.src = "/static/images/profile-default.svg";
+          userProfileImg.src = "/static/images/profile.svg";
+          friendIcon.src = "/static/images/profile.svg";
         }
       }
 
@@ -40,8 +43,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (friendIcon && friendPopup) {
     friendIcon.addEventListener("click", function (event) {
-      event.preventDefault(); 
-      friendPopup.classList.toggle("show"); 
+      event.preventDefault();
+      friendPopup.classList.toggle("show");
     });
   }
 

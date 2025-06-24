@@ -7,6 +7,7 @@ from accounts.models import User
 from quest.models import Quest
 from feed.models import Feed
 from datetime import date
+from django.http import JsonResponse
 
 # Create your views here.
 def signin(request):
@@ -47,7 +48,7 @@ def signup(request):
             print("✅ 폼이 유효함!")
             try:
                 user = form.save()
-                print(f"✅ 사용자 저장 완료: {user.number_name}")
+                print(f"✅ 사용자 저장 완료: {user.username}")
                 return redirect('signin')
             except Exception as e:
                 print(f"❌ 저장 실패: {e}")
@@ -150,5 +151,10 @@ def mainpage(request):
         'quest_exp': quest_exp,
     }
     return render(request, 'main/mainpage.html', context)
+
+def check_username(request):
+    username = request.GET.get('username', '')
+    exists = User.objects.filter(username=username).exists()
+    return JsonResponse({'exists': exists})
 
 

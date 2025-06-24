@@ -3,6 +3,13 @@
   display: inline-block;
 }
 
+#friendIcon {
+  width: 35px;
+  height: 35px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
 .friend-popup {
   display: none;
   position: absolute;

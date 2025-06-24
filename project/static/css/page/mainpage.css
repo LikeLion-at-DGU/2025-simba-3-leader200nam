@@ -20,7 +20,7 @@
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  width: 358px;
+  width: 100%;
   height: 350px;
   justify-content: space-between;
 }
@@ -265,7 +265,7 @@
 
 .evolution-modal-content {
   background: white;
-  border-radius: 20px;
+  border-radius: 10px;
   padding: 25px 20px;
   text-align: center;
   max-width: 300px;
