@@ -263,6 +263,10 @@
   z-index: 1000;
 }
 
+#evolutionModal {
+  z-index: 2000;
+}
+
 .evolution-modal-content {
   background: white;
   border-radius: 10px;
