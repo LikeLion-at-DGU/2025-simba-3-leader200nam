@@ -1,9 +1,12 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 <link rel="stylesheet" href="{% static 'css/page/friendpage.css' %}" />
+<link rel="icon" type="image/x-icon" href="{% static 'images/Ako.png' %}">
 
 {% csrf_token %}
 
+<!-- 친구 페이지 메인 컨테이너 -->
 <div class="page-container">
+  <!-- 검색 및 친구 추가 섹션 -->
   <div class="search-section">
     <div class="search-input-wrapper">
       <img
@@ -16,6 +19,7 @@
     <button class="add-btn">친구추가하기</button>
   </div>
 
+  <!-- 친구 목록 섹션 -->
   {% if friends %}
   <div class="friend-list">
     {% for item in friends %}
@@ -43,7 +47,7 @@
   {% endif %}
 </div>
 
-<!-- 정보 수정 팝업 -->
+<!-- 친구 정보 수정 모달 -->
 <div class="edit-modal hidden">
   <div class="edit-content">
     <div
@@ -58,7 +62,7 @@
   </div>
 </div>
 
-<!-- 친구 삭제 확인 팝업 -->
+<!-- 친구 삭제 확인 모달 -->
 <div class="delete-modal hidden" id="deleteModal">
   <div class="delete-modal-content">
     <p class="delete-title">친구 삭제</p>
@@ -70,7 +74,7 @@
   </div>
 </div>
 
-<!-- 서누 모달 (친구코드 입력) -->
+<!-- 내 친구코드 표시 모달 -->
 <div class="add-modal hidden seonu-modal">
   <div class="add-modal-inner">
     <img src="{% static 'images/Ako.png' %}" alt="Ako" class="ako-img" />
@@ -82,7 +86,7 @@
   </div>
 </div>
 
-<!-- 친구 추가 팝업 -->
+<!-- 친구코드 입력 모달 -->
 <div class="add-modal hidden">
   <div class="add-modal-inner">
     <img src="{% static 'images/Ako.png' %}" alt="Ako" class="ako-img" />
@@ -107,15 +111,12 @@
   </div>
 </div>
 
-<!-- 친구 추가 완료 후 메모 작성 팝업 -->
+<!-- 친구 추가 완료 후 메모 작성 모달 -->
 <div class="memo-modal hidden">
     <form method="POST" action="{% url 'friends:add_friend' %}" class="edit-content">
     {% csrf_token %}
   <div class="edit-content">
-    <div
-      class="edit-avatar"
-      style="background-image: url('{% static 'images/Ako.png' %}')"
-    ></div>
+    <div class="edit-avatar"></div>
     <div class="edit-name">친구 추가 완료</div>
     <input type="hidden" name="friend_code" id="hiddenFriendCode" />
     <div class="edit-desc-box">

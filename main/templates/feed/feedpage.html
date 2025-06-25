@@ -3,20 +3,21 @@
 
 {% csrf_token %}
 
-<!-- 게시물 필터 -->
+<!-- 게시물 필터 (ALL/MY) -->
 <div class="filter-toggle">
   <button class="filter-btn all-btn active">ALL</button>
   <button class="filter-btn my-btn">MY</button>
 </div>
 
+<!-- 피드 컨테이너 -->
 <div class="feed-container">
   {% for feed in feeds %}
+  <!-- 개별 게시물 카드 -->
   <div
     class="post-card {% if feed.author == user %}my-post{% endif %}"
     data-post-id="{{ feed.id }}"
-    data-author-id="{{ feed.author.id }}"
-    data-is-private="{% if not feed.is_public %}true{% else %}false{% endif %}"
   >
+    <!-- 게시물 헤더 (프로필 정보 + 메뉴) -->
     <div class="post-header">
       <img
         src="{% if feed.author.image %}{{ feed.author.image.url }}{% else %}{% static 'images/profile-default.svg' %}{% endif %}"
@@ -30,6 +31,7 @@
         <p class="location">{{ feed.location }}</p>
       </div>
       <div class="more-wrapper">
+        <!-- 내 게시물인 경우 공개/비공개 토글 버튼 -->
         {% if feed.author == user %}
         <button
           class="public-toggle-btn"
@@ -39,6 +41,7 @@
           <span></span>
         </button>
         {% endif %}
+        <!-- 신고 버튼 -->
         <img
           src="{% static 'images/Siren.svg' %}"
           class="siren-report-btn"
@@ -51,8 +54,10 @@
           "
           alt="신고"
         />
+        <!-- 더보기 메뉴 드롭다운 -->
         <div class="more-menu hidden">
           {% if feed.author == user %}
+          <!-- 내 게시물: 공개/비공개 토글 -->
           <button
             class="menu-item toggle-public-button"
             data-post-id="{{ feed.id }}"
@@ -65,11 +70,8 @@
               >게시물 {% if feed.is_public %}공개{% else %}비공개{%endif%}</span
             >
           </button>
-          <button class="menu-item delete-button" data-post-id="{{ feed.id }}">
-            <img src="{% static 'images/delete-icon.svg' %}" alt="delete" />
-            <span>게시물 삭제</span>
-          </button>
           {% else %}
+          <!-- 다른 사람 게시물: 신고 버튼 -->
           <button class="menu-item report-button">
             <img
               src="{% static 'images/lock.svg' %}"
@@ -89,25 +91,27 @@
       </div>
     </div>
 
+    <!-- 게시물 이미지 -->
     <img
       src="{% if feed.image %}{{ feed.image.url }}{% else %}{% static 'images/sample_photo2.jpg' %}{% endif %}"
       alt="게시물 사진"
       class="post-img"
     />
 
+    <!-- 게시물 푸터 -->
     <div class="post-footer">
       <p class="post-caption">{{ feed.content|default:feed.memo }}</p>
       <div class="post-actions">
         <div class="icon-group">
+          <!-- 좋아요 버튼 -->
           <img
             src="{% if feed.is_liked %}{% static 'images/heart_filled.svg' %}{% else %}{% static 'images/heart.svg' %}{% endif %}"
             alt="좋아요"
             class="icon heart-icon"
             data-post-id="{{ feed.id }}"
           />
-          <span class="icon-count like-count" data-post-id="{{ feed.id }}"
-            >{{ feed.likes.count }}</span
-          >
+          <span class="icon-count like-count">{{ feed.likes.count }}</span>
+          <!-- 댓글 버튼 -->
           <img
             src="{% static 'images/comment.svg' %}"
             alt="댓글"
@@ -119,6 +123,7 @@
     </div>
   </div>
   {% empty %}
+  <!-- 게시물이 없을 때 표시 -->
   <div class="no-feed-message">
     <p>아직 게시물이 없습니다.<br />첫 게시물을 작성하고 친구를 늘려보세요!</p>
   </div>
@@ -129,6 +134,7 @@
 <div id="report-modal" class="report-modal hidden">
   <div class="report-box">
     <p class="report-title">해당 게시물을 신고하시겠습니까?</p>
+    <!-- 신고 사유 선택 폼 -->
     <form class="report-reasons">
       <label class="reason-item">
         <input type="radio" name="report-reason" value="욕설" />
@@ -178,6 +184,7 @@
         <input type="text" class="etc-reason" name="report-reason-etc" />
       </label>
     </form>
+    <!-- 신고 모달 버튼 -->
     <div class="report-buttons">
       <button class="cancel-button">취소</button>
       <button class="hide-button" disabled>숨기기</button>
@@ -187,6 +194,7 @@
 
 <!-- 댓글 팝업 -->
 <div class="comment-popup hidden">
+  <!-- 댓글 목록 -->
   <div class="comment-list">
     {% for comment in selected_feed.comments.all %}
     <div class="comment-item">
@@ -223,7 +231,4 @@
 </div>
 
 <script src="{% static 'js/page/feedpage.js' %}"></script>
-<script>
-  window.userId = {{ user.id }};
-</script>
 {% endblock %}

@@ -1,3 +1,7 @@
+/* ========================================
+   친구 페이지 스타일
+   ======================================== */
+
 /* 전체 페이지 컨테이너 */
 .page-container {
   max-width: 600px;
@@ -5,6 +9,7 @@
   padding: 0 20px;
 }
 
+/* 검색 및 친구 추가 섹션 */
 .search-section {
   display: flex;
   flex-direction: column;
@@ -54,6 +59,7 @@
   cursor: pointer;
 }
 
+/* 친구 목록 스타일 */
 .friend-list {
   display: flex;
   flex-direction: column;
@@ -76,6 +82,7 @@
   border-bottom: none;
 }
 
+/* 친구 프로필 아바타 */
 .avatar {
   width: 42px;
   height: 42px;
@@ -106,6 +113,7 @@
   color: #666;
 }
 
+/* 친구 메뉴 버튼 */
 .menu {
   font-size: 18px;
   color: #999;
@@ -117,6 +125,7 @@
   position: relative;
 }
 
+/* 친구 메뉴 - 더보기 */
 .more-menu {
   position: absolute;
   top: 24px;
@@ -157,7 +166,7 @@
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-/* 친구 추가 팝업 */
+/* 친구 추가 모달 스타일 */
 .add-modal {
   position: fixed;
   top: 0;
@@ -268,7 +277,7 @@
   white-space: nowrap;
 }
 
-/* 정보수정창 전체 배경 */
+/* 정보 수정 모달 스타일 */
 .edit-modal {
   position: fixed;
   top: 0;
@@ -287,24 +296,33 @@
   height: 325px;
   background: white;
   border-radius: 12px;
-  position: relative;
   font-family: "Moneygraphy-Rounded", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 32px 0 24px 0;
 }
 
+/* 수정 모달 아바타 */
 .edit-avatar {
-  width: 100px;
-  height: 100px;
+  width: 100px !important;
+  height: 100px !important;
   border-radius: 100px;
-  position: absolute;
-  top: 26px;
-  left: 129px;
+  margin-bottom: 16px;
+  position: static;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: #f0f0f0;
+  flex-shrink: 0;
+  min-width: 100px;
+  min-height: 100px;
 }
 
 .edit-name {
-  width: 253px;
-  position: absolute;
-  top: 140px;
-  left: 52px;
+  width: 100%;
   text-align: center;
   color: #2a2a2a;
   background-color: transparent;
@@ -313,18 +331,20 @@
   font-weight: 400;
   line-height: 30px;
   letter-spacing: -0.5px;
-  white-space: nowrap;
+  white-space: pre-line;
+  margin-bottom: 12px;
+  position: static;
 }
 
 .edit-desc-box {
   display: flex;
-  width: 238px;
   padding: 0px 10px 3px 10px;
   background: rgba(245, 245, 245, 0.95);
   border-radius: 10px;
-  position: absolute;
-  top: 210px;
-  left: 60px;
+  margin-bottom: 16px;
+  position: static;
+  flex-direction: column;
+  align-items: flex-end;
 }
 
 .edit-desc {
@@ -356,9 +376,6 @@
   gap: 10px;
   flex-shrink: 0;
   border-radius: 10px;
-  position: absolute;
-  top: 285px;
-  left: 276px;
   border: none;
   color: #0f3cbe;
   background: none;
@@ -369,8 +386,10 @@
   cursor: pointer;
   white-space: nowrap;
   font-family: "Moneygraphy-Rounded", sans-serif;
+  position: static;
 }
 
+/* 친구 삭제 확인 모달 */
 .delete-modal {
   position: fixed;
   top: 0;
@@ -447,6 +466,7 @@
   color: #f03f40;
 }
 
+/* 메모 작성 모달 */
 .memo-modal {
   position: fixed;
   top: 0;
@@ -460,6 +480,7 @@
   z-index: 2000;
 }
 
+/* 에러 메시지 스타일 */
 .code-error-msg {
   font-family: "Moneygraphy-Rounded", sans-serif;
   font-size: 13px;

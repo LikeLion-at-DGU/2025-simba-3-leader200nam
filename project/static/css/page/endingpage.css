@@ -1,3 +1,8 @@
+/* ========================================
+   엔딩 페이지 스타일
+   ======================================== */
+
+/* 전체 페이지 배경 */
 body {
   margin: 0;
   font-family: "Moneygraphy-Rounded", sans-serif;
@@ -8,6 +13,7 @@ body {
   flex-direction: column;
 }
 
+/* 메인 엔딩 컨테이너 */
 .ending-container {
   flex: 1;
   display: flex;
@@ -17,6 +23,7 @@ body {
   gap: 16px;
 }
 
+/* 다음 페이지 이동 버튼 */
 .next-icon {
   width: 8px;
   height: 16px;
@@ -25,6 +32,7 @@ body {
   stroke: #2a2a2a;
 }
 
+/* 상단 섹션 (경험치 + 이미지) */
 .top-section {
   display: flex;
   flex-direction: row;
@@ -32,6 +40,7 @@ body {
   gap: 16px;
 }
 
+/* 왼쪽 컬럼 */
 .left-column {
   display: flex;
   flex-direction: column;
@@ -39,6 +48,7 @@ body {
   gap: 17px;
 }
 
+/* 타겟 이미지 */
 .target-img {
   width: 154px;
   height: 125px;
@@ -46,6 +56,7 @@ body {
   object-fit: contain;
 }
 
+/* 텍스트 섹션 */
 .text-section {
   display: flex;
   flex-direction: column;
@@ -53,6 +64,7 @@ body {
   gap: 17px;
 }
 
+/* 경험치 제목 */
 .exp-title {
   font-size: 17px;
   font-weight: 400;
@@ -65,6 +77,7 @@ body {
   margin: 0;
 }
 
+/* 경험치 값 */
 .exp-value {
   display: flex;
   width: 178px;
@@ -78,6 +91,7 @@ body {
   letter-spacing: -0.5px;
 }
 
+/* 요약 텍스트 */
 .summary-text {
   font-size: 15px;
   font-weight: 400;
@@ -88,6 +102,7 @@ body {
   width: 277px;
 }
 
+/* 왼쪽 컨테이너 */
 .left-container {
   display: flex;
   flex-direction: column;
@@ -95,10 +110,12 @@ body {
   margin-top: 17px;
 }
 
+/* 하이라이트 텍스트 */
 .highlight {
   color: #1061ff;
 }
 
+/* 월별 그리드 */
 .month-grid {
   display: grid;
   grid-template-columns: repeat(3, 112px);
@@ -106,6 +123,7 @@ body {
   justify-content: center;
 }
 
+/* 월별 박스 */
 .month-box {
   position: relative;
   display: flex;
@@ -116,6 +134,7 @@ body {
   border-radius: 10px;
 }
 
+/* 넓은 박스 (7-8월, 12월) */
 .wide-box {
   grid-column: span 2;
   width: 192px !important;
@@ -132,6 +151,7 @@ body {
   margin-top: auto;
 }
 
+/* 월별 라벨 */
 .month-label {
   color: #fff;
   text-align: center;
@@ -172,7 +192,7 @@ body {
   padding-left: 16px;
 }
 
-/* Background colors */
+/* 월별 배경색 */
 .month-1-2 {
   background: #d1d9e0;
 }
@@ -220,11 +240,12 @@ body {
   padding-right: 16px;
 }
 
-/* 상세 뷰 숨김/보임 제어 */
+/* 숨김/보임 제어 */
 .hidden {
   display: none;
 }
 
+/* 월별 상세 뷰 모달 */
 #month-detail,
 .month-detail {
   background: #fff;
@@ -241,10 +262,12 @@ body {
   overflow-y: auto;
 }
 
+/* 상세 뷰 본문 */
 .month-detail-body {
   padding-top: 18px;
 }
 
+/* 상세 뷰 헤더 */
 .month-detail-header {
   display: flex;
   justify-content: space-between;
@@ -253,6 +276,7 @@ body {
   padding: 0 17px;
 }
 
+/* 상세 뷰 제목 */
 .month-detail-title {
   color: #eab0e5;
   font-family: "Moneygraphy-Rounded";
@@ -264,6 +288,7 @@ body {
   margin-top: 10px;
 }
 
+/* 상세 뷰 구분선 */
 .month-detail-line {
   width: 280px;
   height: 0;
@@ -272,6 +297,7 @@ body {
   flex-shrink: 0;
 }
 
+/* 상세 뷰 설명 */
 .month-detail-desc {
   color: #979797;
   font-size: 12px;
@@ -281,6 +307,7 @@ body {
   letter-spacing: -0.5px;
 }
 
+/* 상세 뷰 아이콘 */
 .month-detail-icon {
   width: 54.872px;
   height: 67px;
@@ -296,6 +323,7 @@ body {
   padding: 0 17px;
 }
 
+/* 게시물 이미지 */
 .post-image {
   width: 100%;
   height: 184px;
@@ -304,6 +332,7 @@ body {
   background: #8a8a8a;
 }
 
+/* 게시물 정보 */
 .post-info {
   display: flex;
   justify-content: space-between;
@@ -314,6 +343,7 @@ body {
   gap: 185px;
 }
 
+/* 게시물 제목 */
 .post-title {
   color: #2a2a2a;
   text-align: center;
@@ -326,6 +356,7 @@ body {
   margin: 0;
 }
 
+/* 게시물 아이콘 */
 .post-icons {
   display: flex;
   align-items: center;
@@ -351,6 +382,7 @@ body {
   letter-spacing: -0.5px;
 }
 
+/* 상세 뷰 뒤로가기 버튼 */
 .next-icon-detail {
   position: fixed;
   top: 41px;
@@ -362,7 +394,7 @@ body {
   cursor: pointer;
 }
 
-/* Ending2 스타일 통합 */
+/* Ending2 컨테이너 */
 .ending2-container {
   display: flex;
   justify-content: center;
@@ -374,6 +406,7 @@ body {
   background: none !important;
 }
 
+/* Ending2 Ako 이미지 */
 .Ako2-img {
   width: 291px;
   height: 291px;
@@ -385,7 +418,7 @@ body {
   transition: opacity 0.8s ease-in-out;
 }
 
-/* 텍스트 스타일 */
+/* Ending2 텍스트 */
 #ending2Text {
   margin-top: 185px;
   color: #2a2a2a;
@@ -400,14 +433,17 @@ body {
   transition: opacity 0.8s ease-in-out;
 }
 
+/* 하이라이트 텍스트 */
 .highlight-text {
   color: #1061ff;
 }
 
+/* 페이드인 애니메이션 */
 .fade-in {
   opacity: 1 !important;
 }
 
+/* 로딩 스피너 */
 .spinner {
   border: 4px solid rgba(255, 255, 255, 0.3);
   border-left-color: rgba(16, 97, 255, 0.8);
@@ -433,6 +469,7 @@ body {
   }
 }
 
+/* 스피너 페이드인/아웃 애니메이션 */
 @keyframes fade-in-out {
   0%,
   100% {

@@ -8,11 +8,15 @@ from django.contrib import messages
 import json
 
 @login_required
+# 로그인한 사용자만 접근 가능한 친구 목록 뷰 함수
 def friend_list(request):
-    # 친구 목록 조회
+    # 현재 사용자의 친구 관계들을 조회
     friends = Friend.objects.filter(user=request.user).select_related('friend')
+
+    # 현재 사용자의 친구 코드를 조회
     friend_codes = FriendCode.objects.filter(user=request.user).first()
     
+    # 친구 목록과 친구 코드를 템플릿에 전달
     context = {
         'friends': friends,
         'friend_code': friend_codes.code if friend_codes else None
@@ -20,17 +24,21 @@ def friend_list(request):
     return render(request, 'friend/friendpage.html', context)
 
 @login_required
+# 로그인한 사용자만 접근 가능한 친구 검색 뷰 함수
 def search_friends(request):
-    # 친구 검색 기능
+    # 검색어 가져오기
     query = request.GET.get('query', '')
     if query:
+        # 검색어가 있으면 해당 검색어를 포함한 친구 조회
         friends = Friend.objects.filter(
             user=request.user,
             friend__nickname__icontains=query
         ).select_related('friend')
     else:
+        # 검색어가 없으면 모든 친구 조회
         friends = Friend.objects.filter(user=request.user).select_related('friend')
     
+    # 친구 목록 형식 변환
     friend_list = [{
         'id': friend.friend.id,
         'username': friend.friend.nickname,
@@ -40,8 +48,9 @@ def search_friends(request):
     return JsonResponse({'friends': friend_list})
 
 @login_required
+# 로그인한 사용자만 접근 가능한 친구 삭제 뷰 함수
 def delete_friend(request, friend_id):
-    # 친구 삭제
+    # 친구 삭제 
     try:
         friend = Friend.objects.get(user=request.user, friend_id=friend_id)
         friend.delete()
@@ -50,6 +59,7 @@ def delete_friend(request, friend_id):
         return JsonResponse({'status': 'error', 'message': 'Friend not found'}, status=404)
 
 @login_required
+# 로그인한 사용자만 접근 가능한 친구 추가 뷰 함수
 def add_friend(request):
     # 친구 추가
     if request.method == 'POST':
@@ -57,6 +67,7 @@ def add_friend(request):
         memo = request.POST.get('memo', '')
 
         try:
+            # 친구 코드로 사용자 찾기: code=friend_code로 해당 코드를 가진 사용자 조회
             friend_code_obj = FriendCode.objects.get(code=friend_code)
 
             if friend_code_obj.user == request.user:
@@ -88,21 +99,7 @@ def add_friend(request):
     return redirect('friends:friend_list')
 
 @login_required
-def get_friend_profile(request, friend_id):
-    # 친구 프로필 정보 조회
-    try:
-        friend = User.objects.get(id=friend_id)
-        profile_data = {
-            'id': friend.id,
-            'username': friend.nickname,
-            'profile_image': friend.image.url if friend.image else None,
-            'bio': friend.bio
-        }
-        return JsonResponse({'status': 'success', 'profile': profile_data})
-    except User.DoesNotExist:
-        return JsonResponse({'status': 'error', 'message': 'User not found'}, status=404) 
-
-@login_required
+# 로그인한 사용자만 접근 가능한 친구 코드로 사용자 검색 뷰 함수
 def search_by_code(request):
     # 친구 코드로 사용자 정보 조회
     code = request.GET.get('code')
@@ -126,19 +123,34 @@ def search_by_code(request):
             'bio': user.bio
         }
         
-        return JsonResponse({'status': 'success', 'user': user_data})
+        # 디버깅: 사용자 데이터 확인
+        print(f"사용자 데이터: {user_data}")
+        print(f"프로필 이미지: {user_data['profile_image']}")
+        
+        # 이미 이미 추가된 친구인지 확인
+        already_added = Friend.objects.filter(
+            user=request.user, 
+            friend=user
+        ).exists()
+        
+        return JsonResponse({
+            'status': 'success', 
+            'user': user_data,
+            'already_added': already_added
+        })
         
     except FriendCode.DoesNotExist:
         return JsonResponse({'status': 'error', 'message': '유효하지 않은 친구 코드입니다.'}, status=404)
 
 @login_required
+# 로그인한 사용자만 접근 가능한 친구 메모 업데이트 뷰 함수
 def update_memo(request, friend_id):
     # 친구 메모 업데이트
     if request.method == 'POST':
         data = json.loads(request.body)
         memo = data.get('memo', '')
         
-        # 친구 관계 조회
+        # 친구 관계 조회: user=request.user, friend_id=friend_id로 해당 친구 관계 조회
         friend = Friend.objects.get(user=request.user, friend_id=friend_id)
         
         # 메모 업데이트
@@ -149,4 +161,4 @@ def update_memo(request, friend_id):
     
     return JsonResponse({'status': 'error'}, status=405)
 
-# Create your views here.
+

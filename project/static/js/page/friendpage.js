@@ -1,6 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // ========================================
+  // 친구 페이지 기능
+  // ========================================
+
   // ------------------------
-  // 0. 친구 검색 기능
+  // 1. 친구 검색 기능
   // ------------------------
   const searchInput = document.querySelector(".search-input");
   const friendList = document.querySelector(".friend-list");
@@ -37,7 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ------------------------
-  // 1. 더보기 메뉴 열고 닫기
+  // 2. 친구 메뉴 드롭다운
   // ------------------------
   const menus = document.querySelectorAll(".menu");
   menus.forEach((menu) => {
@@ -59,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ------------------------
-  // 2. 정보 수정 모달
+  // 3. 친구 정보 수정 모달
   // ------------------------
   const editButtons = document.querySelectorAll(".edit-btn");
   const editModal = document.querySelector(".edit-modal");
@@ -86,8 +90,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // 친구의 프로필 사진 설정
       const editAvatar = editModal.querySelector(".edit-avatar");
-      if (avatarStyle && avatarStyle !== "none") {
-        editAvatar.style.backgroundImage = avatarStyle;
+      if (avatarStyle && avatarStyle !== "none" && avatarStyle !== "") {
+        const urlMatch = avatarStyle.match(/url\(['"]?([^'"]+)['"]?\)/);
+        if (urlMatch) {
+          editAvatar.style.backgroundImage = `url(${urlMatch[1]})`;
+        } else {
+          editAvatar.style.backgroundImage = avatarStyle;
+        }
       } else {
         editAvatar.style.backgroundImage =
           "url('/static/images/profile-default.svg')";
@@ -107,6 +116,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // 메모 수정 저장
   document
     .querySelector(".edit-save-btn")
     .addEventListener("click", async () => {
@@ -145,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ------------------------
-  // 3. 친구 삭제 모달
+  // 4. 친구 삭제 모달
   // ------------------------
   const deleteButtons = document.querySelectorAll(".delete-friend-btn");
   const deleteModal = document.getElementById("deleteModal");
@@ -189,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ------------------------
-  // 4. 친구 추가 모달
+  // 5. 친구 추가 모달
   // ------------------------
   const addFriendBtn = document.querySelector(".add-btn");
   const seonuModal = document.querySelector(".seonu-modal");
@@ -218,9 +228,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ------------------------
-  // 5. 친구 추가 → 메모 팝업
+  // 6. 친구 추가 → 메모 작성
   // ------------------------
-
   const addConfirmBtn = document.querySelector(".friend-add-btn");
   const memoModal = document.querySelector(".memo-modal");
   const memoConfirmBtn = document.querySelector(".memo-confirm-btn");
@@ -253,6 +262,7 @@ document.addEventListener("DOMContentLoaded", () => {
             codeErrorMsg.textContent = "이미 추가한 친구입니다!";
           return;
         }
+
         addModal.classList.add("hidden");
         memoModal.classList.remove("hidden");
         document.getElementById("hiddenFriendCode").value = code;
@@ -261,9 +271,30 @@ document.addEventListener("DOMContentLoaded", () => {
         memoModal.querySelector(
           ".edit-name"
         ).innerText = `'${friendName}'님과\n친구 추가되었어요`;
-        const memoAvatar = memoModal.querySelector(".edit-avatar");
+        const memoAvatar = memoModal.querySelector(
+          "div.edit-content .edit-avatar"
+        );
+
         if (data.user.profile_image) {
-          memoAvatar.style.backgroundImage = `url('${data.user.profile_image}')`;
+          // 이미 URL인지 확인하고 적절히 처리
+          const imageUrl =
+            data.user.profile_image.startsWith("http") ||
+            data.user.profile_image.startsWith("/")
+              ? data.user.profile_image
+              : `/${data.user.profile_image}`;
+
+          // 이미지 로딩 테스트
+          const testImg = new Image();
+          testImg.onload = function () {
+            // 실제 이미지가 로드되면 원래 이미지로 변경
+            memoAvatar.style.backgroundImage = `url(${imageUrl})`;
+          };
+          testImg.onerror = function () {
+            // 실패하면 기본 이미지 유지
+            memoAvatar.style.backgroundImage =
+              "url('/static/images/profile-default.svg')";
+          };
+          testImg.src = imageUrl;
         } else {
           memoAvatar.style.backgroundImage =
             "url('/static/images/profile-default.svg')";
@@ -300,7 +331,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ------------------------
-  // 5. 친구코드 클릭 시 복사
+  // 7. 친구코드 클릭 시 복사
   // ------------------------
   const myCodeBox = document.querySelector(".code-input-box.myinput");
   if (myCodeBox) {
