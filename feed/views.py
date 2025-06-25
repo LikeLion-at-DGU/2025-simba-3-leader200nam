@@ -46,21 +46,36 @@ def api_response(data=None, message="Success", status="success", error=None, sta
 
 @login_required
 def feed_list(request):
-    # 친구 관계에 있는 사용자들의 피드만 가져오기
+    print(f"=== feed_list 디버깅 ===")
+    print(f"현재 사용자: {request.user.username} (ID: {request.user.id})")
+    
+    # 친구 관계가 있는지 확인
     friends = Friend.objects.filter(user=request.user).select_related('friend')
-
-    friend_ids = [friend.friend.id for friend in friends]
-    friend_ids.append(request.user.id)
+    print(f"친구 관계 수: {friends.count()}")
     
-    # 본인 피드는 모두, 친구 피드는 공개만
-    feeds = Feed.objects.filter(
-    Q(author=request.user) |
-    Q(author_id__in=friend_ids, is_private=False),
-    is_deleted=False
-
-    ).select_related('author').order_by('-created_at')
+    if friends.exists():
+        # 친구 관계가 있으면: 친구들의 공개 피드 + 본인 피드
+        friend_ids = [friend.friend.id for friend in friends]
+        friend_ids.append(request.user.id)
+        print(f"친구 ID 목록: {friend_ids}")
+        
+        feeds = Feed.objects.filter(
+            Q(author=request.user) |  # 본인 피드는 모두 (공개/비공개)
+            Q(author_id__in=friend_ids, is_private=False),  # 친구 피드는 공개만
+            is_deleted=False
+        ).select_related('author').order_by('-created_at')
+    else:
+        # 친구 관계가 없으면: 모든 사용자의 공개 피드 + 본인 피드
+        print("친구 관계 없음 - 모든 공개 피드 + 본인 피드 가져오기")
+        feeds = Feed.objects.filter(
+            Q(author=request.user) |  # 본인 피드는 모두 (공개/비공개)
+            Q(is_private=False),     # 다른 사용자 피드는 공개만
+            is_deleted=False
+        ).select_related('author').order_by('-created_at')
     
+    print(f"가져온 피드 수: {feeds.count()}")
     for feed in feeds:
+        print(f"피드 ID: {feed.id}, 작성자: {feed.author.username}, 공개여부: {not feed.is_private}, 삭제여부: {feed.is_deleted}")
         feed.is_liked = feed.likes.filter(user=request.user).exists()
         feed.is_public = not feed.is_private
 
