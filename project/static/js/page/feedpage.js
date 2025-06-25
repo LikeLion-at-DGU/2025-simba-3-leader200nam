@@ -1,4 +1,8 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // ========================================
+  // 피드 페이지 기능
+  // ========================================
+
   // --- 요소 선택 ---
   const allBtn = document.querySelector(".all-btn");
   const myBtn = document.querySelector(".my-btn");
@@ -23,21 +27,30 @@ document.addEventListener("DOMContentLoaded", () => {
   // 페이지 로드 시 숨겨진 게시물 확인
   const hiddenPosts = JSON.parse(localStorage.getItem("hiddenPosts")) || [];
 
-  // 비공개 게시물 id를 저장할 Set
-  const myPrivatePosts = new Set();
-
   // --- 함수 정의 ---
+
+  // 시간 포맷 함수 (방금 전, N분 전, N시간 전, N일 전)
+  function timeSince(dateString) {
+    const now = new Date();
+    const date = new Date(dateString);
+    const seconds = Math.floor((now - date) / 1000);
+    if (seconds < 60) return "방금 전";
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}분 전`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}시간 전`;
+    const days = Math.floor(hours / 24);
+    return `${days}일 전`;
+  }
 
   // 'ALL' 또는 'MY' 필터에 따라 게시물을 표시하거나 숨김
   // localStorage에 저장된 숨겨진 게시물도 함께 처리
-
   function filterPosts() {
     const showMyPosts = myBtn && myBtn.classList.contains("active");
     postCards.forEach((card) => {
       const postId = card.dataset.postId;
       const isMyPost = card.classList.contains("my-post");
       const isHidden = hiddenPosts.includes(postId);
-      // const isPrivate = card.dataset.isPrivate === "true";
       // 버튼의 현재 상태를 기준으로 판단
       const publicBtn = card.querySelector(".public-toggle-btn");
       const isPrivate =
@@ -106,16 +119,17 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // 공개/비공개 버튼과 신고 버튼의 표시 여부 업데이트
   function updatePublicButtonVisibility(tab) {
     document.querySelectorAll(".post-card.my-post").forEach((card) => {
       const publicBtn = card.querySelector(".public-toggle-btn");
       const sirenBtn = card.querySelector(".siren-report-btn");
-      if (tab === "MY") {
-        if (publicBtn) publicBtn.style.display = "flex";
-        if (sirenBtn) sirenBtn.style.display = "none";
-      } else {
-        if (publicBtn) publicBtn.style.display = "none";
-        if (sirenBtn) sirenBtn.style.display = "none";
+
+      if (publicBtn) {
+        publicBtn.style.display = tab === "MY" ? "flex" : "none";
+      }
+      if (sirenBtn) {
+        sirenBtn.style.display = "none";
       }
     });
   }
@@ -130,58 +144,62 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
+  // 공개/비공개 토글 버튼 스타일 적용
   function applyPublicButtonStyle(btn) {
     const isPrivate = btn.dataset.publicState === "private";
-    btn.style.display = "flex";
-    btn.style.width = "93px";
-    btn.style.height = "29px";
-    btn.style.padding = "6px 12px 6px 13px";
-    btn.style.justifyContent = "center";
-    btn.style.alignItems = "center";
-    btn.style.flexShrink = "0";
-    btn.style.borderRadius = "10px";
-    btn.style.background = isPrivate ? "#2782FF" : "#fff";
-    btn.style.border = "none";
-    btn.style.cursor = "pointer";
+
+    // 공통 스타일 설정 (display 제외)
+    const commonStyles = {
+      width: "93px",
+      height: "29px",
+      padding: "6px 12px 6px 13px",
+      justifyContent: "center",
+      alignItems: "center",
+      flexShrink: "0",
+      borderRadius: "10px",
+      background: isPrivate ? "#2782FF" : "#fff",
+      border: "none",
+      cursor: "pointer",
+    };
+
+    Object.assign(btn.style, commonStyles);
+
     const icon = btn.querySelector("img");
     const text = btn.querySelector("span");
+
+    // 아이콘 공통 스타일
+    const iconStyles = {
+      width: "16px",
+      height: "16px",
+      flexShrink: "0",
+      aspectRatio: "1/1",
+      marginRight: "6px",
+      background: "inherit",
+    };
+
+    // 텍스트 공통 스타일
+    const textStyles = {
+      color: "#000",
+      fontFamily: "'머니그라피TTF', sans-serif",
+      fontSize: "10px",
+      fontStyle: "normal",
+      fontWeight: "400",
+      lineHeight: "17px",
+      letterSpacing: "-0.5px",
+      background: "inherit",
+      whiteSpace: "nowrap",
+    };
+
     if (isPrivate) {
       icon.src = "/static/images/lock2.svg";
-      icon.style.width = "16px";
-      icon.style.height = "16px";
-      icon.style.flexShrink = "0";
-      icon.style.aspectRatio = "1/1";
-      icon.style.marginRight = "6px";
-      icon.style.background = "inherit";
       text.textContent = "게시물 비공개";
-      text.style.color = "#000";
-      text.style.fontFamily = "'머니그라피TTF', sans-serif";
-      text.style.fontSize = "10px";
-      text.style.fontStyle = "normal";
-      text.style.fontWeight = "400";
-      text.style.lineHeight = "17px";
-      text.style.letterSpacing = "-0.5px";
-      text.style.background = "inherit";
-      text.style.whiteSpace = "nowrap";
     } else {
       icon.src = "/static/images/lock.svg";
-      icon.style.width = "16px";
-      icon.style.height = "16px";
-      icon.style.flexShrink = "0";
-      icon.style.aspectRatio = "1/1";
-      icon.style.marginRight = "6px";
-      icon.style.background = "inherit";
       text.textContent = "게시물 공개";
-      text.style.color = "#000";
-      text.style.fontFamily = "'머니그라피TTF', sans-serif";
-      text.style.fontSize = "10px";
-      text.style.fontStyle = "normal";
-      text.style.fontWeight = "400";
-      text.style.lineHeight = "17px";
-      text.style.letterSpacing = "-0.5px";
-      text.style.background = "inherit";
-      text.style.whiteSpace = "nowrap";
     }
+
+    Object.assign(icon.style, iconStyles);
+    Object.assign(text.style, textStyles);
   }
 
   // --- 이벤트 리스너 설정 ---
@@ -228,11 +246,6 @@ document.addEventListener("DOMContentLoaded", () => {
         newBtn.dataset.publicState =
           newBtn.dataset.publicState === "private" ? "public" : "private";
         applyPublicButtonStyle(newBtn);
-        if (newBtn.dataset.publicState === "private") {
-          if (postId) myPrivatePosts.add(postId);
-        } else {
-          if (postId) myPrivatePosts.delete(postId);
-        }
         filterPosts(); // 상태 변경 후 필터링 적용
       });
     });
@@ -260,7 +273,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (reportButton) {
       reportButton.addEventListener("click", (e) => {
         e.stopPropagation();
-        if (hideButton) hideButton.dataset.postId = postCard.dataset.postId;
+        const postId = postCard.dataset.postId;
+        if (hideButton) {
+          hideButton.dataset.postId = postId;
+        }
         if (reportModal) reportModal.classList.remove("hidden");
         if (moreMenu) moreMenu.classList.add("hidden");
       });
@@ -295,36 +311,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 icon.src = "/static/images/toggle-off-icon.svg";
                 text.textContent = "게시물 비공개";
               }
-            } else {
-              // 실패 시 웹페이지 내 안내 메시지 표시 (예: 콘솔)
-              console.error(data.message || "상태 변경에 실패했습니다.");
             }
-          })
-          .catch((error) => console.error("Error:", error));
-        if (moreMenu) moreMenu.classList.add("hidden");
-      });
-    }
-
-    // '게시물 삭제' 버튼 클릭
-    const deleteButton = postCard.querySelector(".delete-button");
-    if (deleteButton) {
-      deleteButton.addEventListener("click", (e) => {
-        e.stopPropagation();
-        // confirm 삭제, 바로 삭제 진행
-        const postId = deleteButton.dataset.postId;
-        const csrfToken = document.querySelector(
-          "[name=csrfmiddlewaretoken]"
-        ).value;
-        fetch(`/feed/post/${postId}/delete/`, {
-          method: "POST",
-          headers: { "X-CSRFToken": csrfToken },
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.status === "ok") postCard.remove();
-            else console.error(data.message || "게시물 삭제에 실패했습니다.");
-          })
-          .catch((error) => console.error("Error:", error));
+          });
         if (moreMenu) moreMenu.classList.add("hidden");
       });
     }
@@ -354,12 +342,8 @@ document.addEventListener("DOMContentLoaded", () => {
               const likeCountSpan =
                 this.closest(".icon-group").querySelector(".like-count");
               if (likeCountSpan) likeCountSpan.textContent = data.likes_count;
-            } else {
-              // 좋아요 처리 실패 시 alert 삭제, 콘솔로 대체
-              console.error(data.message || "좋아요 처리에 실패했습니다.");
             }
-          })
-          .catch((error) => console.error("Error:", error));
+          });
       });
     }
 
@@ -386,19 +370,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 `;
               } else {
                 data.feed.comments.forEach((comment) => {
-                  // 시간 포맷 함수 재사용
-                  function timeSince(dateString) {
-                    const now = new Date();
-                    const date = new Date(dateString);
-                    const seconds = Math.floor((now - date) / 1000);
-                    if (seconds < 60) return "방금 전";
-                    const minutes = Math.floor(seconds / 60);
-                    if (minutes < 60) return `${minutes}분 전`;
-                    const hours = Math.floor(minutes / 60);
-                    if (hours < 24) return `${hours}시간 전`;
-                    const days = Math.floor(hours / 24);
-                    return `${days}일 전`;
-                  }
                   commentList.innerHTML += `
                     <div class="comment-item">
                       <div class="comment-content">
@@ -468,19 +439,6 @@ document.addEventListener("DOMContentLoaded", () => {
             // 새 댓글
             const newComment = document.createElement("div");
             newComment.className = "comment-item";
-            // 시간 포맷 함수
-            function timeSince(dateString) {
-              const now = new Date();
-              const date = new Date(dateString);
-              const seconds = Math.floor((now - date) / 1000);
-              if (seconds < 60) return "방금 전";
-              const minutes = Math.floor(seconds / 60);
-              if (minutes < 60) return `${minutes}분 전`;
-              const hours = Math.floor(minutes / 60);
-              if (hours < 24) return `${hours}시간 전`;
-              const days = Math.floor(hours / 24);
-              return `${days}일 전`;
-            }
             newComment.innerHTML = `
               <div class="comment-content">
                 <img src="${
@@ -499,9 +457,6 @@ document.addEventListener("DOMContentLoaded", () => {
             `;
             commentList.appendChild(newComment);
             commentInput.value = "";
-          } else {
-            // 댓글 등록 실패 시 alert 삭제, 콘솔로 대체
-            console.error("댓글 등록에 실패했습니다.");
           }
         });
     });
@@ -524,14 +479,29 @@ document.addEventListener("DOMContentLoaded", () => {
     // '숨기기' 버튼
     if (hideButton) {
       hideButton.addEventListener("click", () => {
-        const postId = hideButton.dataset.postId;
+        let postId = hideButton.dataset.postId;
+
+        // postId가 없으면 현재 보이는 첫 번째 게시물을 찾기
+        if (!postId) {
+          const visiblePostCard = document.querySelector(
+            '.post-card:not([style*="display: none"])'
+          );
+          if (visiblePostCard) {
+            postId = visiblePostCard.dataset.postId;
+          }
+        }
+
         if (postId && !hiddenPosts.includes(postId)) {
           hiddenPosts.push(postId);
           localStorage.setItem("hiddenPosts", JSON.stringify(hiddenPosts));
+
           const cardToHide = document.querySelector(
             `.post-card[data-post-id="${postId}"]`
           );
-          if (cardToHide) cardToHide.style.display = "none";
+
+          if (cardToHide) {
+            cardToHide.style.display = "none";
+          }
         }
         reportModal.classList.add("hidden");
       });

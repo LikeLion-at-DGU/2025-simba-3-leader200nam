@@ -5,6 +5,7 @@ from .models import Feed, Comment, Like, Report
 from friends.models import Friend
 from quest.models import Quest
 from django.views.decorators.http import require_GET
+from django.db.models import Q
 
 
 def get_display_name(user):
@@ -53,11 +54,10 @@ def feed_list(request):
     
     # 본인 피드는 모두, 친구 피드는 공개만
     feeds = Feed.objects.filter(
-        (
-            Q(author=request.user) | 
-            Q(author_id__in=friend_ids, is_private=False)
-        ),
-        is_deleted=False
+    Q(author=request.user) |
+    Q(author_id__in=friend_ids, is_private=False),
+    is_deleted=False
+
     ).select_related('author').order_by('-created_at')
     
     for feed in feeds:

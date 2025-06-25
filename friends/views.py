@@ -123,7 +123,21 @@ def search_by_code(request):
             'bio': user.bio
         }
         
-        return JsonResponse({'status': 'success', 'user': user_data})
+        # 디버깅: 사용자 데이터 확인
+        print(f"사용자 데이터: {user_data}")
+        print(f"프로필 이미지: {user_data['profile_image']}")
+        
+        # 이미 이미 추가된 친구인지 확인
+        already_added = Friend.objects.filter(
+            user=request.user, 
+            friend=user
+        ).exists()
+        
+        return JsonResponse({
+            'status': 'success', 
+            'user': user_data,
+            'already_added': already_added
+        })
         
     except FriendCode.DoesNotExist:
         return JsonResponse({'status': 'error', 'message': '유효하지 않은 친구 코드입니다.'}, status=404)
