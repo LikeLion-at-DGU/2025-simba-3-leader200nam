@@ -318,12 +318,18 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   memoConfirmBtn.addEventListener("click", async () => {
-    // AJAX로 폼 데이터 전송
+    // 폼의 기본 제출 동작 방지
     const form = memoModal.querySelector("form");
+
+    // 폼 제출 이벤트를 막기 위해 preventDefault 추가
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+    });
+
     const formData = new FormData(form);
 
     try {
-      const response = await fetch(form.action, {
+      const response = await fetch("/friends/add/", {
         method: "POST",
         headers: {
           "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]")
@@ -335,7 +341,12 @@ document.addEventListener("DOMContentLoaded", () => {
       const data = await response.json();
 
       if (data.status === "success") {
-        // 성공 시 페이지 새로고침
+        // 성공 시 모달 닫기
+        memoModal.classList.add("hidden");
+        addModal.classList.add("hidden");
+        seonuModal.classList.add("hidden");
+
+        // 페이지 새로고침하여 친구 목록 업데이트
         window.location.reload();
       } else {
         // 오류 메시지 표시

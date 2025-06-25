@@ -139,6 +139,27 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".siren-report-btn").forEach((btn) => {
       btn.addEventListener("click", (e) => {
         e.stopPropagation();
+        const postCard = btn.closest(".post-card");
+        const postId = postCard ? postCard.dataset.postId : null;
+
+        // 내 게시물인지 확인 (my-post 클래스가 있으면 내 게시물)
+        const isMyPost = postCard && postCard.classList.contains("my-post");
+
+        if (isMyPost) {
+          alert("자신의 게시물은 신고할 수 없습니다.");
+          return;
+        }
+
+        console.log("siren-report-btn 클릭 - postId:", postId); // 디버깅 로그 추가
+
+        if (hideButton && postId) {
+          hideButton.dataset.postId = postId;
+          console.log(
+            "hideButton에 postId 설정 (siren):",
+            hideButton.dataset.postId
+          ); // 디버깅 로그 추가
+        }
+
         if (reportModal) reportModal.classList.remove("hidden");
       });
     });
@@ -242,11 +263,36 @@ document.addEventListener("DOMContentLoaded", () => {
       applyPublicButtonStyle(newBtn);
 
       newBtn.addEventListener("click", function () {
-        // 토글
-        newBtn.dataset.publicState =
-          newBtn.dataset.publicState === "private" ? "public" : "private";
-        applyPublicButtonStyle(newBtn);
-        filterPosts(); // 상태 변경 후 필터링 적용
+        const postId = this.closest(".post-card").dataset.postId;
+        if (!postId) return;
+
+        // 서버에 토글 요청 보내기
+        const csrfToken = document.querySelector(
+          "[name=csrfmiddlewaretoken]"
+        ).value;
+
+        fetch(`/feed/post/${postId}/toggle-public/`, {
+          method: "POST",
+          headers: {
+            "X-CSRFToken": csrfToken,
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.status === "ok") {
+              // 서버 응답에 따라 상태 업데이트
+              this.dataset.publicState = data.is_public ? "public" : "private";
+              applyPublicButtonStyle(this);
+              filterPosts(); // 상태 변경 후 필터링 적용
+            } else {
+              alert("공개/비공개 설정 변경 중 오류가 발생했습니다.");
+            }
+          })
+          .catch((error) => {
+            console.error("토글 요청 실패:", error);
+            alert("공개/비공개 설정 변경 중 오류가 발생했습니다.");
+          });
       });
     });
   }
@@ -274,8 +320,10 @@ document.addEventListener("DOMContentLoaded", () => {
       reportButton.addEventListener("click", (e) => {
         e.stopPropagation();
         const postId = postCard.dataset.postId;
+        console.log("신고 버튼 클릭 - postId:", postId);
         if (hideButton) {
           hideButton.dataset.postId = postId;
+          console.log("hideButton에 postId 설정:", hideButton.dataset.postId);
         }
         if (reportModal) reportModal.classList.remove("hidden");
         if (moreMenu) moreMenu.classList.add("hidden");
@@ -480,28 +528,66 @@ document.addEventListener("DOMContentLoaded", () => {
     if (hideButton) {
       hideButton.addEventListener("click", () => {
         let postId = hideButton.dataset.postId;
+        console.log("숨기기 버튼 클릭 - postId:", postId);
 
-        // postId가 없으면 현재 보이는 첫 번째 게시물을 찾기
+        // postId가 없으면 오류 메시지 표시
         if (!postId) {
-          const visiblePostCard = document.querySelector(
-            '.post-card:not([style*="display: none"])'
-          );
-          if (visiblePostCard) {
-            postId = visiblePostCard.dataset.postId;
-          }
+          alert("신고할 게시물을 찾을 수 없습니다. 다시 시도해주세요.");
+          reportModal.classList.add("hidden");
+          return;
         }
 
-        if (postId && !hiddenPosts.includes(postId)) {
-          hiddenPosts.push(postId);
-          localStorage.setItem("hiddenPosts", JSON.stringify(hiddenPosts));
+        // 신고 사유 가져오기
+        const selectedRadio = reportModal.querySelector(
+          'input[name="report-reason"]:checked'
+        );
+        let reason = selectedRadio ? selectedRadio.value : "";
 
-          const cardToHide = document.querySelector(
-            `.post-card[data-post-id="${postId}"]`
-          );
+        // 기타 사유인 경우 직접 입력된 값 사용
+        if (reason === "기타" && etcInput) {
+          reason = etcInput.value.trim();
+        }
 
-          if (cardToHide) {
-            cardToHide.style.display = "none";
-          }
+        if (reason) {
+          // 서버에 신고 요청 보내기
+          const csrfToken = document.querySelector(
+            "[name=csrfmiddlewaretoken]"
+          ).value;
+
+          fetch(`/feed/post/${postId}/report/`, {
+            method: "POST",
+            headers: {
+              "X-CSRFToken": csrfToken,
+              "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: `reason=${encodeURIComponent(reason)}`,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.status === "success") {
+                // 신고 성공 시 해당 게시물 숨기기
+                const cardToHide = document.querySelector(
+                  `.post-card[data-post-id="${postId}"]`
+                );
+                if (cardToHide) {
+                  cardToHide.style.display = "none";
+                }
+                // localStorage에도 추가
+                if (!hiddenPosts.includes(postId)) {
+                  hiddenPosts.push(postId);
+                  localStorage.setItem(
+                    "hiddenPosts",
+                    JSON.stringify(hiddenPosts)
+                  );
+                }
+              } else {
+                alert("신고 처리 중 오류가 발생했습니다.");
+              }
+            })
+            .catch((error) => {
+              console.error("신고 요청 실패:", error);
+              alert("신고 처리 중 오류가 발생했습니다.");
+            });
         }
         reportModal.classList.add("hidden");
       });
