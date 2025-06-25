@@ -1,0 +1,338 @@
+* {
+  font-family: "Moneygraphy-Rounded", sans-serif;
+}
+
+.main-container {
+  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-box {
+  position: relative;
+  background: linear-gradient(
+    180deg,
+    rgba(17, 51, 137, 0.1) 53%,
+    rgba(15, 60, 190, 0.5) 100%
+  );
+  padding: 15px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 350px;
+  justify-content: space-between;
+}
+
+.univ-name {
+  background-color: white;
+  font-size: 16px;
+  color: #dc8219;
+  padding: 7px 10px;
+  border-radius: 10px;
+  display: inline-block;
+  align-self: flex-start;
+}
+
+.ako1-img {
+  position: absolute;
+  top: 36px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 200px;
+  background-color: inherit;
+  z-index: 1;
+}
+
+.level-container {
+  padding: 15px;
+  border-radius: 10px;
+  background: linear-gradient(
+    0deg,
+    rgba(255, 255, 255, 0.5) 0%,
+    rgba(255, 255, 255, 0.9) 100%
+  );
+  margin-top: auto;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+.level-title {
+  font-size: 14px;
+  color: rgba(42, 42, 42, 0.7);
+  font-weight: 400;
+  background-color: inherit;
+}
+
+.level {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 5px;
+  background-color: inherit;
+}
+
+.user-level,
+.level-count {
+  font-size: 11px;
+  font-weight: 400;
+  color: rgba(138, 138, 138, 0.7);
+  background-color: inherit;
+}
+
+/* --- 막대 그래프 스타일 --- */
+.bar-container {
+  width: 100%;
+  height: 20px;
+  border-radius: 10px;
+  background: rgba(231, 231, 231, 0.7);
+  overflow: hidden;
+  margin-top: 5px;
+}
+
+.bar-fill {
+  height: 100%;
+  border-radius: 10px;
+  background: linear-gradient(90deg, rgba(240, 185, 89, 0.1) 0%, #e4811c 100%);
+  transition: width 1s ease-out;
+  width: 0%;
+}
+
+.main-quest {
+  width: 100%;
+  background-color: white;
+  border-radius: 10px;
+  margin-top: 20px;
+  padding: 17px;
+}
+
+.quest-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: inherit;
+  margin-bottom: 17px;
+}
+
+.quest-title {
+  color: #113389;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  font-size: 20px;
+  background-color: inherit;
+}
+
+.quest-completed-icon {
+  width: 56px;
+  height: 45px;
+  background-color: inherit;
+}
+
+#questContainer {
+  background-color: white;
+}
+
+.quest-date {
+  color: #757575;
+  font-size: 11px;
+  font-weight: 400;
+  background-color: inherit;
+}
+
+.quest-border {
+  border: 1px solid rgba(245, 245, 245, 0.95);
+}
+
+.quest-lists {
+  padding: 5px 5px;
+  margin-top: 15px;
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  background-color: white !important;
+  border-radius: 5px;
+  transition: opacity 0.3s ease;
+}
+
+.quest-lists.completed {
+  opacity: 0.5 !important;
+  background-color: #f5f5f5 !important;
+  border-radius: 8px;
+}
+
+.quest-lists.completed .quest-list {
+  background-color: #f5f5f5 !important;
+  border-radius: 8px;
+}
+
+.quest-lists.completed .quest-order {
+  background-color: #f5f5f5 !important;
+  border-radius: 8px;
+}
+
+.quest-lists.completed .quest-infos {
+  background-color: #f5f5f5 !important;
+  border-radius: 8px;
+}
+
+.quest-lists.completed .quest-name {
+  background-color: #f5f5f5 !important;
+  border-radius: 8px;
+}
+
+.quest-lists.completed .quest-description {
+  background-color: #f5f5f5 !important;
+  border-radius: 8px;
+}
+
+.quest-lists.completed .quest-point {
+  background-color: #f5f5f5 !important;
+  border-radius: 8px;
+}
+
+.quest-lists.completed .quest-completed-icon {
+  background-color: #f5f5f5 !important;
+  border-radius: 8px;
+}
+
+.quest-list {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+  background-color: white !important;
+}
+
+.quest-order {
+  color: #2a2a2a;
+  text-align: center;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  background-color: white !important;
+}
+
+.quest-infos {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  background-color: white !important;
+}
+
+.quest-name {
+  color: #2a2a2a;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  background-color: white !important;
+}
+
+.quest-description {
+  color: #8a8a8a;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  background-color: white !important;
+}
+
+.quest-point {
+  color: #000;
+  text-align: center;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  background-color: white !important;
+}
+
+/* 진화 모달 스타일 */
+.evolution-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+#evolutionModal {
+  z-index: 2000;
+}
+
+.evolution-modal-content {
+  background: white;
+  border-radius: 10px;
+  padding: 25px 20px;
+  text-align: center;
+  max-width: 300px;
+  width: 90%;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.evolution-body {
+  margin-bottom: 25px;
+  background-color: inherit;
+}
+
+.evolution-ako-img {
+  width: 174px;
+  height: 174px;
+  margin-bottom: 15px;
+  background-color: inherit;
+}
+
+.evolution-text,
+.evolution-text2 {
+  color: #094aec;
+  text-align: center;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px; /* 140% */
+  background-color: inherit;
+  margin-top: 5px;
+}
+
+.evolution-text2 {
+  font-size: 14px;
+  color: #8a8a8a;
+}
+
+.evolution-level-text {
+  color: #8a8a8a;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+  background-color: inherit;
+}
+
+.evolution-close-btn {
+  background: #094aec;
+  color: white;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 30px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.evolution-close-btn:hover {
+  background: #0d4fd1;
+}
+
+.hidden {
+  display: none !important;
+}

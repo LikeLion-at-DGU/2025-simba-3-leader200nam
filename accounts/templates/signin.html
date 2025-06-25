@@ -1,0 +1,65 @@
+{% extends "baseNoneHeader.html" %} {% block content %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/accounts/signin/signin.css' %}" />
+
+<div class="signin-container">
+  <div class="signin-box">
+    <img
+      src="{% static 'images/refresh-logo.svg' %}"
+      alt="Logo"
+      class="signin-logo"
+      onclick="history.back()"
+      style="cursor: pointer"
+    />
+    <form id="login-form" method="POST" action="/signin/">
+      {% csrf_token %}
+      <div class="input-group">
+        <label for="username" class="input-label">아이디</label>
+        <div class="number-input">
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="아이디를 입력해주세요"
+            required
+          />
+        </div>
+      </div>
+      <div class="input-group">
+        <label for="password" class="input-label">비밀번호</label>
+        <div class="password-input">
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="비밀번호를 입력해주세요"
+            required
+          />
+          <img
+            src="{% static 'images/toggle-off-icon.svg' %}"
+            alt="Toggle Password"
+            class="toggle-icon"
+            id="toggle-password"
+            data-on="{% static 'images/toggle-on-icon.svg' %}"
+            data-off="{% static 'images/toggle-off-icon.svg' %}"
+          />
+        </div>
+      </div>
+      <button type="submit" class="signin-button" disabled>로그인</button>
+      {% if error %}
+      <div
+        class="error-message"
+        style="color: red; margin-bottom: 10px; text-align: center"
+      >
+        {{ error }}
+      </div>
+      {% endif %}
+    </form>
+    <div class="signup-link">
+      아직 회원이 아니신가요?<a href="{% url 'signup' %}">회원가입하기</a>
+    </div>
+  </div>
+</div>
+
+<script src="{% static 'js/accounts/signin.js' %}"></script>
+
+{% endblock content %}

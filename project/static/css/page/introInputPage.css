@@ -1,0 +1,81 @@
+body {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  overflow: hidden;
+  position: relative;
+}
+
+.ako1-img {
+  margin-top: 50px;
+  margin-bottom: 90px;
+  width: 291px;
+  height: 291px;
+}
+
+.intro-input-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 66px;
+}
+
+input {
+  border: none;
+  color: rgba(42, 42, 42);
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 200;
+  line-height: normal;
+  outline: none;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.name-input {
+  border-bottom: 2px solid #0f3cbe;
+  width: 100%;
+  flex-shrink: 0;
+  margin-bottom: 5px;
+}
+
+.name-condition {
+  color: #8a8a8a;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-bottom: 60px;
+}
+
+#name-form {
+  width: 229px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.name-button {
+  width: 189px;
+  height: 44px;
+  border-radius: 10px;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  border: none;
+  transition: background-color 0.3s;
+}
+
+.name-button:disabled {
+  background-color: #bfbfbf;
+  cursor: not-allowed;
+}
+
+.name-button:enabled {
+  background-color: #1061ff;
+  cursor: pointer;
+  color: white;
+}

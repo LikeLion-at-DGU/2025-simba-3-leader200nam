@@ -1,0 +1,483 @@
+/* ========================================
+   엔딩 페이지 스타일
+   ======================================== */
+
+/* 전체 페이지 배경 */
+body {
+  margin: 0;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  background: linear-gradient(#dbeaff, #fff);
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 메인 엔딩 컨테이너 */
+.ending-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 24px 16px 32px;
+  gap: 16px;
+}
+
+/* 다음 페이지 이동 버튼 */
+.next-icon {
+  width: 8px;
+  height: 16px;
+  flex-shrink: 0;
+  stroke-width: 3px;
+  stroke: #2a2a2a;
+}
+
+/* 상단 섹션 (경험치 + 이미지) */
+.top-section {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+}
+
+/* 왼쪽 컬럼 */
+.left-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 17px;
+}
+
+/* 타겟 이미지 */
+.target-img {
+  width: 154px;
+  height: 125px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+/* 텍스트 섹션 */
+.text-section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 17px;
+}
+
+/* 경험치 제목 */
+.exp-title {
+  font-size: 17px;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: -0.5px;
+  background: linear-gradient(90deg, #113389 19.64%, #1061ff 80.36%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0;
+}
+
+/* 경험치 값 */
+.exp-value {
+  display: flex;
+  width: 178px;
+  height: 34px;
+  justify-content: left;
+  align-items: center;
+  color: #1061ff;
+  font-size: 32px;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: -0.5px;
+}
+
+/* 요약 텍스트 */
+.summary-text {
+  font-size: 15px;
+  font-weight: 400;
+  color: #2a2a2a;
+  line-height: 17px;
+  letter-spacing: -0.5px;
+  text-align: left;
+  width: 277px;
+  padding-top: 10px;
+}
+
+/* 왼쪽 컨테이너 */
+.left-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 17px;
+}
+
+/* 하이라이트 텍스트 */
+.highlight {
+  color: #1061ff;
+}
+
+/* 월별 그리드 */
+.month-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 112px);
+  gap: 10px;
+  justify-content: center;
+}
+
+/* 월별 박스 */
+.month-box {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 32px 16px 31px;
+  height: 116px;
+  border-radius: 10px;
+}
+
+/* 넓은 박스 (7-8월, 12월) */
+.wide-box {
+  grid-column: span 2;
+  width: 192px !important;
+  height: 116px;
+  padding: 11px 20px;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.month-box img {
+  width: 65px;
+  height: 65px;
+  object-fit: contain;
+  margin-top: auto;
+}
+
+/* 월별 라벨 */
+.month-label {
+  color: #fff;
+  text-align: center;
+  font-family: "Moneygraphy-Rounded";
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: -0.5px;
+  margin-bottom: 4px;
+}
+
+/* 1-2월: 왼쪽 정렬 */
+.month-1-2 .month-label {
+  align-self: flex-start;
+  position: absolute;
+  left: 20px;
+  top: 6px;
+}
+
+/* 7-8월: 오른쪽 정렬 */
+.month-7-8 .month-label {
+  align-self: flex-end;
+  position: absolute;
+  right: 20px;
+  top: 6px;
+}
+
+.month-1-2 img {
+  margin-left: auto;
+  padding-bottom: 10px;
+  width: 79px;
+  height: 80px;
+}
+
+.month-7-8 img {
+  padding-bottom: 16px;
+  padding-left: 16px;
+}
+
+/* 월별 배경색 */
+.month-1-2 {
+  background: #d1d9e0;
+}
+.month-3 {
+  background: #2cce14;
+}
+.month-4 {
+  background: #eab0e5;
+}
+.month-5 {
+  background: #2782ff;
+}
+.month-6 {
+  background: #d6d639;
+}
+.month-7-8 {
+  background: #4ae5f3;
+  justify-content: flex-start;
+  padding: 11px 20px;
+}
+.month-9 {
+  background: #f5d592;
+}
+.month-10 {
+  background: #f0b959;
+}
+.month-11 {
+  background: #e4811c;
+}
+.month-12 {
+  background: #fa8787;
+  justify-content: flex-end;
+  padding: 11px 20px;
+}
+
+.month-12 .month-label {
+  align-self: flex-start;
+  position: absolute;
+  left: 20px;
+  top: 6px;
+}
+
+.month-12 img {
+  padding-bottom: 16px;
+  padding-right: 16px;
+}
+
+/* 숨김/보임 제어 */
+.hidden {
+  display: none;
+}
+
+/* 월별 상세 뷰 모달 */
+#month-detail,
+.month-detail {
+  background: #fff;
+  width: 100%;
+  height: 100%;
+  flex-shrink: 0;
+  border-radius: 10px;
+  z-index: 9999;
+  position: fixed;
+  top: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+}
+
+/* 상세 뷰 본문 */
+.month-detail-body {
+  padding-top: 18px;
+}
+
+/* 상세 뷰 헤더 */
+.month-detail-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 39px;
+  margin-top: 18px;
+  padding: 0 17px;
+}
+
+/* 상세 뷰 제목 */
+.month-detail-title {
+  color: #eab0e5;
+  font-family: "Moneygraphy-Rounded";
+  font-size: 34px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px; /* 53.125% */
+  letter-spacing: -0.5px;
+  margin-top: 10px;
+}
+
+/* 상세 뷰 구분선 */
+.month-detail-line {
+  width: 280px;
+  height: 0;
+  border: none;
+  border-top: 0.5px solid #eab0e5;
+  flex-shrink: 0;
+}
+
+/* 상세 뷰 설명 */
+.month-detail-desc {
+  color: #979797;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: -0.5px;
+}
+
+/* 상세 뷰 아이콘 */
+.month-detail-icon {
+  width: 54.872px;
+  height: 67px;
+  aspect-ratio: 54.87/67;
+}
+
+/* 게시물 카드 */
+.post-card {
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  padding: 0 17px;
+  padding-bottom: 15px;
+}
+
+/* 게시물 이미지 */
+.post-image {
+  width: 100%;
+  height: 184px;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #8a8a8a;
+}
+
+/* 게시물 정보 */
+.post-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #fff;
+  border-bottom-left-radius: 12px;
+  border-bottom-right-radius: 12px;
+  gap: 185px;
+}
+
+/* 게시물 제목 */
+.post-title {
+  color: #2a2a2a;
+  text-align: center;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: -0.5px;
+  margin-bottom: 8px;
+  margin: 0;
+}
+
+/* 게시물 아이콘 */
+.post-icons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+}
+
+.post-icons .icon {
+  width: 20px;
+  height: 18.35px;
+  flex-shrink: 0;
+}
+
+.post-icons span {
+  color: #2a2a2a;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: -0.5px;
+}
+
+/* 상세 뷰 뒤로가기 버튼 */
+.next-icon-detail {
+  position: fixed;
+  top: 41px;
+  left: 21px;
+  width: 16px;
+  height: 16px;
+  transform: scaleX(-1);
+  z-index: 100;
+  cursor: pointer;
+}
+
+/* Ending2 컨테이너 */
+.ending2-container {
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  overflow: hidden;
+  position: relative;
+  background: none !important;
+}
+
+/* Ending2 Ako 이미지 */
+.Ako2-img {
+  width: 291px;
+  height: 291px;
+  position: absolute;
+  bottom: 200px;
+  left: 50%;
+  transform: translateX(calc(-50% + 10px));
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+
+/* Ending2 텍스트 */
+#ending2Text {
+  margin-top: 185px;
+  color: #2a2a2a;
+  text-align: center;
+  font-size: 22px;
+  font-style: normal;
+  font-weight: 400;
+  font-family: "Moneygraphy-Rounded", sans-serif;
+  line-height: 30px;
+  white-space: pre-line;
+  opacity: 0;
+  transition: opacity 0.8s ease-in-out;
+}
+
+/* 하이라이트 텍스트 */
+.highlight-text {
+  color: #1061ff;
+}
+
+/* 페이드인 애니메이션 */
+.fade-in {
+  opacity: 1 !important;
+}
+
+/* 로딩 스피너 */
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-left-color: rgba(16, 97, 255, 0.8);
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1.2s linear infinite, fade-in-out 2.4s ease-in-out infinite;
+  position: absolute;
+  margin-top: 180px;
+  left: 50%;
+  transform: translateX(-50%);
+  filter: blur(0.5px);
+  box-shadow: 0 0 10px rgba(0, 123, 255, 0.4);
+}
+
+/* 스피너 회전 애니메이션 */
+@keyframes spin {
+  0% {
+    transform: translateX(-50%) rotate(0deg);
+  }
+  100% {
+    transform: translateX(-50%) rotate(360deg);
+  }
+}
+
+/* 스피너 페이드인/아웃 애니메이션 */
+@keyframes fade-in-out {
+  0%,
+  100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}

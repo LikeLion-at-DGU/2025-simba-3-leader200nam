@@ -1,0 +1,13 @@
+{% extends "baseNoneHeader.html" %} {% block content %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/page/intropage.css' %}" />
+
+<div class="intro-container">
+  <h1 id="introText"></h1>
+  <div class="spinner" id="loadingSpinner" style="display: none"></div>
+  <img src="" alt="mascot Image" class="ako1-img" id="mascotImg" />
+</div>
+<script>
+  window.univName = '{{ user.univ_name|escapejs|default_if_none:"" }}';
+</script>
+<script src="{% static 'js/page/intropage.js' %}"></script>
+{% endblock content %}

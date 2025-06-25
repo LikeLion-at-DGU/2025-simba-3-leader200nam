@@ -1,0 +1,96 @@
+.friend-icon-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+#friendIcon {
+  width: 35px;
+  height: 35px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.friend-popup {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  width: 244px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0px 4px 9.6px 0px rgba(164, 164, 164, 0.25);
+  padding: 15px;
+  z-index: 1000;
+}
+
+.friend-popup.show {
+  display: block;
+}
+
+.popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  background-color: inherit;
+}
+
+.popup-border {
+  border: rgba(245, 245, 245, 0.95) 1px solid;
+  margin-bottom: 10px;
+}
+
+.user-name {
+  color: #2a2a2a;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px;
+  letter-spacing: -0.5px;
+  background-color: inherit;
+}
+
+.level {
+  color: #1061ff;
+  text-align: center;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px; /* 170% */
+  letter-spacing: -0.5px;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: inherit;
+}
+
+.profile,
+.logout {
+  color: #8a8a8a;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 17px; /* 113.333% */
+  letter-spacing: -0.5px;
+  background-color: inherit;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background-color: inherit;
+}
+
+.user-profile {
+  width: 35px;
+  height: 35px;
+  object-fit: cover;
+  border-radius: 50%;
+  background-color: inherit;
+}

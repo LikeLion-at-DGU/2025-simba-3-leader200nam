@@ -1,0 +1,99 @@
+{% extends "baseNoneHeader.html" %} {% block content %} {% load static %}
+<link rel="stylesheet" href="{% static 'css/page/profileModification.css' %}" />
+<div class="profile-modification-container">
+  <div id="header">
+    <img
+      src="{% static 'images/back-icon.svg' %}"
+      alt="back icon"
+      class="back-icon"
+      onclick="history.back()"
+      style="cursor: pointer"
+    />
+    <h1 class="profile-modification-title">프로필 수정하기</h1>
+  </div>
+
+  <div class="profile-modification-box">
+    {% if error %}
+    <div
+      class="error-message"
+      style="color: red; margin-bottom: 10px; text-align: center"
+    >
+      {{ error }}
+    </div>
+    {% endif %}
+
+    <form
+      id="profile-modification-form"
+      method="POST"
+      action="{% url 'profileModification' %}"
+      enctype="multipart/form-data"
+    >
+      {% csrf_token %}
+      <div class="profile-img">
+        <div class="profile-image-box" id="imageUploadBox">
+          <img
+            src="{% if user.image %}{{ user.image.url }}{% else %}{% static 'images/profile-default.svg' %}{% endif %}"
+            alt="default profile image"
+            class="profile-image {% if user.image %}uploaded{% endif %}"
+            id="previewProfileImage"
+          />
+        </div>
+        <input
+          type="file"
+          id="profile-image-upload"
+          name="image"
+          accept="image/*"
+          style="display: none"
+        />
+        <p class="profile-image-text" id="changeProfileText">
+          프로필 사진 변경
+        </p>
+      </div>
+      <div class="input-group">
+        <label for="nickname" class="input-label">닉네임</label>
+        <div class="name-input">
+          <input
+            type="text"
+            id="nickname"
+            name="nickname"
+            placeholder="닉네임을 입력해주세요."
+            value="{{ user.nickname|default:'' }}"
+            required
+          />
+        </div>
+        <p class="input-condition">2~15자 이내로 입력해주세요.</p>
+      </div>
+      <div class="input-group">
+        <label for="major_name" class="input-label">학과</label>
+        <div class="major-input">
+          <input
+            type="text"
+            id="major_name"
+            name="major_name"
+            placeholder="본인의 학과를 입력해주세요."
+            value="{{ user.major_name|default:'' }}"
+            required
+          />
+        </div>
+        <p class="input-condition">공식명칭으로 입력해주세요.</p>
+      </div>
+      <div class="input-group">
+        <label for="bio" class="input-label">한줄소개</label>
+        <div class="introduce-input">
+          <input
+            type="text"
+            id="bio"
+            name="bio"
+            placeholder="한줄소개를 입력해주세요."
+            value="{{ user.bio|default:'' }}"
+            maxlength="20"
+          />
+        </div>
+        <p class="input-condition" id="description">(0/20)</p>
+      </div>
+      <button type="submit" class="submit-button">수정하기</button>
+    </form>
+  </div>
+</div>
+<script src="{% static 'js/page/profileModification.js' %}"></script>
+{% endblock content %}
