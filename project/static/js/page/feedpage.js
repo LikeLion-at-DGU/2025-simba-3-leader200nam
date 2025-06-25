@@ -24,8 +24,9 @@ document.addEventListener("DOMContentLoaded", () => {
     ? reportModal.querySelector(".etc-reason")
     : null;
 
-  // 페이지 로드 시 숨겨진 게시물 확인
-  const hiddenPosts = JSON.parse(localStorage.getItem("hiddenPosts")) || [];
+  // 숨겨진 게시물 목록 (localStorage에서 가져오기)
+  const hiddenPosts = []; // localStorage 초기화 - 모든 게시물 표시
+  // const hiddenPosts = JSON.parse(localStorage.getItem("hiddenPosts")) || [];
 
   // --- 함수 정의 ---
 
