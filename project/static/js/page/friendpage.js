@@ -317,17 +317,34 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  memoConfirmBtn.addEventListener("click", () => {
-    // 폼 제출
+  memoConfirmBtn.addEventListener("click", async () => {
+    // AJAX로 폼 데이터 전송
     const form = memoModal.querySelector("form");
-    const memoTextarea = memoModal.querySelector("textarea[name='memo']");
+    const formData = new FormData(form);
 
-    // 메모가 비어있으면 기본값 설정
-    if (!memoTextarea.value.trim()) {
-      memoTextarea.value = "";
+    try {
+      const response = await fetch(form.action, {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]")
+            .value,
+        },
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.status === "success") {
+        // 성공 시 페이지 새로고침
+        window.location.reload();
+      } else {
+        // 오류 메시지 표시
+        alert(data.message || "친구 추가 중 오류가 발생했습니다.");
+      }
+    } catch (error) {
+      console.error("친구 추가 오류:", error);
+      alert("친구 추가 중 오류가 발생했습니다.");
     }
-
-    form.submit();
   });
 
   // ------------------------

@@ -13,6 +13,8 @@ class Friend(models.Model):
     friend = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='friend_of')
     # 친구 모델 필드 정의: 친구 관계가 생성된 시간을 저장
     created_at = models.DateTimeField(auto_now_add=True)
+    # 친구 모델 필드 정의: 친구 관계 상태 (accepted, pending 등)
+    status = models.CharField(max_length=10, default='accepted')
     # 친구 모델 필드 정의: 친구 관계에 대한 메모를 저장하는 필드
     memo = models.CharField(max_length=255, blank=True, null=True)
     # 친구 모델 옵션 정의: 사용자와 친구 간의 관계가 유일해야 함

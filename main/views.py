@@ -231,75 +231,14 @@ def profileModification(request):
     # GET 요청: 현재 사용자 정보를 폼에 표시
     return render(request, 'main/profileModification.html', {'user': request.user})
 
-
-
 def rankPage(request):
     return render(request, 'main/rankPage.html')
 
 def ending(request):
-    # 사용자의 실제 데이터 계산
-    user_exp = getattr(request.user, 'exp', 0)
-    
-    # 사용자가 작성한 게시물 수 (완료된 것만)
-    total_posts = Feed.objects.filter(
-        author=request.user, 
-        is_completed=True,
-        is_deleted=False
-    ).count()
-    
-    # 사용자가 방문한 고유한 장소 수
-    unique_locations = Feed.objects.filter(
-        author=request.user, 
-        is_completed=True,
-        is_deleted=False,
-        location__isnull=False
-    ).exclude(location='').values('location').distinct().count()
-    
-    # 사용자 정보
-    user_data = {
-        'nickname': request.user.nickname or '서누',
-        'univ_name': request.user.univ_name,
-        'major_name': request.user.major_name,
-        'bio': request.user.bio or '',
-        'image_url': request.user.image.url if request.user.image else None,
-        'exp': user_exp,
-        'level': request.user.level,
-        'current_level_exp': request.user.current_level_exp,
-        'max_level_exp': request.user.max_level_exp,
-        'ako_image': request.user.ako_image
-    }
-    
-    context = {
-        'user': user_data,
-        'user_exp': user_exp,
-        'total_posts': total_posts,
-        'unique_locations': unique_locations,
-    }
-    
-    return render(request, 'ending/endingpage.html', context)
+    return render(request, 'ending/endingpage.html')
 
 def ending2(request):
-    # 사용자 정보
-    user_exp = getattr(request.user, 'exp', 0)
-    user_data = {
-        'nickname': request.user.nickname or '서누',
-        'univ_name': request.user.univ_name,
-        'major_name': request.user.major_name,
-        'bio': request.user.bio or '',
-        'image_url': request.user.image.url if request.user.image else None,
-        'exp': user_exp,
-        'level': request.user.level,
-        'current_level_exp': request.user.current_level_exp,
-        'max_level_exp': request.user.max_level_exp,
-        'ako_image': request.user.ako_image
-    }
-    
-    context = {
-        'user': user_data
-    }
-    
-    return render(request, 'ending2/ending2page.html', context)
-
+    return render(request, 'ending2/ending2page.html')
 
 # API 엔드포인트 - 사용자 정보 제공
 @login_required
@@ -341,8 +280,3 @@ def update_nickname(request):
             }, status=400)
     
     return JsonResponse({'status': 'error', 'message': 'POST 요청만 허용됩니다.'}, status=405)
-
-def logout(request):
-    auth.logout(request)
-    return redirect('signin')
-
