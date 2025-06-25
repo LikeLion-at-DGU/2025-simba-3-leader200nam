@@ -166,9 +166,14 @@ document.addEventListener("DOMContentLoaded", function () {
         currentSlide++;
         // 다음 슬라이드 표시 (2초 후)
         setTimeout(showNextSlide, slideDisplayTime);
+
+        // 1초 후 엔딩페이지로 리다이렉트
+        setTimeout(() => {
+          window.location.href = "/ending/";
+        }, 7000);
       }, 800);
     } else {
-      // 모든 슬라이드 표시 완료
+      // 모든 슬라이드 표시 완료 후 바로 엔딩페이지로 리다이렉트
       ending2TextElement.classList.remove("fade-in");
       Ako2Img.classList.remove("fade-in");
     }
