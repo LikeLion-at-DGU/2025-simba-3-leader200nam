@@ -13,16 +13,6 @@
     <h1 class="signup-title">회원가입하기</h1>
   </div>
   <div class="signup-box">
-    {% if form.errors %}
-    <div
-      class="form-errors"
-      style="color: red; text-align: center; margin-bottom: 10px"
-    >
-      {% for field, errors in form.errors.items %} {% for error in errors %}
-      <div>{{ error }}</div>
-      {% endfor %} {% endfor %}
-    </div>
-    {% endif %}
     <form id="signup-form" method="POST" action="{% url 'signup' %}">
       {% csrf_token %}
       <div class="input-group">
@@ -117,6 +107,13 @@
         </div>
         <p class="input-condition"></p>
       </div>
+      {% if form.errors %}
+      <div class="form-errors" style="color: red; text-align: center">
+        {% for field, errors in form.errors.items %} {% for error in errors %}
+        <div>{{ error }}</div>
+        {% endfor %} {% endfor %}
+      </div>
+      {% endif %}
       <button type="submit" class="signin-button" disabled>회원가입</button>
     </form>
   </div>
