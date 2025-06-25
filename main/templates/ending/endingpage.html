@@ -15,14 +15,18 @@
     </style>
   </head>
   <body>
+    <!-- 메인 엔딩 컨테이너 -->
     <div class="ending-container">
+      <!-- 왼쪽 컨테이너 (경험치 + 요약) -->
       <div class="left-container">
+        <!-- 다음 페이지 이동 버튼 -->
         <img
           src="{% static 'images/next.svg' %}"
           alt="화살표"
           class="next-icon"
           id="next-icon"
         />
+        <!-- 상단 섹션 (경험치 + 이미지) -->
         <div class="top-section">
           <div class="left-column">
             <div class="text-section">
@@ -39,6 +43,7 @@
           />
         </div>
 
+        <!-- 요약 텍스트 -->
         <p class="summary-text">
           올해 <span class="highlight">{{ unique_locations }}</span>곳에서
           <span class="highlight">{{ total_posts }}</span>개의 멋진 추억을
@@ -46,7 +51,9 @@
         </p>
       </div>
 
+      <!-- 월별 그리드 -->
       <div class="month-grid">
+        <!-- 3월 블록 -->
         <div
           class="month-box month-3"
           data-title="3월"
@@ -57,6 +64,7 @@
           <p class="month-label">3월</p>
           <img src="{% static 'images/plant.png' %}" alt="3월" />
         </div>
+        <!-- 4월 블록 -->
         <div
           class="month-box month-4"
           data-title="4월"
@@ -67,6 +75,7 @@
           <p class="month-label">4월</p>
           <img src="{% static 'images/flower.png' %}" alt="4월" />
         </div>
+        <!-- 5월 블록 -->
         <div
           class="month-box month-5"
           data-title="5월"
@@ -77,6 +86,7 @@
           <p class="month-label">5월</p>
           <img src="{% static 'images/sound.png' %}" alt="5월" />
         </div>
+        <!-- 6월 블록 -->
         <div
           class="month-box month-6"
           data-title="6월"
@@ -87,6 +97,7 @@
           <p class="month-label">6월</p>
           <img src="{% static 'images/pencil.png' %}" alt="6월" />
         </div>
+        <!-- 7-8월 블록 (넓은 박스) -->
         <div
           class="month-box wide-box month-7-8"
           data-title="7-8월"
@@ -98,6 +109,7 @@
           <img src="{% static 'images/chair.png' %}" alt="7월" />
           <img src="{% static 'images/parasol.png' %}" alt="8월" />
         </div>
+        <!-- 9월 블록 -->
         <div
           class="month-box month-9"
           data-title="9월"
@@ -108,6 +120,7 @@
           <p class="month-label">9월</p>
           <img src="{% static 'images/acorn.png' %}" alt="9월" />
         </div>
+        <!-- 10월 블록 -->
         <div
           class="month-box month-10"
           data-title="10월"
@@ -118,6 +131,7 @@
           <p class="month-label">10월</p>
           <img src="{% static 'images/leave.png' %}" alt="10월" />
         </div>
+        <!-- 11월 블록 -->
         <div
           class="month-box month-11"
           data-title="11월"
@@ -128,6 +142,7 @@
           <p class="month-label">11월</p>
           <img src="{% static 'images/muffler.png' %}" alt="11월" />
         </div>
+        <!-- 12월 블록 (넓은 박스) -->
         <div
           class="month-box wide-box month-12"
           data-title="12월"
@@ -139,6 +154,7 @@
           <img src="{% static 'images/cookie.png' %}" alt="쿠키" />
           <img src="{% static 'images/tree.png' %}" alt="트리" />
         </div>
+        <!-- 서누 블록 -->
         <div class="month-box" style="background-color: #8a8a8a; color: white">
           <p class="month-label">서누</p>
           <img src="{% static 'images/good.png' %}" alt="서누" />
@@ -146,7 +162,9 @@
       </div>
     </div>
 
+    <!-- 월별 상세 뷰 모달 -->
     <div class="month-detail hidden" id="month-detail">
+      <!-- 상세 뷰 헤더 -->
       <div class="month-detail-header">
         <div class="month-detail-body">
           <span class="month-detail-title" id="detail-title"></span>
@@ -155,10 +173,11 @@
         </div>
         <img src="" alt="" class="month-detail-icon" id="detail-img" />
       </div>
+      <!-- 월별 게시물 목록 -->
       <div id="month-feed-list"></div>
     </div>
 
-    <!-- Ending2 섹션 -->
+    <!-- Ending2 섹션 (최종 메시지) -->
     <div class="ending2-container hidden" id="ending2-container">
       <h1 id="ending2Text"></h1>
       <img
@@ -168,6 +187,7 @@
       />
     </div>
 
+    <!-- 상세 뷰 뒤로가기 버튼 -->
     <img
       src="{% static 'images/next.svg' %}"
       alt="화살표"
